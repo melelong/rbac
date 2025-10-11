@@ -5,15 +5,15 @@ import type { JwtConfigType } from '@/configs'
 import type { ILoggerCls } from '@/infrastructure/logger2/ILogger2'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { AuthBusiness } from '@packages/types'
+import { AuthBusiness, AuthBusinessTextMap } from '@packages/types'
 import { ClsService } from 'nestjs-cls'
+import { BusinessException } from '@/common/exceptions'
 import { JWT_CONFIG_KEY } from '@/configs'
 import { CaptchaService } from '@/infrastructure/captcha/captcha.service'
 import { TokenType } from '@/infrastructure/jwt2/jwt2.constant'
 import { Jwt2Service } from '@/infrastructure/jwt2/jwt2.service'
 import { LOGGER_CLS } from '@/infrastructure/logger2/logger2.constant'
 import { UserService } from '@/modules/system/user/user.service'
-import { AuthException } from './auth.util'
 import { LoginVO, UserInfo } from './vo'
 
 @Injectable()
@@ -37,7 +37,7 @@ export class AuthService implements IAuthService {
     const { name, email, captcha, pwd } = resetPwdByEmailDTO
     await this.captchaService.verifyCaptcha(captcha, { id: email, type: 'resetPwd', name: 'email' })
     const user = await this.userService.findOneByName({ name })
-    if (email !== user?.profile.email) throw new AuthException(AuthBusiness.EMAIL_MISMATCH)
+    if (email !== user?.profile.email) throw new BusinessException(AuthBusiness.EMAIL_MISMATCH, AuthBusinessTextMap)
     await this.userService.updatePwd(user.id, pwd)
     await this.delAllToken(user.id, response)
     return true
@@ -47,7 +47,7 @@ export class AuthService implements IAuthService {
     const { email, captcha } = loginByEmailDTO
     await this.captchaService.verifyCaptcha(captcha, { id: email, type: 'login', name: 'email' })
     const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
-    if (email !== userInfo.email) throw new AuthException(AuthBusiness.EMAIL_MISMATCH)
+    if (email !== userInfo.email) throw new BusinessException(AuthBusiness.EMAIL_MISMATCH, AuthBusinessTextMap)
     await this.userService.updateLoginInfo(userInfo.id, userInfo.loginAt!, userInfo.loginIp!)
     return await this.setAllToken(response)
   }
@@ -133,9 +133,10 @@ export class AuthService implements IAuthService {
   async validateUser(name: string, pwd: string) {
     const ip = this.clsService.get(LOGGER_CLS.CLIENT_IP)
     const user = await this.userService.findOneByName({ name }, false)
-    if (!user) throw new AuthException(AuthBusiness.USER_NOT_FOUND)
+    if (!user) throw new BusinessException(AuthBusiness.USER_NOT_FOUND, AuthBusinessTextMap)
     const compare = await this.userService.compare(pwd, user.salt, user.pwd)
-    if (!compare) throw new AuthException(AuthBusiness.INCORRECT_PASSWORD)
+    if (!compare) throw new BusinessException(AuthBusiness.INCORRECT_PASSWORD, AuthBusinessTextMap)
+
     const now = new Date()
     const VO = new UserInfo({ id: user.id, name: user.name, email: user.profile.email, loginIp: ip, loginAt: now })
     return VO

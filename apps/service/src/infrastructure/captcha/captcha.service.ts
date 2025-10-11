@@ -12,22 +12,21 @@ import type { AppConfigType } from '@/configs'
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { CaptchaBusiness } from '@packages/types'
+import { CaptchaBusiness, CaptchaBusinessTextMap } from '@packages/types'
 import Redis from 'ioredis'
 import { create } from 'svg-captcha'
 import { CAPTCHA_LENGTH } from '@/common/constants'
-import { SystemException } from '@/common/exceptions'
+import { BusinessException, SystemException } from '@/common/exceptions'
+import { CacheTemplate } from '@/common/template'
 import { getCode, uuid_v4 } from '@/common/utils'
 import { APP_CONFIG_KEY } from '@/configs'
-import { LikeCache2Module } from '@/infrastructure/cache2/LikeCache2Module.abstract'
 import { EmailService } from '@/infrastructure/email/email.service'
 import { Logger2Service } from '@/infrastructure/logger2/logger2.service'
 import { CAPTCHA_REDIS_CLIENT_TOKEN, SEND_EMAIL_CAPTCHA_VO } from './captcha.constant'
-import { CaptchaException } from './captcha.exception'
 import { SvgCaptchaVO } from './vo/svgCaptcha.vo'
 
 @Injectable()
-export class CaptchaService extends LikeCache2Module implements ICaptchaService {
+export class CaptchaService extends CacheTemplate implements ICaptchaService {
   constructor(
     @Inject(CACHE_MANAGER) memory: Cache,
     @Inject(CAPTCHA_REDIS_CLIENT_TOKEN) redis: Redis,
@@ -104,9 +103,9 @@ export class CaptchaService extends LikeCache2Module implements ICaptchaService 
     const key = this.createCaptchaKey({ id, name, type })
     const redisCode = await this.get(key)
     /** 找不到 */
-    if (!redisCode) throw new CaptchaException(CaptchaBusiness.CODE_EXPIRED)
+    if (!redisCode) throw new BusinessException(CaptchaBusiness.CODE_EXPIRED, CaptchaBusinessTextMap)
     /** 对不上 */
-    if (redisCode !== code) throw new CaptchaException(CaptchaBusiness.CODE_INVALID)
+    if (redisCode.toLowerCase() !== code.toLowerCase()) throw new BusinessException(CaptchaBusiness.CODE_INVALID, CaptchaBusinessTextMap)
     await this.delCaptcha(options)
   }
 
@@ -119,6 +118,6 @@ export class CaptchaService extends LikeCache2Module implements ICaptchaService 
     /** 没有就设置，有就更新 */
     const old = await this.get<number>(throttleKey)
     Object.is(old, null) ? await this.set(throttleKey, 1, timer) : await this.update(throttleKey, +old! + 1)
-    if (+old! >= num) throw new CaptchaException(CaptchaBusiness.SEND_TOO_FREQUENT)
+    if (+old! >= num) throw new BusinessException(CaptchaBusiness.SEND_TOO_FREQUENT, CaptchaBusinessTextMap)
   }
 }

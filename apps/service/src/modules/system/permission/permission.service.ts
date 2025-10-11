@@ -3,11 +3,11 @@ import type { IPermissionService } from './IPermission'
 import type { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { ActionTypeTextMap, PermissionBusiness } from '@packages/types'
+import { ActionTypeTextMap, PermissionBusiness, PermissionBusinessTextMap } from '@packages/types'
 import { EntityManager, Repository } from 'typeorm'
 import { SYSTEM_DEFAULT_BY } from '@/common/constants'
+import { BusinessException } from '@/common/exceptions'
 import { PermissionEntity } from './entities/permission.entity'
-import { PermissionException } from './permission.exception'
 import { FindAllPermissionVO, PermissionVO } from './vo'
 
 @Injectable()
@@ -29,8 +29,8 @@ export class PermissionService implements IPermissionService {
           lock: { mode: 'pessimistic_write' },
         }),
       ])
-      if (hasName) throw new PermissionException(PermissionBusiness.NAME_ALREADY_EXISTS)
-      if (hasCode) throw new PermissionException(PermissionBusiness.CODE_ALREADY_EXISTS)
+      if (hasName) throw new BusinessException(PermissionBusiness.NAME_ALREADY_EXISTS, PermissionBusinessTextMap)
+      if (hasCode) throw new BusinessException(PermissionBusiness.CODE_ALREADY_EXISTS, PermissionBusinessTextMap)
 
       // 创建权限
       const now = new Date()
@@ -56,7 +56,7 @@ export class PermissionService implements IPermissionService {
       const { id } = permissionIdDTO
       const now = new Date()
       const permission = await entityManager.findOne(PermissionEntity, { where: { id }, lock: { mode: 'pessimistic_write' } })
-      if (!permission) throw new PermissionException(PermissionBusiness.NOT_FOUND)
+      if (!permission) throw new BusinessException(PermissionBusiness.NOT_FOUND, PermissionBusinessTextMap)
 
       await entityManager.update(PermissionEntity, { id }, { deletedBy: by, deletedAt: now })
 
@@ -86,7 +86,7 @@ export class PermissionService implements IPermissionService {
   async findOneById(permissionIdDTO: PermissionIdDTO, isVO: boolean = true) {
     const { id } = permissionIdDTO
     const permission = await this.permissionRepository.findOne({ where: { id } })
-    if (!permission) throw new PermissionException(PermissionBusiness.NOT_FOUND)
+    if (!permission) throw new BusinessException(PermissionBusiness.NOT_FOUND, PermissionBusinessTextMap)
     if (isVO) {
       const VO = new PermissionVO(permission)
       return VO
@@ -100,7 +100,7 @@ export class PermissionService implements IPermissionService {
   async findOneByName(permissionNameDTO: PermissionNameDTO, isVO: boolean = true) {
     const { name } = permissionNameDTO
     const permission = await this.permissionRepository.findOne({ where: { name } })
-    if (!permission) throw new PermissionException(PermissionBusiness.NOT_FOUND)
+    if (!permission) throw new BusinessException(PermissionBusiness.NOT_FOUND, PermissionBusinessTextMap)
     if (isVO) {
       const VO = new PermissionVO(permission)
       return VO
@@ -114,7 +114,7 @@ export class PermissionService implements IPermissionService {
   async findOneByCode(permissionCodeDTO: PermissionCodeDTO, isVO: boolean = true) {
     const { permissionCode } = permissionCodeDTO
     const permission = await this.permissionRepository.findOne({ where: { permissionCode } })
-    if (!permission) throw new PermissionException(PermissionBusiness.NOT_FOUND)
+    if (!permission) throw new BusinessException(PermissionBusiness.NOT_FOUND, PermissionBusinessTextMap)
     if (isVO) {
       const VO = new PermissionVO(permission)
       return VO
@@ -129,7 +129,7 @@ export class PermissionService implements IPermissionService {
 
       const permission = await entityManager.findOne(PermissionEntity, { where: { id }, lock: { mode: 'pessimistic_write' } })
 
-      if (!permission) throw new PermissionException(PermissionBusiness.NOT_FOUND)
+      if (!permission) throw new BusinessException(PermissionBusiness.NOT_FOUND, PermissionBusinessTextMap)
 
       const now = new Date()
       await entityManager.update(PermissionEntity, { id }, { status, updatedBy: by, updatedAt: now })

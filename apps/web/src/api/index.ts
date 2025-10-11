@@ -1,5 +1,1 @@
-import { loginBySvgCaptcha } from './auth'
-
-export const api = {
-  loginBySvgCaptcha,
-}
+export * as authApi from './auth'

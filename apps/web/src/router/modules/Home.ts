@@ -5,8 +5,16 @@ export const homeRoutes: RouteRecordRaw[] = [
     name: 'Home',
     path: '/',
     component: () => import('@/layout/DefaultLayout.vue'),
-    redirect: '/workspace',
+    redirect: '/dashboard',
     children: [
+      {
+        name: 'Dashboard',
+        path: 'dashboard',
+        component: () => import('@/views/Dashboard/index.vue'),
+        meta: {
+          title: 'VIEWS.DASHBOARD.TITLE',
+        },
+      },
       {
         name: 'Workspace',
         path: 'workspace',

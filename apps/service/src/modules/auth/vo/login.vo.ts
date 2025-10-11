@@ -1,4 +1,4 @@
-import type { IUserInfo } from '@packages/types'
+import type { ILoginVO, IUserInfo } from '@packages/types'
 import { ApiModel } from '@/common/decorators'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../auth.constant'
 
@@ -36,7 +36,7 @@ export class UserInfo implements IUserInfo {
   },
   { description: '登录响应数据' },
 )
-export class LoginVO {
+export class LoginVO implements ILoginVO {
   accessToken: string
   refreshToken: string
   constructor(login?: LoginVO) {

@@ -1,53 +1,68 @@
 /* eslint-disable style/quote-props */
-import type { ILoginBySvgDto } from '@packages/types'
+import type { ILoginBySvgDTO } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
-import { api } from '@/api'
-import { CAPTCHA, CAPTCHA_LENGTH, PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '@/constants'
+import { useI18n } from 'vue-i18n'
+import { authApi } from '@/api'
+import { CAPTCHA_LENGTH, PWD_MAX, PWD_MIN, USER_NAME_MAX, USER_NAME_MIN } from '@/constants'
 import { t } from '@/i18n'
 import { goTo } from '@/router'
 import { CaptchaImg } from '../components'
 
 export function useSvgLogin() {
-  const formData = reactive<ILoginBySvgDto>({
-    username: '',
-    password: '',
+  const formData = reactive<ILoginBySvgDTO>({
+    name: '',
+    pwd: '',
     captcha: '',
     token: '',
   })
-  const getFormTitle = () => t('登录')
+  const getFormTitle = () => t('views.Login.SvgLogin.title')
   const formInstance = ref<FormInstance | null>(null)
   const captchaImgUrl = ref<null | string>(null)
-  const formRules = reactive<FormRules<ILoginBySvgDto>>({
-    username: [
-      { required: true, message: `${t('请输入')}${t(USER_NAME)}`, trigger: ['blur', 'change'] },
-      {
-        min: USER_NAME_MIN,
-        max: USER_NAME_MAX,
-        message: `${t(USER_NAME)}${t('长度')} ${USER_NAME_MIN} ~ ${USER_NAME_MAX}`,
-        trigger: ['blur', 'change'],
-      },
-    ],
-    password: [
-      { required: true, message: `${t('请输入')}${t(PWD)}`, trigger: ['blur', 'change'] },
-      { min: PWD_MIN, max: PWD_MAX, message: `${t(PWD)}${t('长度')} ${PWD_MIN} ~ ${PWD_MAX}`, trigger: ['blur', 'change'] },
-    ],
-    captcha: [
-      { required: true, message: `${t('请输入')}${t(CAPTCHA)}`, trigger: ['blur', 'change'] },
-      { min: CAPTCHA_LENGTH, max: CAPTCHA_LENGTH, message: `${t(CAPTCHA)}${t('长度')} ${CAPTCHA_LENGTH}`, trigger: ['blur', 'change'] },
-    ],
+  const { locale } = useI18n()
+  const formRules = computed<FormRules<ILoginBySvgDTO>>(() => {
+    // eslint-disable-next-line ts/no-unused-expressions
+    locale
+    return {
+      name: [
+        { required: true, message: t('common.form.username'), trigger: ['blur', 'change'] },
+        {
+          min: USER_NAME_MIN,
+          max: USER_NAME_MAX,
+          message: `${t('common.form.usernameLength')} ${USER_NAME_MIN} ~ ${USER_NAME_MAX}`,
+          trigger: ['blur', 'change'],
+        },
+      ],
+      pwd: [
+        { required: true, message: t('common.form.password'), trigger: ['blur', 'change'] },
+        { min: PWD_MIN, max: PWD_MAX, message: `${t('common.form.passwordLength')} ${PWD_MIN} ~ ${PWD_MAX}`, trigger: ['blur', 'change'] },
+      ],
+      captcha: [
+        { required: true, message: t('common.form.captcha'), trigger: ['blur', 'change'] },
+        {
+          min: CAPTCHA_LENGTH,
+          max: CAPTCHA_LENGTH,
+          message: `${t('common.form.captchaLength')} ${CAPTCHA_LENGTH}`,
+          trigger: ['blur', 'change'],
+        },
+      ],
+    }
   })
   function setInstance(_formInstance: any) {
     formInstance.value = _formInstance ?? null
   }
   async function getSvg() {
-    formData.captcha = ''
-    const {
-      data: { svg, token },
-    } = await api.loginBySvgCaptcha()
-    formData.token = token
-    captchaImgUrl.value = svg
+    try {
+      formData.captcha = ''
+      const { data } = await authApi.loginBySvgCaptcha()
+      if (data) {
+        formData.token = data?.token
+        captchaImgUrl.value = data?.svg
+      }
+    } catch (e) {
+      console.error(e)
+    }
   }
   getSvg()
   const submitDisabled = computed<boolean>(() => {
@@ -57,9 +72,9 @@ export function useSvgLogin() {
   const formItems = computed<IFormItems[]>(() => [
     {
       type: 'Input',
-      key: 'username',
+      key: 'name',
       props: {
-        placeholder: t('请输入用户名'),
+        placeholder: t('common.form.username'),
         autocomplete: 'off',
         'prefix-icon': h(Icon, {
           icon: 'icon-park-outline:user',
@@ -69,11 +84,11 @@ export function useSvgLogin() {
     },
     {
       type: 'Input',
-      key: 'password',
+      key: 'pwd',
       props: {
         'show-password': true,
         type: 'password',
-        placeholder: t('请输入密码'),
+        placeholder: t('common.form.password'),
         autocomplete: 'off',
         'prefix-icon': h(Icon, {
           icon: 'icon-park-outline:key',
@@ -85,7 +100,7 @@ export function useSvgLogin() {
       type: 'Input',
       key: 'captcha',
       props: {
-        placeholder: t('请输入验证码'),
+        placeholder: t('common.form.captcha'),
         autocomplete: 'off',
         'prefix-icon': h(Icon, {
           icon: 'icon-park-outline:unlock-one',
@@ -118,11 +133,18 @@ export function useSvgLogin() {
       attrs: {
         onClick: () => {
           formInstance.value?.validate(async (isValid: boolean) => {
-            console.warn(isValid)
+            if (isValid) {
+              try {
+                await authApi.loginBySvg(formData)
+                // goTo('Home')
+              } catch {
+                await getSvg()
+              }
+            }
           })
         },
       },
-      slots: t('确认'),
+      slots: t('common.form.confirm'),
     },
     {
       type: 'Button',
@@ -130,7 +152,7 @@ export function useSvgLogin() {
       attrs: {
         onClick: () => goTo('EmailLogin'),
       },
-      slots: t('邮箱登录'),
+      slots: t('views.Login.EmailLogin.title'),
     },
   ])
   return {

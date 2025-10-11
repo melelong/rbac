@@ -2,7 +2,7 @@ import type { AssignPermissionsByCodesDTO, AssignPermissionsByIdsDTO, CreateRole
 import type { RoleEntity } from './entities/role.entity'
 import type { RoleTreeEntity } from './entities/roleTree.entity'
 import type { FindAllRoleVO, RoleVO } from './vo'
-import type { UPDATE_STATUS_VO, UPDATE_VO } from '@/common/constants'
+import type { DEL_BY_ID_VO, UPDATE_STATUS_VO, UPDATE_VO } from '@/common/constants'
 import type { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
 import type { ICommonEntity } from '@/common/entities/ICommonEntity'
 import type { DeptEntity } from '@/modules/system/dept/entities/dept.entity'
@@ -125,6 +125,12 @@ export interface IRoleController {
    * @param createRoleDTO 创建参数
    */
   create: (createRoleDTO: CreateRoleDTO) => Promise<RoleVO>
+
+  /**
+   * 删除用户接口
+   * @param roleIdDTO 角色ID
+   */
+  delete: (roleIdDTO: RoleIdDTO) => Promise<typeof DEL_BY_ID_VO>
 
   /**
    * 分页查询接口

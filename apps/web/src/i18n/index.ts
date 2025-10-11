@@ -4,7 +4,7 @@ import { useStorage } from '@vueuse/core'
 import { createI18n } from 'vue-i18n'
 import { useApp } from '@/store/modules/app'
 
-export const localeKeys = ['zh-cn', 'en'] as const
+export const localeKeys = ['zh-CN', 'en'] as const
 export type AppLocale = (typeof localeKeys)[number]
 console.warn(messages)
 export const i18n = createI18n({

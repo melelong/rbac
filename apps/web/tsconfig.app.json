@@ -7,6 +7,6 @@
     },
     "types": ["@intlify/unplugin-vue-i18n/messages"]
   },
-  "include": ["src/vite-env.d.ts", "src/**/*", "src/**/*.vue"],
+  "include": ["src/vite-env.d.ts", "src/**/*", "src/**/*.vue", "src/utils/.util.ts"],
   "exclude": ["src/**/__tests__/*"]
 }

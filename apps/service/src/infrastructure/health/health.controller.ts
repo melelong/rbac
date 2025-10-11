@@ -78,7 +78,6 @@ export class HealthController {
     this.logger2Service.http('http', name)
     this.logger2Service.verbose('verbose', name)
     this.logger2Service.debug('debug', name)
-    // throw new BusinessException('1', 500)
     try {
       this.redisHealthIndicator.test()
     } catch (error) {

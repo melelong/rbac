@@ -1,7 +1,6 @@
-import type { IRefreshTokenDto } from '@packages/types'
+import type { IRefreshTokenDTO } from '@packages/types'
 import { IsOptional } from 'class-validator'
-import { InputJWT, InputSpace, NotEmpty } from '@/common/decorators'
-import { ApiModel } from '@/common/decorators'
+import { ApiModel, InputJWT, InputSpace, NotEmpty } from '@/common/decorators'
 import { REFRESH_TOKEN } from '../auth.constant'
 
 @ApiModel(
@@ -10,7 +9,7 @@ import { REFRESH_TOKEN } from '../auth.constant'
   },
   { description: '刷新令牌接口参数校验' },
 )
-export class RefreshTokenDTO implements IRefreshTokenDto {
+export class RefreshTokenDTO implements IRefreshTokenDTO {
   @NotEmpty(REFRESH_TOKEN)
   @InputSpace(REFRESH_TOKEN)
   @InputJWT(REFRESH_TOKEN)

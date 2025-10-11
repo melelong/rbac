@@ -1,8 +1,17 @@
 {
   "common": {
     "locale": {
-      "zh-cn": "中文",
+      "zh-CN": "中文",
       "en": "英文"
+    },
+    "form": {
+      "username": "请输入用户名",
+      "password": "请输入密码",
+      "captcha": "请输入验证码",
+      "confirm": "确认",
+      "usernameLength": "用户名长度",
+      "passwordLength": "密码长度",
+      "captchaLength": "验证码长度"
     }
   },
   "components": {
@@ -17,12 +26,15 @@
     "Login": {
       "components": {
         "CaptchaImg": {
-          "text": "图片占位",
+          "text": "图片验证码",
           "alt": "图片验证码"
         }
       },
       "SvgLogin": {
-        "title": "登录"
+        "title": "登录",
+        "noAccount": "没有账号?",
+        "register": "去注册",
+        "forgetPwd": "忘记密码?"
       },
       "EmailLogin": {
         "title": "邮箱登录"

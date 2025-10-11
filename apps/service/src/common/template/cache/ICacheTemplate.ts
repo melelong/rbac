@@ -1,9 +1,8 @@
 import type { Cache } from '@nestjs/cache-manager'
 import type { Queue, RedisClient } from 'bullmq'
-
-/** 类似缓存模块配置接口 */
-export interface ILikeCache2ModuleOptions {
-  /** 子类名 */
+/** 缓存模板抽象类配置接口 */
+export interface ICacheTemplateOptions {
+  /** 应用模板的类名 */
   className: string
   /** redis缓存实例 */
   redis: RedisClient
@@ -14,8 +13,8 @@ export interface ILikeCache2ModuleOptions {
   /** 队列redis实例 */
   queueRedis?: RedisClient
 }
-/** 类似缓存模块接口 */
-export interface ILikeCache2Module {
+/** 缓存模板抽象类接口 */
+export interface ICacheTemplate {
   /** redis缓存实例 */
   redis: RedisClient
   /** memory缓存实例 */
@@ -24,6 +23,8 @@ export interface ILikeCache2Module {
   queue?: Queue
   /** 队列的redis实例 */
   queueRedis?: RedisClient
+  /** 应用模板的类名 */
+  className: string
 
   /**
    * 写入缓存

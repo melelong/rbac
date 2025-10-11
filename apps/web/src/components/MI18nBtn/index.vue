@@ -13,7 +13,7 @@ function _setLocale(locale: AppLocale) {
   setLocale(locale)
   setTitle(route.meta.title as string)
   ElMessage({
-    message: locale,
+    message: t(`common.locale.${locale}`),
     type: 'success',
     duration: 1000,
   })

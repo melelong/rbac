@@ -1,8 +1,17 @@
 {
   "common": {
     "locale": {
-      "zh-cn": "zh-cn",
+      "zh-CN": "zh-cn",
       "en": "en"
+    },
+    "form": {
+      "username": "UserName",
+      "password": "Password",
+      "captcha": "Captcha",
+      "confirm": "Confirm",
+      "usernameLength": "UserName Length",
+      "passwordLength": "Password Length",
+      "captchaLength": "Captcha Length"
     }
   },
   "components": {
@@ -17,12 +26,15 @@
     "Login": {
       "components": {
         "CaptchaImg": {
-          "text": "Code",
-          "alt": "Code"
+          "text": "Captcha",
+          "alt": "Captcha"
         }
       },
       "SvgLogin": {
-        "title": "Login"
+        "title": "Login",
+        "noAccount": "NoAccount?",
+        "register": "register",
+        "forgetPwd": "ForgetPwd?"
       },
       "EmailLogin": {
         "title": "EmailLogin"

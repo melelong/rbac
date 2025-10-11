@@ -3,6 +3,7 @@ import { IRoleVO, StatusEnum } from '@packages/types'
 import { ApiModel } from '@/common/decorators'
 import { DeptVO } from '@/modules/system/dept/vo'
 import { PermissionVO } from '@/modules/system/permission/vo'
+import { RoleTreeEntity } from '../entities/roleTree.entity'
 
 @ApiModel(
   {
@@ -34,10 +35,27 @@ export class RoleVO implements IRoleVO {
   roleCode: string
   permissions: PermissionVO[]
   depts: DeptVO[]
+  ancestorNodes: RoleTreeEntity[]
+  descendantNodes: RoleTreeEntity[]
 
   constructor(role?: RoleEntity) {
     if (role) {
-      const { id, createdBy, updatedBy, createdAt, updatedAt, remark, status, parentId, name, roleCode, permissions, depts } = role
+      const {
+        id,
+        createdBy,
+        updatedBy,
+        createdAt,
+        updatedAt,
+        remark,
+        status,
+        parentId,
+        name,
+        roleCode,
+        permissions,
+        depts,
+        ancestorNodes,
+        descendantNodes,
+      } = role
       this.id = id
       this.createdBy = createdBy
       this.updatedBy = updatedBy
@@ -50,6 +68,8 @@ export class RoleVO implements IRoleVO {
       this.roleCode = roleCode
       this.permissions = permissions ? permissions.map((permission) => new PermissionVO(permission)) : []
       this.depts = depts ? depts.map((dept) => new DeptVO(dept)) : []
+      this.ancestorNodes = ancestorNodes
+      this.descendantNodes = descendantNodes
     }
   }
 }

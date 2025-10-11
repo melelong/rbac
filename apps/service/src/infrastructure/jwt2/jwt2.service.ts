@@ -6,11 +6,11 @@ import type { UserInfo } from '@/modules/auth/vo'
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { LikeCache2Module } from '@/infrastructure/cache2/LikeCache2Module.abstract'
+import { CacheTemplate } from '@/common/template'
 import { JWT_REDIS_CLIENT_TOKEN } from './jwt2.constant'
 
 @Injectable()
-export class Jwt2Service extends LikeCache2Module implements IJwt2Service {
+export class Jwt2Service extends CacheTemplate implements IJwt2Service {
   constructor(
     @Inject(CACHE_MANAGER) memory: Cache,
     @Inject(JWT_REDIS_CLIENT_TOKEN) redis: Redis,

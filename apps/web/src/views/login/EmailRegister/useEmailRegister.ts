@@ -1,5 +1,5 @@
 /* eslint-disable style/quote-props */
-import type { IRegisterByEmailDto } from '@packages/types'
+import type { IRegisterByEmailDTO } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
@@ -8,16 +8,16 @@ import { t } from '@/i18n'
 import { goTo } from '@/router'
 
 export function useEmailRegister() {
-  const formData = reactive<IRegisterByEmailDto>({
-    username: '',
-    password: '',
+  const formData = reactive<IRegisterByEmailDTO>({
+    name: '',
+    pwd: '',
     captcha: '',
     email: '',
   })
   const getFormTitle = () => t('邮箱注册')
   const formInstance = ref<FormInstance | null>(null)
-  const formRules = reactive<FormRules<IRegisterByEmailDto>>({
-    username: [
+  const formRules = reactive<FormRules<IRegisterByEmailDTO>>({
+    name: [
       { required: true, message: `${t('请输入')}${USER_NAME}`, trigger: ['blur', 'change'] },
       {
         min: USER_NAME_MIN,
@@ -26,7 +26,7 @@ export function useEmailRegister() {
         trigger: ['blur', 'change'],
       },
     ],
-    password: [
+    pwd: [
       { required: true, message: `${t('请输入')}${PWD}`, trigger: ['blur', 'change'] },
       { min: PWD_MIN, max: PWD_MAX, message: `${PWD}${t('长度')} ${PWD_MIN} ~ ${PWD_MAX}`, trigger: ['blur', 'change'] },
     ],

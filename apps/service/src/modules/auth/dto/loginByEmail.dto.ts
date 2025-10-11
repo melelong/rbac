@@ -1,7 +1,6 @@
 import type { ILoginByEmailDTO } from '@packages/types'
 import { CAPTCHA, CAPTCHA_LENGTH } from '@/common/constants'
-import { InputEmail, InputPwd, InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
-import { ApiModel } from '@/common/decorators'
+import { ApiModel, InputEmail, InputPwd, InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
 import { EMAIL, PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '@/modules/system/user/user.constant'
 
 @ApiModel(

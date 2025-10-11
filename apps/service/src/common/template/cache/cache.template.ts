@@ -1,19 +1,19 @@
 import type { Queue, RedisClient } from 'bullmq'
-import type { ILikeCache2Module, ILikeCache2ModuleOptions } from './ICache'
+import type { ICacheTemplate, ICacheTemplateOptions } from './ICacheTemplate'
 import { Cache } from '@nestjs/cache-manager'
 import { SystemException } from '@/common/exceptions'
 import { DEFAULT_CACHE_TTL } from '@/configs'
 import { redisIsOk } from '@/infrastructure/redis/redis.utils'
 
-/** 类缓存模块 */
-export abstract class LikeCache2Module implements ILikeCache2Module {
+/** 缓存模板抽象类 */
+export abstract class CacheTemplate implements ICacheTemplate {
   redis: RedisClient
   memory: Cache
   queue?: Queue
   queueRedis?: RedisClient
   className: string
-  constructor(cache2ModuleOptions: ILikeCache2ModuleOptions) {
-    const { className, redis, memory, queue, queueRedis } = cache2ModuleOptions
+  constructor(cacheTemplateOptions: ICacheTemplateOptions) {
+    const { className, redis, memory, queue, queueRedis } = cacheTemplateOptions
     this.className = className
     this.redis = redis
     this.memory = memory
