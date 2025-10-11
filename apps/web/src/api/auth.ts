@@ -19,8 +19,10 @@ export async function loginBySvgCaptcha() {
   return (await request.get<CustomConfig, ISvgCaptchaVO>(`/auth/login/svg/captcha`, undefined, {
     requestIdRules: 'method:url',
     customConfig: {
-      limitTime: 3000,
-      limitType: 'Debounce',
+      LimitPlugin: {
+        limitTime: 3000,
+        limitType: 'Debounce',
+      },
     },
   })) as IOKResponse<ISvgCaptchaVO>
 }
@@ -96,8 +98,10 @@ export async function resetPwdByEmail(resetPwdByEmailDTO: IResetPwdByEmailDTO) {
 export async function logout(logoutDTO?: ILogoutDTO) {
   return (await request.post<CustomConfig, string>(`/auth/logout`, logoutDTO, {
     customConfig: {
-      limitTime: 3000,
-      limitType: 'Debounce',
+      LimitPlugin: {
+        limitTime: 3000,
+        limitType: 'Debounce',
+      },
     },
   })) as IOKResponse<string>
 }

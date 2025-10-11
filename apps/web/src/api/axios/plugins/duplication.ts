@@ -1,16 +1,20 @@
 import type { CancelTokenSource } from 'axios'
-import type { IHttpPlugin } from '../IAxiosUtils'
+import type { CustomConfig } from '..'
+import type { CustomAxiosError, IHttpPlugin } from '../IAxiosUtils'
+import type { IEventBusEvents } from '@/eventBus/IEventBus'
 import axios from 'axios'
 import { eventBus } from '@/eventBus'
 import { AxiosUtils } from '../AxiosUtils'
-/** 重复请求插件配置 */
+/** 重复请求处理插件配置 */
 export interface IDuplicationPluginConfig {
   /** 是否显示错误 */
-  showDuplicationError?: boolean
+  showError?: boolean
+  /** 错误提示 */
+  message?: string
+  /** 错误提示显示时长 */
+  duration?: number
   /** 是否允许重复请求 */
   allowDuplication?: boolean
-  /** 重复请求提示 */
-  duplicationMessage?: string
 }
 /** 重复请求队列元素类型 */
 interface IDuplicationQueueItem {
@@ -23,21 +27,28 @@ type TDuplicationQueue = Map<string, IDuplicationQueueItem>
 export const duplicationQueue: TDuplicationQueue = new Map()
 /** 默认配置 */
 const defaultConfig: IDuplicationPluginConfig = {
-  showDuplicationError: true,
+  showError: true,
+  message: '取消上次请求',
+  duration: 1000,
   allowDuplication: false,
 }
 const pluginName = 'DuplicationPlugin'
-/** 重复请求插件 */
+/** 重复请求处理插件事件 */
+export interface IDuplicationPluginEvents extends IEventBusEvents {
+  'HTTP_PLUGIN:DuplicationPlugin:handler': [error: CustomAxiosError]
+  'HTTP_PLUGIN:DuplicationPlugin:showError': [message: string, duration: number]
+}
+/** 重复请求处理插件 */
 export const DuplicationPlugin: IHttpPlugin = {
   name: pluginName,
   request: async (config) => {
-    const { allowDuplication = defaultConfig.allowDuplication, duplicationMessage = defaultConfig.duplicationMessage } =
-      config.customConfig as IDuplicationPluginConfig
+    const { allowDuplication = defaultConfig.allowDuplication!, message = defaultConfig.message! } =
+      (config.customConfig as CustomConfig).DuplicationPlugin ?? {}
     if (allowDuplication) return null
     const requestId = config.requestId!
     const cancelTokenSource = config.cancelTokenSource!
     const requestQueueItem = duplicationQueue.get(requestId)
-    if (requestQueueItem) requestQueueItem?.cancelTokenSource.cancel(duplicationMessage ?? `取消上次请求:${requestId}`, config)
+    if (requestQueueItem) requestQueueItem?.cancelTokenSource.cancel(message ?? `取消上次请求:${requestId}`, config)
 
     duplicationQueue.set(requestId, { cancelTokenSource })
     return config
@@ -50,14 +61,17 @@ export const DuplicationPlugin: IHttpPlugin = {
   },
   responseError: async (error) => {
     if (!axios.isCancel(error)) return null
-    const { duplicationMessage = defaultConfig.duplicationMessage, showDuplicationError = defaultConfig.showDuplicationError } = error.config
-      ?.customConfig as IDuplicationPluginConfig
+    const {
+      message = defaultConfig.message!,
+      showError = defaultConfig.showError!,
+      duration = defaultConfig.duration!,
+    } = (error.config?.customConfig as CustomConfig).DuplicationPlugin ?? {}
     const requestId = error!.config!.requestId!
-    const message = duplicationMessage ?? `取消上次请求:${requestId}`
-    if (showDuplicationError) ElMessage({ message, type: 'error', duration: 1000 })
+    const _message = message ?? `取消上次请求:${requestId}`
+    if (showError) eventBus.emit('HTTP_PLUGIN:DuplicationPlugin:showError', [_message, duration])
 
-    eventBus.emit('HTTP_PLUGIN:duplicationCustomErrorHandler', [error])
+    eventBus.emit('HTTP_PLUGIN:DuplicationPlugin:handler', [error])
 
-    return Promise.reject(AxiosUtils.createPluginError(pluginName, message))
+    return Promise.reject(AxiosUtils.createPluginError(pluginName, _message))
   },
 }

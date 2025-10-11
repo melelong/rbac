@@ -134,12 +134,14 @@ export function useSvgLogin() {
         onClick: () => {
           formInstance.value?.validate(async (isValid: boolean) => {
             if (isValid) {
-              try {
-                await authApi.loginBySvg(formData)
-                // goTo('Home')
-              } catch {
-                await getSvg()
-              }
+              await authApi.loginBySvg(formData)
+
+              // try {
+              //   await authApi.loginBySvg(formData)
+              //   // goTo('Home')
+              // } catch {
+              //   // await getSvg()
+              // }
             }
           })
         },
