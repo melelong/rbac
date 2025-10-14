@@ -1,7 +1,7 @@
 import type { IResourceController } from './IResource'
-import { Controller, Post, UseGuards } from '@nestjs/common'
+import { Controller, Post } from '@nestjs/common'
 import { ApiController, ApiMethod } from '@/common/decorators'
-import { JwtGuard } from '@/common/guards/jwt.guard'
+
 import { ResourceService } from './resource.service'
 import { ResourceVO } from './vo'
 
@@ -9,7 +9,7 @@ import { ResourceVO } from './vo'
 @ApiController({ ApiTagsOptions: ['资源模块'] })
 export class ResourceController implements IResourceController {
   constructor(private readonly resourceService: ResourceService) {}
-  @UseGuards(JwtGuard)
+
   @Post()
   @ApiMethod({
     ApiOperationOptions: [{ summary: '创建资源' }],

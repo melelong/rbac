@@ -14,10 +14,10 @@ import { LoginByEmailDTO } from './loginByEmail.dto'
   { description: '邮箱注册接口参数校验' },
 )
 export class ResetPwdByEmailDTO extends LoginByEmailDTO implements IResetPwdByEmailDTO {
-  @InputCompare(['pwd'])
-  @NotEmpty(CONFIRM_PWD)
-  @InputSpace(CONFIRM_PWD)
-  @InputPwd()
   @InputStringLength(PWD_MIN, PWD_MAX, CONFIRM_PWD)
+  @InputPwd()
+  @InputCompare(['pwd'])
+  @InputSpace(CONFIRM_PWD)
+  @NotEmpty(CONFIRM_PWD)
   confirmPwd: string
 }

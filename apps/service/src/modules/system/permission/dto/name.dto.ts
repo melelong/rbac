@@ -9,8 +9,8 @@ import { PERMISSION_NAME, PERMISSION_NAME_MAX, PERMISSION_NAME_MIN } from '../pe
   { description: PERMISSION_NAME },
 )
 export class PermissionNameDTO implements INameDTO {
-  @NotEmpty(PERMISSION_NAME)
-  @InputSpace(PERMISSION_NAME)
   @InputStringLength(PERMISSION_NAME_MIN, PERMISSION_NAME_MAX, PERMISSION_NAME)
+  @InputSpace(PERMISSION_NAME)
+  @NotEmpty(PERMISSION_NAME)
   name: string
 }

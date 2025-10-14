@@ -14,18 +14,18 @@ export interface CustomConfig {
   LimitPlugin?: ILimitPluginConfig
   /** 重复请求处理插件配置 */
   DuplicationPlugin?: IDuplicationPluginConfig
-  /** 业务错误处理插件配置 */
-  BusinessErrorPlugin?: IBusinessErrorPluginConfig
   /** 网络错误处理插件配置 */
   NetworkErrorPlugin?: INetworkErrorPluginConfig
+  /** 业务错误处理插件配置 */
+  BusinessErrorPlugin?: IBusinessErrorPluginConfig
   /** 未知错误处理插件配置 */
   UnknownErrorPlugin?: IUnknownErrorPluginConfig
 }
 export const request = new AxiosUtils<CustomConfig>()
 
 request.install(
-  [LimitPlugin, DuplicationPlugin, BusinessErrorPlugin, NetworkErrorPlugin, UnknownErrorPlugin],
-  [LimitPlugin, DuplicationPlugin, BusinessErrorPlugin, NetworkErrorPlugin, UnknownErrorPlugin],
+  [LimitPlugin, DuplicationPlugin, NetworkErrorPlugin, BusinessErrorPlugin, UnknownErrorPlugin],
+  [LimitPlugin, DuplicationPlugin, NetworkErrorPlugin, BusinessErrorPlugin, UnknownErrorPlugin],
 )
 
 // 注册插件的错误提示事件

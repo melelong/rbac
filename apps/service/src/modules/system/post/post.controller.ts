@@ -1,7 +1,7 @@
 import type { IPostController } from './IPost'
-import { Controller, Post, UseGuards } from '@nestjs/common'
+import { Controller, Post } from '@nestjs/common'
 import { ApiController, ApiMethod } from '@/common/decorators'
-import { JwtGuard } from '@/common/guards/jwt.guard'
+
 import { PostService } from './post.service'
 import { PostVO } from './vo'
 
@@ -9,7 +9,7 @@ import { PostVO } from './vo'
 @ApiController({ ApiTagsOptions: ['岗位模块'] })
 export class PostController implements IPostController {
   constructor(private readonly postService: PostService) {}
-  @UseGuards(JwtGuard)
+
   @Post()
   @ApiMethod({
     ApiOperationOptions: [{ summary: '创建岗位' }],

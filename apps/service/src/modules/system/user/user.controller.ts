@@ -1,11 +1,11 @@
 import type { IUserController } from './IUser'
 import type { ILoggerCls } from '@/infrastructure/logger2/ILogger2'
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common'
 import { ClsService } from 'nestjs-cls'
 import { DEL_BY_ID_VO, SYSTEM_DEFAULT_BY, UPDATE_STATUS_VO, UPDATE_VO } from '@/common/constants'
 import { ApiController, ApiMethod } from '@/common/decorators'
 import { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
-import { JwtGuard } from '@/common/guards/jwt.guard'
+
 import { LOGGER_CLS } from '@/infrastructure/logger2/logger2.constant'
 import { AssignRolesByIdsDTO, CreateUserDTO, UpdateUserDTO, UserIdDTO } from './dto'
 import { UserService } from './user.service'
@@ -19,7 +19,6 @@ export class UserController implements IUserController {
     private readonly clsService: ClsService<ILoggerCls>,
   ) {}
 
-  @UseGuards(JwtGuard)
   @Post()
   @ApiMethod({
     ApiOperationOptions: [{ summary: '创建用户' }],
@@ -31,7 +30,6 @@ export class UserController implements IUserController {
     return await this.userService.create(createUserDTO, userInfo.id ?? SYSTEM_DEFAULT_BY)
   }
 
-  @UseGuards(JwtGuard)
   @Delete(':id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '删除用户' }],
@@ -44,7 +42,6 @@ export class UserController implements IUserController {
     return DEL_BY_ID_VO
   }
 
-  @UseGuards(JwtGuard)
   @Get()
   @ApiMethod({
     ApiOperationOptions: [{ summary: '分页查询用户详情' }],
@@ -55,7 +52,6 @@ export class UserController implements IUserController {
     return await this.userService.findAll(findAllDTO)
   }
 
-  @UseGuards(JwtGuard)
   @Get(':id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '查询用户详情' }],
@@ -66,7 +62,6 @@ export class UserController implements IUserController {
     return await this.userService.findOneById(userIdDTO.id)
   }
 
-  @UseGuards(JwtGuard)
   @Patch(':id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '更新用户' }],
@@ -79,7 +74,6 @@ export class UserController implements IUserController {
     return UPDATE_VO
   }
 
-  @UseGuards(JwtGuard)
   @Patch('status/:id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '更新用户状态' }],
@@ -92,7 +86,6 @@ export class UserController implements IUserController {
     return UPDATE_STATUS_VO
   }
 
-  @UseGuards(JwtGuard)
   @Post(':id/roles')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '分配角色' }],

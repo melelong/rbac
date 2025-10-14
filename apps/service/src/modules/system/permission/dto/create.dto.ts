@@ -31,14 +31,14 @@ import {
   { description: '创建权限接口参数校验' },
 )
 export class CreatePermissionDTO implements ICreatePermissionDTO {
-  @NotEmpty(PERMISSION_NAME)
-  @InputSpace(PERMISSION_NAME)
   @InputStringLength(PERMISSION_NAME_MIN, PERMISSION_NAME_MAX, PERMISSION_NAME)
+  @InputSpace(PERMISSION_NAME)
+  @NotEmpty(PERMISSION_NAME)
   name: string
 
-  @NotEmpty(PERMISSION_DOMAIN)
-  @InputSpace(PERMISSION_DOMAIN)
   @InputStringLength(PERMISSION_DOMAIN_MIN, PERMISSION_DOMAIN_MAX, PERMISSION_DOMAIN)
+  @InputSpace(PERMISSION_DOMAIN)
+  @NotEmpty(PERMISSION_DOMAIN)
   domain: string
 
   @IsEnum(ActionTypeEnum, {
@@ -46,8 +46,8 @@ export class CreatePermissionDTO implements ICreatePermissionDTO {
   })
   actionType: ActionTypeEnum
 
-  @InputSpace(REMARK)
   @InputStringLength(REMARK_MIN, REMARK_MAX, REMARK)
+  @InputSpace(REMARK)
   @IsOptional()
   remark?: string
 }

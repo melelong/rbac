@@ -12,10 +12,10 @@ import { ROLE_ID } from '@/modules/system/role/role.constant'
   { description: '通过权限ID分配权限给角色参数校验' },
 )
 export class AssignPermissionsByIdsDTO extends IdDTO {
-  @InputArray(PERMISSION_ID)
-  @NotEmpty(PERMISSION_ID, true)
-  @InputSpace(PERMISSION_ID, true)
   @InputStringLength(UUID_V4_LENGTH, UUID_V4_LENGTH, PERMISSION_ID, true)
+  @InputSpace(PERMISSION_ID, true)
+  @NotEmpty(PERMISSION_ID, true)
+  @InputArray(PERMISSION_ID)
   permissionIds: string[]
 }
 
@@ -27,9 +27,9 @@ export class AssignPermissionsByIdsDTO extends IdDTO {
   { description: '通过权限编码分配权限给角色参数校验' },
 )
 export class AssignPermissionsByCodesDTO extends IdDTO {
-  @InputArray(PERMISSION_CODE)
+  @InputStringLength(PERMISSION_CODE_MIN, PERMISSION_CODE_MAX, PERMISSION_CODE, true)
+  @InputSpace(PERMISSION_CODE, true)
   @NotEmpty(PERMISSION_CODE, true)
-  @InputSpace(PERMISSION_CODE)
-  @InputStringLength(PERMISSION_CODE_MIN, PERMISSION_CODE_MAX, PERMISSION_CODE)
+  @InputArray(PERMISSION_CODE)
   permissionCodes: string[]
 }

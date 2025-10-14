@@ -13,24 +13,24 @@ import { PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '
   { description: '邮箱登录接口参数校验' },
 )
 export class LoginBySvgDTO implements ILoginBySvgDTO {
-  @NotEmpty(USER_NAME)
-  @InputSpace(USER_NAME)
   @InputStringLength(USER_NAME_MIN, USER_NAME_MAX, USER_NAME)
+  @InputSpace(USER_NAME)
+  @NotEmpty(USER_NAME)
   name: string
 
-  @NotEmpty(PWD)
-  @InputSpace(PWD)
-  @InputPwd()
   @InputStringLength(PWD_MIN, PWD_MAX, PWD)
+  @InputPwd()
+  @InputSpace(PWD)
+  @NotEmpty(PWD)
   pwd: string
 
-  @NotEmpty(CAPTCHA)
-  @InputSpace(CAPTCHA)
   @InputStringLength(CAPTCHA_LENGTH, CAPTCHA_LENGTH, CAPTCHA)
+  @InputSpace(CAPTCHA)
+  @NotEmpty(CAPTCHA)
   captcha: string
 
-  @NotEmpty(CAPTCHA_TOKEN)
-  @InputSpace(CAPTCHA_TOKEN)
   @InputStringLength(CAPTCHA_TOKEN_LENGTH, CAPTCHA_TOKEN_LENGTH, CAPTCHA_TOKEN)
+  @InputSpace(CAPTCHA_TOKEN)
+  @NotEmpty(CAPTCHA_TOKEN)
   token: string
 }

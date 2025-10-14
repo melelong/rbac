@@ -14,8 +14,8 @@ import { LoginByEmailDTO } from './loginByEmail.dto'
   { description: '邮箱注册接口参数校验' },
 )
 export class RegisterByEmailDTO extends LoginByEmailDTO implements IRegisterByEmailDTO {
-  @NotEmpty(USER_NAME)
-  @InputSpace(USER_NAME)
   @InputStringLength(USER_NAME_MIN, USER_NAME_MAX, USER_NAME)
+  @InputSpace(USER_NAME)
+  @NotEmpty(USER_NAME)
   name: string
 }

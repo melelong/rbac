@@ -12,10 +12,10 @@ import { USER_ID } from '../user.constant'
   { description: '通过角色ID分配角色给用户参数校验' },
 )
 export class AssignRolesByIdsDTO extends IdDTO {
-  @InputArray(ROLE_ID)
-  @NotEmpty(ROLE_ID, true)
-  @InputSpace(ROLE_ID, true)
   @InputStringLength(UUID_V4_LENGTH, UUID_V4_LENGTH, ROLE_ID, true)
+  @InputSpace(ROLE_ID, true)
+  @NotEmpty(ROLE_ID, true)
+  @InputArray(ROLE_ID)
   roleIds: string[]
 }
 
@@ -27,9 +27,9 @@ export class AssignRolesByIdsDTO extends IdDTO {
   { description: '通过角色编码分配角色给用户参数校验' },
 )
 export class AssignRolesByCodesDTO extends IdDTO {
-  @InputArray(ROLE_CODE)
+  @InputStringLength(ROLE_CODE_MIN, ROLE_CODE_MAX, ROLE_CODE, true)
+  @InputSpace(ROLE_CODE, true)
   @NotEmpty(ROLE_CODE, true)
-  @InputSpace(ROLE_CODE)
-  @InputStringLength(ROLE_CODE_MIN, ROLE_CODE_MAX, ROLE_CODE)
+  @InputArray(ROLE_CODE)
   roleCodes: string[]
 }

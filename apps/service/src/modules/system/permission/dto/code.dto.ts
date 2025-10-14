@@ -14,8 +14,8 @@ import { PERMISSION_CODE, PERMISSION_CODE_MAX, PERMISSION_CODE_MIN } from '../pe
   { description: PERMISSION_CODE },
 )
 export class PermissionCodeDTO {
-  @NotEmpty(PERMISSION_CODE)
-  @InputSpace(PERMISSION_CODE)
   @InputStringLength(PERMISSION_CODE_MIN, PERMISSION_CODE_MAX, PERMISSION_CODE)
+  @InputSpace(PERMISSION_CODE)
+  @NotEmpty(PERMISSION_CODE)
   permissionCode: string
 }

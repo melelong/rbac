@@ -7,7 +7,7 @@ import { LOGGER_CLS } from '@/infrastructure/logger2/logger2.constant'
 import { AuthService } from '../auth.service'
 
 @Injectable()
-export class NameStrategy extends PassportStrategy(Strategy, 'Name') {
+export class SvgStrategy extends PassportStrategy(Strategy, 'Svg') {
   constructor(
     private readonly authService: AuthService,
     private readonly clsService: ClsService<ILoggerCls>,

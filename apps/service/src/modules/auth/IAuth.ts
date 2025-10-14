@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 import type { UserVO } from '../system/user/vo'
 import type { LOGOUT_VO, REGISTER_VO, RESET_PWD_VO } from './auth.constant'
-import type { LoginBySvgDTO, LogoutDTO, RefreshTokenDTO, ResetPwdByEmailDTO } from './dto'
+import type { LoginBySvgDTO, LogoutDTO, RefreshTokenDTO, ResetPwdByEmailDTO, UnifiedLoginDTO } from './dto'
 import type { EmailCaptchaDTO } from './dto/emailCaptcha.dto'
 import type { LoginByEmailDTO } from './dto/loginByEmail.dto'
 import type { RegisterByEmailDTO } from './dto/registerByEmail.dto'
@@ -94,6 +94,13 @@ export interface IAuthController {
    * @param emailCaptchaDTO 邮箱验证码接口参数校验
    */
   loginByEmailCaptcha: (emailCaptchaDTO: EmailCaptchaDTO) => Promise<typeof SEND_EMAIL_CAPTCHA_VO>
+
+  /**
+   * 统一登录接口
+   * @param response 响应对象
+   * @param unifiedLoginDTO 统一登录接口参数校验
+   */
+  unifiedLogin: (response: Response, unifiedLoginDTO: UnifiedLoginDTO) => Promise<LoginVO>
 
   /**
    * 邮箱登录接口

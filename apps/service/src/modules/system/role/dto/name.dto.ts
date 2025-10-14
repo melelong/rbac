@@ -9,8 +9,8 @@ import { ROLE_NAME, ROLE_NAME_MAX, ROLE_NAME_MIN } from '../role.constant'
   { description: ROLE_NAME },
 )
 export class RoleNameDTO implements INameDTO {
-  @NotEmpty(ROLE_NAME)
-  @InputSpace(ROLE_NAME)
   @InputStringLength(ROLE_NAME_MIN, ROLE_NAME_MAX, ROLE_NAME)
+  @InputSpace(ROLE_NAME)
+  @NotEmpty(ROLE_NAME)
   name: string
 }

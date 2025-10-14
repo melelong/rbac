@@ -17,7 +17,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>()
     const status = exception.getStatus()
     let data = exception.getResponse()
-    if (exception instanceof UnauthorizedException) data = '令牌已失效，请重新登录'
     switch (true) {
       // 高频的不记录日志
       case exception instanceof ThrottlerException: {

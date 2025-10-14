@@ -12,19 +12,19 @@ import { EMAIL, PWD, PWD_MAX, PWD_MIN } from '@/modules/system/user/user.constan
   { description: '邮箱登录接口参数校验' },
 )
 export class LoginByEmailDTO implements ILoginByEmailDTO {
-  @NotEmpty(EMAIL)
-  @InputSpace(EMAIL)
   @InputEmail()
+  @InputSpace(EMAIL)
+  @NotEmpty(EMAIL)
   email: string
 
-  @NotEmpty(PWD)
-  @InputSpace(PWD)
-  @InputPwd()
   @InputStringLength(PWD_MIN, PWD_MAX, PWD)
+  @InputPwd()
+  @InputSpace(PWD)
+  @NotEmpty(PWD)
   pwd: string
 
-  @NotEmpty(CAPTCHA)
-  @InputSpace(CAPTCHA)
   @InputStringLength(CAPTCHA_LENGTH, CAPTCHA_LENGTH, CAPTCHA)
+  @InputSpace(CAPTCHA)
+  @NotEmpty(CAPTCHA)
   captcha: string
 }

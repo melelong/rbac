@@ -10,9 +10,9 @@ import { REFRESH_TOKEN } from '../auth.constant'
   { description: '刷新令牌接口参数校验' },
 )
 export class RefreshTokenDTO implements IRefreshTokenDTO {
-  @NotEmpty(REFRESH_TOKEN)
-  @InputSpace(REFRESH_TOKEN)
   @InputJWT(REFRESH_TOKEN)
+  @InputSpace(REFRESH_TOKEN)
+  @NotEmpty(REFRESH_TOKEN)
   @IsOptional()
   refreshToken?: string
 }

@@ -13,19 +13,19 @@ import { PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '
   { description: '创建用户接口参数校验' },
 )
 export class CreateUserDTO implements ICreateUserDTO {
-  @NotEmpty(USER_NAME)
-  @InputSpace(USER_NAME)
   @InputStringLength(USER_NAME_MIN, USER_NAME_MAX, USER_NAME)
+  @InputSpace(USER_NAME)
+  @NotEmpty(USER_NAME)
   name: string
 
-  @NotEmpty(PWD)
-  @InputSpace(PWD)
-  @InputPwd()
   @InputStringLength(PWD_MIN, PWD_MAX, PWD)
+  @InputPwd()
+  @InputSpace(PWD)
+  @NotEmpty(PWD)
   pwd: string
 
-  @InputSpace(REMARK)
   @InputStringLength(REMARK_MIN, REMARK_MAX, REMARK)
+  @InputSpace(REMARK)
   @IsOptional()
   remark?: string
 }

@@ -26,9 +26,9 @@ export class FindAllDTO {
 }
 
 export class IdDTO implements IIdDTO {
-  @NotEmpty('id')
-  @InputSpace('id')
   @InputStringLength(UUID_V4_LENGTH, UUID_V4_LENGTH, 'id')
+  @InputSpace('id')
+  @NotEmpty('id')
   id: string
 }
 

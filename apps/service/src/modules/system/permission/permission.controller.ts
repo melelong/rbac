@@ -1,11 +1,10 @@
 import type { IPermissionController } from './IPermission'
 import type { ILoggerCls } from '@/infrastructure/logger2/ILogger2'
-import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common'
 import { ClsService } from 'nestjs-cls'
 import { SYSTEM_DEFAULT_BY, UPDATE_STATUS_VO } from '@/common/constants'
 import { ApiController, ApiMethod } from '@/common/decorators'
 import { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
-import { JwtGuard } from '@/common/guards/jwt.guard'
 import { LOGGER_CLS } from '@/infrastructure/logger2/logger2.constant'
 import { CreatePermissionDTO, PermissionIdDTO } from './dto'
 import { PermissionService } from './permission.service'
@@ -19,7 +18,6 @@ export class PermissionController implements IPermissionController {
     private readonly clsService: ClsService<ILoggerCls>,
   ) {}
 
-  @UseGuards(JwtGuard)
   @Post()
   @ApiMethod({
     ApiOperationOptions: [{ summary: '创建权限' }],
@@ -31,7 +29,6 @@ export class PermissionController implements IPermissionController {
     return await this.permissionService.create(createPermissionDTO, userInfo.id ?? SYSTEM_DEFAULT_BY)
   }
 
-  @UseGuards(JwtGuard)
   @Get()
   @ApiMethod({
     ApiOperationOptions: [{ summary: '分页查询权限详情' }],
@@ -42,7 +39,6 @@ export class PermissionController implements IPermissionController {
     return await this.permissionService.findAll(findAllDTO)
   }
 
-  @UseGuards(JwtGuard)
   @Get(':id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '查询权限详情' }],
@@ -53,7 +49,6 @@ export class PermissionController implements IPermissionController {
     return await this.permissionService.findOneById(permissionIdDTO)
   }
 
-  @UseGuards(JwtGuard)
   @Patch('status/:id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '更新权限状态' }],

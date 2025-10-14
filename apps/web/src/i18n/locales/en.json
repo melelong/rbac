@@ -49,6 +49,12 @@
           "text": "Captcha",
           "alt": "Captcha"
         },
+        "LoginProtocol": {
+          "text": "I have read and agree to the",
+          "ServiceAgreement": "service agreement",
+          "And": "and",
+          "PrivacyPolicy": "privacy policy"
+        },
         "OtherLogin": {
           "text": "OtherLogin",
           "Email": "Email",

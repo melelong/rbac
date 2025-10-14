@@ -1,11 +1,11 @@
 import type { IRoleController } from './IRole'
 import type { ILoggerCls } from '@/infrastructure/logger2/ILogger2'
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common'
 import { ClsService } from 'nestjs-cls'
 import { DEL_BY_ID_VO, SYSTEM_DEFAULT_BY, UPDATE_STATUS_VO, UPDATE_VO } from '@/common/constants'
 import { ApiController, ApiMethod } from '@/common/decorators'
 import { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
-import { JwtGuard } from '@/common/guards/jwt.guard'
+
 import { LOGGER_CLS } from '@/infrastructure/logger2/logger2.constant'
 import { AssignPermissionsByIdsDTO, CreateRoleDTO, RoleIdDTO } from './dto'
 import { RoleService } from './role.service'
@@ -19,7 +19,6 @@ export class RoleController implements IRoleController {
     private readonly clsService: ClsService<ILoggerCls>,
   ) {}
 
-  @UseGuards(JwtGuard)
   @Post()
   @ApiMethod({
     ApiOperationOptions: [{ summary: '创建角色' }],
@@ -31,7 +30,6 @@ export class RoleController implements IRoleController {
     return await this.roleService.create(createRoleDTO, userInfo.id ?? SYSTEM_DEFAULT_BY)
   }
 
-  @UseGuards(JwtGuard)
   @Delete(':id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '删除角色' }],
@@ -44,7 +42,6 @@ export class RoleController implements IRoleController {
     return DEL_BY_ID_VO
   }
 
-  @UseGuards(JwtGuard)
   @Get()
   @ApiMethod({
     ApiOperationOptions: [{ summary: '分页查询角色详情' }],
@@ -55,7 +52,6 @@ export class RoleController implements IRoleController {
     return await this.roleService.findAll(findAllDTO)
   }
 
-  @UseGuards(JwtGuard)
   @Get(':id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '查询角色详情' }],
@@ -66,7 +62,6 @@ export class RoleController implements IRoleController {
     return await this.roleService.findOneById(roleIdDTO)
   }
 
-  @UseGuards(JwtGuard)
   @Patch('status/:id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '更新角色状态' }],
@@ -79,7 +74,6 @@ export class RoleController implements IRoleController {
     return UPDATE_STATUS_VO
   }
 
-  @UseGuards(JwtGuard)
   @Post(':id/permissions')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '分配权限' }],

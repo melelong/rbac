@@ -1,11 +1,11 @@
 import type { Request, Response } from 'express'
-import type { LoginByEmailDTO, LoginBySvgDTO, LogoutDTO, RefreshTokenDTO, RegisterByEmailDTO, ResetPwdByEmailDTO } from './dto'
+import type { LoginByEmailDTO, LoginBySvgDTO, LogoutDTO, RefreshTokenDTO, RegisterByEmailDTO, ResetPwdByEmailDTO, UnifiedLoginDTO } from './dto'
 import type { IAuthService } from './IAuth'
 import type { JwtConfigType } from '@/configs'
 import type { ILoggerCls } from '@/infrastructure/logger2/ILogger2'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { AuthBusiness, AuthBusinessTextMap } from '@packages/types'
+import { AuthBusiness, AuthBusinessTextMap, LoginTypeEnum } from '@packages/types'
 import { ClsService } from 'nestjs-cls'
 import { BusinessException } from '@/common/exceptions'
 import { JWT_CONFIG_KEY } from '@/configs'
@@ -58,6 +58,18 @@ export class AuthService implements IAuthService {
     await this.captchaService.verifyCaptcha(captcha, { id: token, type: 'login', name: 'svg' })
     await this.userService.updateLoginInfo(userInfo.id, userInfo.loginAt!, userInfo.loginIp!)
     return await this.setAllToken(response)
+  }
+
+  async unifiedLogin(response: Response, unifiedLoginDTO: UnifiedLoginDTO) {
+    const loginType = unifiedLoginDTO.loginType
+    switch (loginType) {
+      case LoginTypeEnum.EMAIL:
+        return await this.loginByEmail(response, unifiedLoginDTO)
+      case LoginTypeEnum.SVG:
+        return await this.loginBySvg(response, unifiedLoginDTO)
+      default:
+        throw new BusinessException(AuthBusiness.LOGIN_TYPE_NOT_SUPPORT, AuthBusinessTextMap)
+    }
   }
 
   async setAllToken(response: Response) {

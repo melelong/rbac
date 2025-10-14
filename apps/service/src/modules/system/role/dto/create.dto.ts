@@ -21,23 +21,23 @@ import { ROLE_CODE, ROLE_CODE_MAX, ROLE_CODE_MIN, ROLE_NAME, ROLE_NAME_MAX, ROLE
   { description: '创建角色接口参数校验' },
 )
 export class CreateRoleDTO implements ICreateRoleDTO {
-  @NotEmpty(ROLE_NAME)
-  @InputSpace(ROLE_NAME)
   @InputStringLength(ROLE_NAME_MIN, ROLE_NAME_MAX, ROLE_NAME)
+  @InputSpace(ROLE_NAME)
+  @NotEmpty(ROLE_NAME)
   name: string
 
-  @NotEmpty(ROLE_CODE)
-  @InputSpace(ROLE_CODE)
   @InputStringLength(ROLE_CODE_MIN, ROLE_CODE_MAX, ROLE_CODE)
+  @InputSpace(ROLE_CODE)
+  @NotEmpty(ROLE_CODE)
   roleCode: string
 
-  @InputSpace(ROLE_PARENT_ID)
   @InputStringLength(UUID_V4_LENGTH, UUID_V4_LENGTH, ROLE_PARENT_ID)
+  @InputSpace(ROLE_PARENT_ID)
   @IsOptional()
   parentId?: string
 
-  @InputSpace(REMARK)
   @InputStringLength(REMARK_MIN, REMARK_MAX, REMARK)
+  @InputSpace(REMARK)
   @IsOptional()
   remark?: string
 }

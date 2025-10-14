@@ -25,7 +25,8 @@
     // 连接mongodb
     "mongodb.mongodb-vscode",
     // 画图
-    "hediet.vscode-drawio"
+    "hediet.vscode-drawio",
+    "alibaba-cloud.tongyi-lingma"
   ],
   "unwantedRecommendations": [
     // 和 volar 冲突

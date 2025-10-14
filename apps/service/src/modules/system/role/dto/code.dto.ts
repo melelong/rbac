@@ -8,8 +8,8 @@ import { ROLE_CODE, ROLE_CODE_MAX, ROLE_CODE_MIN } from '../role.constant'
   { description: ROLE_CODE },
 )
 export class RoleCodeDTO {
-  @NotEmpty(ROLE_CODE)
-  @InputSpace(ROLE_CODE)
   @InputStringLength(ROLE_CODE_MIN, ROLE_CODE_MAX, ROLE_CODE)
+  @InputSpace(ROLE_CODE)
+  @NotEmpty(ROLE_CODE)
   roleCode: string
 }

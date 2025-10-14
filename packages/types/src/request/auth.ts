@@ -1,3 +1,5 @@
+import type { LoginTypeEnum } from '../enums'
+
 /** 邮箱验证码接口参数校验 */
 export interface IEmailCaptchaDTO {
   /** 邮箱 */
@@ -42,3 +44,9 @@ export interface IRefreshTokenDTO {
 
 /** 退出登录接口参数校验 */
 export interface ILogoutDTO extends IRefreshTokenDTO {}
+
+/** 统一登录接口参数校验 */
+export interface IUnifiedLoginDTO extends ILoginByEmailDTO, ILoginBySvgDTO {
+  /** 登录类型 */
+  loginType: LoginTypeEnum
+}
