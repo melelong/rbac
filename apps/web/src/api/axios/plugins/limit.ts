@@ -31,7 +31,7 @@ const limitQueue: TLimitQueue = new Map()
 const defaultConfig: ILimitPluginConfig = {
   showError: true,
   message: '请求过于频繁，请稍后再试',
-  duration: 1000,
+  duration: 1500,
   limitType: 'Throttle',
 }
 const pluginName = 'LimitPlugin'

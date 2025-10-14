@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { ElColorPicker } from 'element-plus'
 import { Icon } from '@iconify/vue'
+import { t } from '@/i18n'
 
 defineOptions({ name: 'MThemeBtn' })
 const MThemeBtnRef = useTemplateRef<HTMLDivElement>('MThemeBtnRef')
@@ -52,7 +53,7 @@ function handleChange() {
       @change="handleChange"
       @active-change="handleActiveChange"
     />
-    <ElTooltip :auto-close="500" placement="bottom" content="主颜色">
+    <ElTooltip :auto-close="200" placement="bottom" :content="t('components.MThemeBtn.content')">
       <ElButton class="z-1 m-0 flex-center border-none">
         <template #icon>
           <Icon class="cursor-pointer color-primary" icon="icon-park-outline:color-filter" />

@@ -21,7 +21,7 @@ function _setLocale(locale: AppLocale) {
 </script>
 
 <template>
-  <ElTooltip :auto-close="500" placement="bottom" :content="t('components.MI18nBtn.content')">
+  <ElTooltip :auto-close="200" placement="bottom" :content="t('components.MI18nBtn.content')">
     <ElDropdown size="large" placement="bottom" trigger="click" popper-class="MI18nBtn_container">
       <ElButton class="m-0 border-none">
         <template #icon>

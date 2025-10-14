@@ -17,11 +17,12 @@ import { request } from './axios'
 /** svg验证码接口(登录) */
 export async function loginBySvgCaptcha() {
   return (await request.get<CustomConfig, ISvgCaptchaVO>(`/auth/login/svg/captcha`, undefined, {
-    requestIdRules: 'method:url',
+    requestIdRules: 'method:url:params',
     customConfig: {
       LimitPlugin: {
         limitTime: 3000,
         limitType: 'Debounce',
+        message: '30秒后再次重试',
       },
     },
   })) as IOKResponse<ISvgCaptchaVO>
@@ -32,7 +33,16 @@ export async function loginBySvgCaptcha() {
  * @param emailCaptchaDTO 邮箱验证码接口参数校验
  */
 export async function loginByEmailCaptcha(emailCaptchaDTO: IEmailCaptchaDTO) {
-  return (await request.post<CustomConfig, string>(`/auth/login/email/captcha`, emailCaptchaDTO, {})) as IOKResponse<string>
+  return (await request.post<CustomConfig, string>(`/auth/login/email/captcha`, emailCaptchaDTO, {
+    requestIdRules: 'method:url:data',
+    customConfig: {
+      LimitPlugin: {
+        limitTime: 60000,
+        limitType: 'Throttle',
+        message: '1分钟后再次重试',
+      },
+    },
+  })) as IOKResponse<string>
 }
 
 /**
@@ -40,7 +50,16 @@ export async function loginByEmailCaptcha(emailCaptchaDTO: IEmailCaptchaDTO) {
  * @param loginByEmailDTO 邮箱登录接口参数校验
  */
 export async function loginByEmail(loginByEmailDTO: ILoginByEmailDTO) {
-  return (await request.post<CustomConfig, ILoginVO>(`/auth/login/email`, loginByEmailDTO, {})) as IOKResponse<ILoginVO>
+  return (await request.post<CustomConfig, ILoginVO>(`/auth/login/email`, loginByEmailDTO, {
+    requestIdRules: 'method:url:data',
+    customConfig: {
+      LimitPlugin: {
+        limitTime: 60000,
+        limitType: 'Throttle',
+        message: '1分钟后再次重试',
+      },
+    },
+  })) as IOKResponse<ILoginVO>
 }
 
 /**
@@ -49,10 +68,13 @@ export async function loginByEmail(loginByEmailDTO: ILoginByEmailDTO) {
  */
 export async function loginBySvg(loginBySvgDTO: ILoginBySvgDTO) {
   return (await request.post<CustomConfig, ILoginVO>(`/auth/login/svg`, loginBySvgDTO, {
-    requestIdRules: 'method:url',
+    requestIdRules: 'method:url:data',
     customConfig: {
-      // limitTime: 3000,
-      // limitType: 'Debounce',
+      LimitPlugin: {
+        limitTime: 60000,
+        limitType: 'Throttle',
+        message: '1分钟后再次重试',
+      },
     },
   })) as IOKResponse<ILoginVO>
 }
@@ -64,7 +86,16 @@ export async function loginBySvg(loginBySvgDTO: ILoginBySvgDTO) {
  */
 
 export async function registerByEmailCaptcha(emailCaptchaDTO: IEmailCaptchaDTO) {
-  return (await request.post<CustomConfig, string>(`/auth/register/email/captcha`, emailCaptchaDTO, {})) as IOKResponse<string>
+  return (await request.post<CustomConfig, string>(`/auth/register/email/captcha`, emailCaptchaDTO, {
+    requestIdRules: 'method:url:data',
+    customConfig: {
+      LimitPlugin: {
+        limitTime: 60000,
+        limitType: 'Throttle',
+        message: '1分钟后再次重试',
+      },
+    },
+  })) as IOKResponse<string>
 }
 
 /**
@@ -72,7 +103,16 @@ export async function registerByEmailCaptcha(emailCaptchaDTO: IEmailCaptchaDTO) 
  * @param registerByEmailDTO 邮箱注册接口参数校验
  */
 export async function registerByEmail(registerByEmailDTO: IRegisterByEmailDTO) {
-  return (await request.post<CustomConfig, string>(`/auth/register/email`, registerByEmailDTO, {})) as IOKResponse<string>
+  return (await request.post<CustomConfig, string>(`/auth/register/email`, registerByEmailDTO, {
+    requestIdRules: 'method:url:data',
+    customConfig: {
+      LimitPlugin: {
+        limitTime: 60000,
+        limitType: 'Throttle',
+        message: '1分钟后再次重试',
+      },
+    },
+  })) as IOKResponse<string>
 }
 
 /**
@@ -80,7 +120,16 @@ export async function registerByEmail(registerByEmailDTO: IRegisterByEmailDTO) {
  * @param emailCaptchaDTO 邮箱验证码接口参数校验
  */
 export async function resetPwdByEmailCaptcha(emailCaptchaDTO: IEmailCaptchaDTO) {
-  return (await request.post<CustomConfig, string>(`/auth/pwd/email/captcha`, emailCaptchaDTO, {})) as IOKResponse<string>
+  return (await request.post<CustomConfig, string>(`/auth/pwd/email/captcha`, emailCaptchaDTO, {
+    requestIdRules: 'method:url:data',
+    customConfig: {
+      LimitPlugin: {
+        limitTime: 60000,
+        limitType: 'Throttle',
+        message: '1分钟后再次重试',
+      },
+    },
+  })) as IOKResponse<string>
 }
 
 /**
@@ -88,7 +137,16 @@ export async function resetPwdByEmailCaptcha(emailCaptchaDTO: IEmailCaptchaDTO) 
  * @param resetPwdByEmailDTO 邮箱重置密码接口参数校验
  */
 export async function resetPwdByEmail(resetPwdByEmailDTO: IResetPwdByEmailDTO) {
-  return (await request.post<CustomConfig, string>(`/auth/pwd`, resetPwdByEmailDTO, {})) as IOKResponse<string>
+  return (await request.post<CustomConfig, string>(`/auth/pwd`, resetPwdByEmailDTO, {
+    requestIdRules: 'method:url',
+    customConfig: {
+      LimitPlugin: {
+        limitTime: 60000,
+        limitType: 'Throttle',
+        message: '1分钟后再次重试',
+      },
+    },
+  })) as IOKResponse<string>
 }
 
 /**
@@ -97,10 +155,12 @@ export async function resetPwdByEmail(resetPwdByEmailDTO: IResetPwdByEmailDTO) {
  */
 export async function logout(logoutDTO?: ILogoutDTO) {
   return (await request.post<CustomConfig, string>(`/auth/logout`, logoutDTO, {
+    requestIdRules: 'method:url',
     customConfig: {
       LimitPlugin: {
         limitTime: 3000,
         limitType: 'Debounce',
+        message: '30秒后再次重试',
       },
     },
   })) as IOKResponse<string>

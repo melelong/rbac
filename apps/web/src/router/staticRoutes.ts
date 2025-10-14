@@ -9,5 +9,9 @@ export const staticRoutes: RouteRecordRaw[] = [
     name: 'NotFound',
     path: '/:path(.*)*',
     component: () => import('@/views/Error/NotFound/index.vue'),
+    meta: {
+      title: 'views.Error.NotFound.title',
+      type: 'static',
+    },
   },
 ]

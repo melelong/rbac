@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { ColorPalette } from '@/theme/colorPalette'
+import type { IColorPalette } from '@/composables'
+import { useColorPalette } from '@/composables'
 import { goTo } from '@/router'
-import { generatePalette } from '@/theme/colorPalette'
 
 defineOptions({ name: 'ColorPalette' })
 const colors: Array<string> = [
@@ -28,9 +28,10 @@ const colors: Array<string> = [
   '#ec4899',
   '#f43f5e',
 ]
-const colorPalette = computed<Array<Array<ColorPalette>>>(() => colors.map((color) => generatePalette(color)))
+const { generatePalette } = useColorPalette()
+const colorPalette = computed<Array<Array<IColorPalette>>>(() => colors.map((color) => generatePalette(color)))
 const customColor = ref<string>('#ffffff')
-const customColorPalette = computed<Array<ColorPalette>>(() => generatePalette(customColor.value))
+const customColorPalette = computed<Array<IColorPalette>>(() => generatePalette(customColor.value))
 function handleActiveChange(val?: string) {
   console.warn('handleChange')
   val && (customColor.value = val)

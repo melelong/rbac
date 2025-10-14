@@ -19,12 +19,13 @@ export const useApp = defineStore('APP', {
         i18n.global.locale.value = I18N_LOCALE.value
         return I18N_LOCALE.value as AppLocale
       }
-      return 'zh-cn'
+      return 'zh-CN'
     },
   },
   actions: {
     setTitle(title: string) {
-      this.title = t(title) || import.meta.env.VITE_APP_TITLE
+      title = t(title)
+      this.title = `${import.meta.env.VITE_APP_TITLE}${title ? ` - ${title}` : ''}`
       window.document.title = this.title
     },
     setLocale(locale: AppLocale) {

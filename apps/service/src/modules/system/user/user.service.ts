@@ -1,4 +1,4 @@
-import type { AssignRolesByCodesDTO, AssignRolesByIdsDTO, UpdateUserDTO, UserIdDTO, UserNameDTO } from './dto'
+import type { AssignRolesByCodesDTO, AssignRolesByIdsDTO, UpdateUserDTO, UserIdDTO } from './dto'
 import type { CreateUserOptions, IUserService } from './IUser'
 import type { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
 import type { AppConfigType } from '@/configs'
@@ -74,22 +74,29 @@ export class UserService extends BusinessTemplate implements IUserService {
     return isVO ? new FindAllUserVO({ DataConstructor: UserVO, data, limit, page, total }) : [data, total]
   }
 
-  findOneById(userIdDTO: UserIdDTO, isVO: true): Promise<UserVO>
-  findOneById(userIdDTO: UserIdDTO, isVO: false): Promise<UserEntity>
-  findOneById(userIdDTO: UserIdDTO): Promise<UserVO>
-  async findOneById(userIdDTO: UserIdDTO, isVO: boolean = true) {
-    const { id } = userIdDTO
+  findOneById(id: string, isVO: true): Promise<UserVO>
+  findOneById(id: string, isVO: false): Promise<UserEntity>
+  findOneById(id: string): Promise<UserVO>
+  async findOneById(id: string, isVO: boolean = true) {
     const user = await this.entityManager.findOne(UserEntity, { where: { id } })
     if (!user) throw new BusinessException(UserBusiness.NOT_FOUND, UserBusinessTextMap)
     return isVO ? new UserVO(user) : user
   }
 
-  findOneByName(userNameDTO: UserNameDTO, isVO: true): Promise<UserVO>
-  findOneByName(userNameDTO: UserNameDTO, isVO: false): Promise<UserEntity>
-  findOneByName(userNameDTO: UserNameDTO): Promise<UserVO>
-  async findOneByName(userNameDTO: UserNameDTO, isVO: boolean = true) {
-    const { name } = userNameDTO
+  findOneByName(name: string, isVO: true): Promise<UserVO>
+  findOneByName(name: string, isVO: false): Promise<UserEntity>
+  findOneByName(name: string): Promise<UserVO>
+  async findOneByName(name: string, isVO: boolean = true) {
     const user = await this.entityManager.findOne(UserEntity, { where: { name } })
+    if (!user) throw new BusinessException(UserBusiness.NOT_FOUND, UserBusinessTextMap)
+    return isVO ? new UserVO(user) : user
+  }
+
+  findOneByEmail(email: string, isVO: true): Promise<UserVO>
+  findOneByEmail(email: string, isVO: false): Promise<UserEntity>
+  findOneByEmail(email: string): Promise<UserVO>
+  async findOneByEmail(email: string, isVO: boolean = true) {
+    const user = await this.entityManager.findOne(UserEntity, { where: { profile: { email } } })
     if (!user) throw new BusinessException(UserBusiness.NOT_FOUND, UserBusinessTextMap)
     return isVO ? new UserVO(user) : user
   }

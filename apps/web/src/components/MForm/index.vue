@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { componentType, IFormItems, MFormProps, TComponentMap } from './IMForm'
 import { h } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { MButton } from '@/components'
 
 defineOptions({ name: 'MForm' })
@@ -43,12 +42,10 @@ function getSlots(item: IFormItems) {
 </script>
 
 <template>
-  <div class="MForm_container min-h-full min-w-full px-[4px] text-center">
+  <div class="MForm_container">
     <slot name="mFormTitle">
       <template v-if="props.formTitle">
-        <h1
-          class="MForm_title select-none py-[.5rem] text-2xl color-slate-950 font-black text-shadow-lg shadow-slate-500/40 dark:color-white dark:shadow-primary/40"
-        >
+        <h1 class="MForm_title">
           {{ props.formTitle }}
         </h1>
       </template>
@@ -56,7 +53,7 @@ function getSlots(item: IFormItems) {
     <ElForm v-bind="{ ...$attrs, ..._formProps }" :ref="changeRef">
       <ElRow :gutter="props.gutter">
         <ElCol v-for="item in _formItems" :key="item.key" :span="item.span || 24">
-          <ElFormItem :label="item.label" :prop="item.key in props.model! ? item.key : undefined">
+          <ElFormItem :class="[`MForm_item_${item.key}`]" :label="item.label" :prop="item.key in props.model! ? item.key : undefined">
             <slot :name="item.key">
               <template v-if="getComponent(item)">
                 <Component
@@ -72,3 +69,12 @@ function getSlots(item: IFormItems) {
     </ElForm>
   </div>
 </template>
+
+<style>
+.MForm_container {
+  @apply min-h-full min-w-full px-[4px] text-center;
+}
+.MForm_title {
+  @apply select-none py-[.5rem] text-2xl color-slate-950 font-black text-shadow-lg shadow-slate-500/40 dark:color-white dark:shadow-primary/40;
+}
+</style>

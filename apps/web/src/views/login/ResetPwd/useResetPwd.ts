@@ -1,81 +1,136 @@
-/* eslint-disable style/quote-props */
-import type { IRegisterByEmailDTO } from '@packages/types'
+import type { IResetPwdByEmailDTO } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
-import { CAPTCHA, CAPTCHA_LENGTH, EMAIL, PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '@/constants'
+import { authApi } from '@/api'
+import { CAPTCHA_LENGTH, PWD_MAX, PWD_MIN } from '@/constants'
 import { t } from '@/i18n'
 import { goTo } from '@/router'
 
 export function useResetPwd() {
-  const formData = reactive<IRegisterByEmailDTO>({
-    name: '',
-    pwd: '',
-    captcha: '',
+  const formData = reactive<IResetPwdByEmailDTO>({
     email: '',
+    pwd: '',
+    confirmPwd: '',
+    captcha: '',
   })
-  const getFormTitle = () => t('重置密码')
+  const getFormTitle = () => t('views.Login.ResetPwd.title')
   const formInstance = ref<FormInstance | null>(null)
-  const formRules = reactive<FormRules<IRegisterByEmailDTO>>({
-    name: [
-      { required: true, message: `${t('请输入')}${USER_NAME}`, trigger: ['blur', 'change'] },
+  function setInstance(_formInstance: any) {
+    formInstance.value = _formInstance ?? null
+  }
+  const emailValidateState = computed(() => {
+    const email = formInstance.value?.fields.find((field) => field.prop === 'email')
+    return !email || email.validateState !== 'success'
+  })
+  const pwdValidateState = computed(() => {
+    const pwd = formInstance.value?.fields.find((field) => field.prop === 'pwd')
+    return !pwd || pwd.validateState !== 'success'
+  })
+  const confirmPwdValidateState = computed(() => {
+    const confirmPwd = formInstance.value?.fields.find((field) => field.prop === 'confirmPwd')
+    return !confirmPwd || confirmPwd.validateState !== 'success'
+  })
+  const formValidateState = computed<boolean>(() => {
+    const length = formInstance.value?.fields.length
+    return formInstance.value?.fields.filter((item) => item.validateState === 'success').length !== length
+  })
+  async function getCaptchaHandler() {
+    try {
+      formData.captcha = ''
+      const { data } = await authApi.resetPwdByEmailCaptcha({ email: formData.email })
+      ElMessage({
+        message: data,
+        type: 'success',
+        duration: 1000,
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  async function submitHandler() {
+    formInstance.value?.validate(async (isValid: boolean) => {
+      if (isValid) {
+        try {
+          const { data } = await authApi.resetPwdByEmail(formData)
+          ElMessage({ message: data, type: 'success', duration: 1000 })
+          goTo('SvgLogin')
+        } catch {
+          await getCaptchaHandler()
+        }
+      }
+    })
+  }
+  const formRules = computed<FormRules<IResetPwdByEmailDTO>>(() => ({
+    email: [
+      { required: true, message: t('common.form.email'), trigger: ['blur', 'change'] },
       {
-        min: USER_NAME_MIN,
-        max: USER_NAME_MAX,
-        message: `${USER_NAME}${t('长度')} ${USER_NAME_MIN} ~ ${USER_NAME_MAX}`,
+        pattern: /^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i,
+        message: t('common.form.emailInvalid'),
         trigger: ['blur', 'change'],
       },
     ],
     pwd: [
-      { required: true, message: `${t('请输入')}${PWD}`, trigger: ['blur', 'change'] },
-      { min: PWD_MIN, max: PWD_MAX, message: `${PWD}${t('长度')} ${PWD_MIN} ~ ${PWD_MAX}`, trigger: ['blur', 'change'] },
+      { required: true, message: t('common.form.password'), trigger: ['blur', 'change'] },
+      { min: PWD_MIN, max: PWD_MAX, message: `${t('common.form.passwordLength')} ${PWD_MIN} ~ ${PWD_MAX}`, trigger: ['blur', 'change'] },
+    ],
+    confirmPwd: [
+      { required: true, message: t('common.form.confirmPwd'), trigger: ['blur', 'change'] },
+      {
+        validator: (_, value, callback) => {
+          callback(value !== formData.pwd ? new Error(t('common.form.passwordNotMatch')) : undefined)
+        },
+        trigger: ['blur', 'change'],
+      },
     ],
     captcha: [
-      { required: true, message: `${t('请输入')}${CAPTCHA}`, trigger: ['blur', 'change'] },
-      { min: CAPTCHA_LENGTH, max: CAPTCHA_LENGTH, message: `${CAPTCHA}${t('长度')} ${CAPTCHA_LENGTH}`, trigger: ['blur', 'change'] },
+      { required: true, message: t('common.form.captcha'), trigger: ['blur', 'change'] },
+      {
+        min: CAPTCHA_LENGTH,
+        max: CAPTCHA_LENGTH,
+        message: `${t('common.form.captchaLength')} ${CAPTCHA_LENGTH}`,
+        trigger: ['blur', 'change'],
+      },
     ],
-    email: [{ required: true, message: `${t('请输入')}${EMAIL}`, trigger: ['blur', 'change'] }],
-  })
-  function setInstance(_formInstance: any) {
-    formInstance.value = _formInstance ?? null
-  }
-  const submitDisabled = computed<boolean>(() => {
-    const length = formInstance.value?.fields.length
-    return formInstance.value?.fields.filter((item) => item.validateState === 'success').length !== length
-  })
+  }))
   const formItems = computed<IFormItems[]>(() => [
-    {
-      type: 'Input',
-      key: 'username',
-      props: {
-        placeholder: t('请输入用户名'),
-        autocomplete: 'off',
-        'prefix-icon': h(Icon, {
-          icon: 'icon-park-outline:user',
-        }),
-      },
-    },
-    {
-      type: 'Input',
-      key: 'password',
-      props: {
-        'show-password': true,
-        type: 'password',
-        placeholder: t('请输入密码'),
-        autocomplete: 'off',
-        'prefix-icon': h(Icon, {
-          icon: 'icon-park-outline:key',
-        }),
-      },
-    },
     {
       type: 'Input',
       key: 'email',
       props: {
-        placeholder: t('请输入邮箱'),
+        placeholder: t('common.form.email'),
         autocomplete: 'off',
-        'prefix-icon': h(Icon, {
+        prefixIcon: h(Icon, {
           icon: 'icon-park-outline:email-lock',
+          color: '#bbb',
+        }),
+      },
+    },
+    {
+      type: 'Input',
+      key: 'pwd',
+      props: {
+        showPassword: true,
+        type: 'password',
+        placeholder: t('common.form.password'),
+        autocomplete: 'off',
+        prefixIcon: h(Icon, {
+          icon: 'icon-park-outline:key',
+          color: '#bbb',
+        }),
+      },
+    },
+    {
+      type: 'Input',
+      key: 'confirmPwd',
+      props: {
+        showPassword: true,
+        type: 'password',
+        placeholder: t('common.form.confirmPwd'),
+        autocomplete: 'off',
+        prefixIcon: h(Icon, {
+          icon: 'icon-park-outline:key',
+          color: '#bbb',
         }),
       },
     },
@@ -83,9 +138,9 @@ export function useResetPwd() {
       type: 'Input',
       key: 'captcha',
       props: {
-        placeholder: t('请输入验证码'),
+        placeholder: t('common.form.captcha'),
         autocomplete: 'off',
-        'prefix-icon': h(Icon, {
+        prefixIcon: h(Icon, {
           icon: 'icon-park-outline:unlock-one',
           color: '#bbb',
         }),
@@ -97,9 +152,12 @@ export function useResetPwd() {
       key: 'captchaEmail',
       props: {
         type: 'primary',
-        disabled: formData.email === '',
+        disabled: emailValidateState.value || pwdValidateState.value || confirmPwdValidateState.value,
       },
-      slots: t('发送'),
+      attrs: {
+        onClick: async () => await getCaptchaHandler(),
+      },
+      slots: t('common.form.send'),
       span: 10,
     },
     {
@@ -107,24 +165,20 @@ export function useResetPwd() {
       key: 'submit',
       props: {
         type: 'primary',
-        disabled: submitDisabled.value,
+        disabled: formValidateState.value,
       },
       attrs: {
-        onClick: () => {
-          formInstance.value?.validate(async (isValid: boolean) => {
-            console.warn(isValid)
-          })
-        },
+        onClick: async () => await submitHandler(),
       },
-      slots: t('确认'),
+      slots: t('common.form.confirm'),
     },
     {
       type: 'Button',
-      key: 'back',
+      key: 'Back',
       attrs: {
-        onClick: () => goTo('SvgLogin'),
+        onClick: () => goTo('back'),
       },
-      slots: t('返回'),
+      slots: t('common.form.back'),
     },
   ])
   return {

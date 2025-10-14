@@ -8,7 +8,7 @@ const theme = useMode()
 </script>
 
 <template>
-  <ElTooltip :auto-close="500" placement="bottom" :content="t('components.MModeBtn.content')">
+  <ElTooltip :auto-close="200" placement="bottom" :content="t('components.MModeBtn.content')">
     <ElButton class="MModeBtn_container m-0 flex-center border-none" @click="theme.toggleMode">
       <template #icon>
         <Icon v-if="theme.mode === 'light'" icon="icon-park-outline:sun-one" class="color-black" />

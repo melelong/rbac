@@ -1,40 +1,72 @@
 {
   "common": {
     "locale": {
-      "zh-CN": "zh-cn",
+      "zh-CN": "zh-CN",
       "en": "en"
     },
     "form": {
       "username": "UserName",
       "password": "Password",
+      "confirmPwd": "ConfirmPwd",
+      "email": "Email",
+      "send": "Send",
       "captcha": "Captcha",
       "confirm": "Confirm",
+      "back": "Back",
       "usernameLength": "UserName Length",
       "passwordLength": "Password Length",
-      "captchaLength": "Captcha Length"
+      "captchaLength": "Captcha Length",
+      "emailInvalid": "Email Invalid",
+      "passwordNotMatch": "Password Not Match"
     }
   },
   "components": {
     "MI18nBtn": {
       "content": "Language"
     },
+    "MThemeBtn": {
+      "content": "Theme"
+    },
     "MModeBtn": {
       "content": "Mode"
     }
   },
+  "layouts": {
+    "LoginLayout": {
+      "banner": "banner"
+    }
+  },
+
   "views": {
+    "Error": {
+      "NotFound": {
+        "title": "NotFound"
+      }
+    },
     "Login": {
       "components": {
         "CaptchaImg": {
           "text": "Captcha",
           "alt": "Captcha"
+        },
+        "OtherLogin": {
+          "text": "OtherLogin",
+          "Email": "Email",
+          "QRCode": "QR",
+          "Phone": "Phone",
+          "WeChat": "WeChat",
+          "QQ": "QQ",
+          "Github": "Github",
+          "Google": "Google"
         }
       },
       "SvgLogin": {
         "title": "Login",
         "noAccount": "NoAccount?",
-        "register": "register",
-        "forgetPwd": "ForgetPwd?"
+        "register": "Register",
+        "forgetPwd": "ForgetPwd?",
+        "success": "Login Success",
+        "captchaWarning": "Please enter your username and password"
       },
       "EmailLogin": {
         "title": "EmailLogin"
@@ -45,6 +77,18 @@
       "ResetPwd": {
         "title": "ResetPwd"
       }
+    },
+    "Dashboard": {
+      "title": "Dashboard"
+    },
+    "Workspace": {
+      "title": "Workspace"
+    },
+    "ColorPalette": {
+      "title": "ColorPalette"
+    },
+    "Test": {
+      "title": "Test"
     }
   }
 }

@@ -63,7 +63,7 @@ export class UserController implements IUserController {
     ApiBearerAuthOptions: 'JWT',
   })
   async findOne(@Param() userIdDTO: UserIdDTO) {
-    return await this.userService.findOneById(userIdDTO)
+    return await this.userService.findOneById(userIdDTO.id)
   }
 
   @UseGuards(JwtGuard)

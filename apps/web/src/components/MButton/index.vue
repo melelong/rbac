@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<MButtonProps>(), {
 function getSlot(slots: InstanceType<typeof ElButton>['$slots']) {
   return {
     ...slots,
-    loading: (): any => h(Icon, { icon: 'icon-park-outline:loading-four', class: 'loading-icon' }),
+    loading: () => h(Icon, { icon: 'icon-park-outline:loading-four', class: 'loading-icon' }),
   }
 }
 const vm = getCurrentInstance()
@@ -25,7 +25,7 @@ function changeRef(instance: any) {
 </script>
 
 <template>
-  <Component :is="h(ElButton, { ...$attrs, ...props }, getSlot($slots))" :ref="changeRef"> </Component>
+  <Component :is="h(ElButton, { ...$attrs, ...props }, getSlot($slots))" :ref="changeRef"></Component>
 </template>
 
 <style scoped>

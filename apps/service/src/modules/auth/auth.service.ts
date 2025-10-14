@@ -34,9 +34,9 @@ export class AuthService implements IAuthService {
   }
 
   async resetPwdByEmail(response: Response, resetPwdByEmailDTO: ResetPwdByEmailDTO) {
-    const { name, email, captcha, pwd } = resetPwdByEmailDTO
+    const { email, captcha, pwd } = resetPwdByEmailDTO
     await this.captchaService.verifyCaptcha(captcha, { id: email, type: 'resetPwd', name: 'email' })
-    const user = await this.userService.findOneByName({ name })
+    const user = await this.userService.findOneByEmail(email)
     if (email !== user?.profile.email) throw new BusinessException(AuthBusiness.EMAIL_MISMATCH, AuthBusinessTextMap)
     await this.userService.updatePwd(user.id, pwd)
     await this.delAllToken(user.id, response)
@@ -45,8 +45,8 @@ export class AuthService implements IAuthService {
 
   async loginByEmail(response: Response, loginByEmailDTO: LoginByEmailDTO) {
     const { email, captcha } = loginByEmailDTO
-    await this.captchaService.verifyCaptcha(captcha, { id: email, type: 'login', name: 'email' })
     const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
+    await this.captchaService.verifyCaptcha(captcha, { id: email, type: 'login', name: 'email' })
     if (email !== userInfo.email) throw new BusinessException(AuthBusiness.EMAIL_MISMATCH, AuthBusinessTextMap)
     await this.userService.updateLoginInfo(userInfo.id, userInfo.loginAt!, userInfo.loginIp!)
     return await this.setAllToken(response)
@@ -132,7 +132,19 @@ export class AuthService implements IAuthService {
 
   async validateUser(name: string, pwd: string) {
     const ip = this.clsService.get(LOGGER_CLS.CLIENT_IP)
-    const user = await this.userService.findOneByName({ name }, false)
+    const user = await this.userService.findOneByName(name, false)
+    if (!user) throw new BusinessException(AuthBusiness.USER_NOT_FOUND, AuthBusinessTextMap)
+    const compare = await this.userService.compare(pwd, user.salt, user.pwd)
+    if (!compare) throw new BusinessException(AuthBusiness.INCORRECT_PASSWORD, AuthBusinessTextMap)
+
+    const now = new Date()
+    const VO = new UserInfo({ id: user.id, name: user.name, email: user.profile.email, loginIp: ip, loginAt: now })
+    return VO
+  }
+
+  async validateEmail(email: string, pwd: string) {
+    const ip = this.clsService.get(LOGGER_CLS.CLIENT_IP)
+    const user = await this.userService.findOneByEmail(email, false)
     if (!user) throw new BusinessException(AuthBusiness.USER_NOT_FOUND, AuthBusinessTextMap)
     const compare = await this.userService.compare(pwd, user.salt, user.pwd)
     if (!compare) throw new BusinessException(AuthBusiness.INCORRECT_PASSWORD, AuthBusinessTextMap)

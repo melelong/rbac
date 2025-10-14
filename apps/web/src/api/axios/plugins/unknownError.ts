@@ -15,7 +15,7 @@ export interface IUnknownErrorPluginConfig {
 const defaultConfig: IUnknownErrorPluginConfig = {
   showError: true,
   message: '未知错误',
-  duration: 1000,
+  duration: 1500,
 }
 const pluginName = 'UnknownErrorPlugin'
 
@@ -32,7 +32,7 @@ function handler(error: CustomAxiosError): Promise<IPluginError> | CustomAxiosEr
     message = defaultConfig.message!,
     duration = defaultConfig.duration!,
   } = (error?.config?.customConfig as CustomConfig)?.UnknownErrorPlugin ?? {}
-  const _message = `${message}:${error.message}`
+  const _message = `${message !== '' ? `${message}:` : ''}${error.message}`
   if (showError) eventBus.emit('HTTP_PLUGIN:UnknownErrorPlugin:showError', [_message, duration])
 
   eventBus.emit('HTTP_PLUGIN:UnknownErrorPlugin:handler', [error])

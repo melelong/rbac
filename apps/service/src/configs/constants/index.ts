@@ -12,7 +12,7 @@ export const DEFAULT_APP_USER_NAME = 'user'
 /** cors配置相关 */
 export const DEFAULT_CORS_ENABLED = true
 export const DEFAULT_CORS_ORIGINS = 'http://127.0.0.1:4002,http://localhost:4002'
-export const DEFAULT_CORS_METHODS = 'GET,PATCH,POST,DELETE,HEAD'
+export const DEFAULT_CORS_METHODS = 'GET,PATCH,POST,DELETE,HEAD,OPTIONS'
 export const DEFAULT_CORS_ALLOWED_HEADERS = 'Content-Type,Authorization'
 export const DEFAULT_CORS_CREDENTIALS = true
 export const DEFAULT_CORS_MAX_AGE = 3600
@@ -35,10 +35,10 @@ export const DEFAULT_REDIS_PORT = 6379
 export const DEFAULT_REDIS_USERNAME = 'default'
 export const DEFAULT_REDIS_PASSWORD = 'Aa123456'
 export const DEFAULT_REDIS_ENABLE_AUTO_PIPELINING = true
-export const DEFAULT_REDIS_COMMAND_TIMEOUT = 6000
-export const DEFAULT_REDIS_CONNECT_TIMEOUT = 5000
+export const DEFAULT_REDIS_COMMAND_TIMEOUT = 20000
+export const DEFAULT_REDIS_CONNECT_TIMEOUT = 20000
 export const DEFAULT_REDIS_ENABLE_OFFLINE_QUEUE = true
-export const DEFAULT_REDIS_KEEP_ALIVE = 30000
+export const DEFAULT_REDIS_KEEP_ALIVE = 3000
 /** cache配置相关 */
 export const DEFAULT_CACHE_TTL = 7 * 1000
 export const DEFAULT_CACHE_MEMORY_NAME = 'MEMORY'

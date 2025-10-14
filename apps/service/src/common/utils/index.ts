@@ -1,4 +1,5 @@
 export * from './crypto.util'
+export * from './file.util'
 export * from './ip.util'
 export * from './path.util'
 export * from './string.util'

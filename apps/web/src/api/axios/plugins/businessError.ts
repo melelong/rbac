@@ -17,7 +17,7 @@ export interface IBusinessErrorPluginConfig {
 const defaultConfig: IBusinessErrorPluginConfig = {
   showError: true,
   message: '业务错误',
-  duration: 1000,
+  duration: 1500,
 }
 
 const pluginName = 'BusinessErrorPlugin'
@@ -37,7 +37,7 @@ function handler(error: CustomAxiosError): Promise<IPluginError> | CustomAxiosEr
     message = defaultConfig.message!,
     duration = defaultConfig.duration!,
   } = (error?.config?.customConfig as CustomConfig).BusinessErrorPlugin ?? {}
-  const _message = `${message}:${(error.response?.data as IErrorResponse)?.data}`
+  const _message = `${message !== '' ? `${message}:` : ''}${(error.response?.data as IErrorResponse)?.data}`
   if (showError) eventBus.emit('HTTP_PLUGIN:BusinessErrorPlugin:showError', [_message, duration])
 
   eventBus.emit('HTTP_PLUGIN:BusinessErrorPlugin:handler', [error])

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { api } from '@/api'
+import { authApi } from '@/api'
 import { goTo } from '@/router'
 
 defineOptions({ name: 'Dashboard' })
 async function logout() {
-  await api.logout()
+  await authApi.logout()
   goTo('Login')
 }
 </script>

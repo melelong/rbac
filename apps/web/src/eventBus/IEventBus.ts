@@ -28,6 +28,11 @@ export interface IEventBus<T extends IEventBusEvents> {
    * @param fn 事件函数
    */
   off: <K extends keyof T>(eventName: K, fn: (...args: T[K]) => any) => void
+  /**
+   * 移除监听事件
+   * @param eventName 事件名(不传移除全部)
+   */
+  removeListeners: <K extends keyof T>(eventName?: K) => void
 }
 /** 事件总线配置项 */
 export interface IEventBusOptions {
@@ -42,6 +47,6 @@ export interface IEventMapItem<T extends any[]> {
   num: number | null
 }
 
-export interface IEventMap {
-  [key: string]: Array<IEventMapItem<any[]>> // 修改此处
+export interface IEventMap<T = any> {
+  [key: string]: Array<IEventMapItem<T[]>>
 }

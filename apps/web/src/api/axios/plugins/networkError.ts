@@ -17,7 +17,7 @@ export interface INetworkErrorPluginConfig {
 const defaultConfig: INetworkErrorPluginConfig = {
   showError: true,
   message: '网络错误',
-  duration: 1000,
+  duration: 1500,
 }
 
 const pluginName = 'NetworkErrorPlugin'
@@ -37,7 +37,7 @@ function handler(error: CustomAxiosError): Promise<IPluginError> | CustomAxiosEr
     message = defaultConfig.message!,
     duration = defaultConfig.duration!,
   } = (error?.config?.customConfig as CustomConfig).NetworkErrorPlugin ?? {}
-  const _message = `${message}:${(error.response?.data as IErrorResponse)?.data}`
+  const _message = `${message !== '' ? `${message}:` : ''}${(error.response?.data as IErrorResponse)?.data}`
   if (showError) eventBus.emit('HTTP_PLUGIN:NetworkErrorPlugin:showError', [_message, duration])
 
   eventBus.emit('HTTP_PLUGIN:NetworkErrorPlugin:handler', [error])

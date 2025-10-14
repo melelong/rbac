@@ -29,7 +29,7 @@ export const duplicationQueue: TDuplicationQueue = new Map()
 const defaultConfig: IDuplicationPluginConfig = {
   showError: true,
   message: '取消上次请求',
-  duration: 1000,
+  duration: 1500,
   allowDuplication: false,
 }
 const pluginName = 'DuplicationPlugin'

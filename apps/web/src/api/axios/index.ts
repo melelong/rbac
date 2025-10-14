@@ -7,7 +7,7 @@ import type {
 } from './plugins'
 import { eventBus } from '@/eventBus'
 import { AxiosUtils } from './AxiosUtils'
-import { BusinessErrorPlugin, DuplicationPlugin, NetworkErrorPlugin, UnknownErrorPlugin } from './plugins'
+import { BusinessErrorPlugin, DuplicationPlugin, LimitPlugin, NetworkErrorPlugin, UnknownErrorPlugin } from './plugins'
 
 export interface CustomConfig {
   /** 限流处理插件配置 */
@@ -24,8 +24,8 @@ export interface CustomConfig {
 export const request = new AxiosUtils<CustomConfig>()
 
 request.install(
-  [DuplicationPlugin, BusinessErrorPlugin, NetworkErrorPlugin, UnknownErrorPlugin],
-  [DuplicationPlugin, BusinessErrorPlugin, NetworkErrorPlugin, UnknownErrorPlugin],
+  [LimitPlugin, DuplicationPlugin, BusinessErrorPlugin, NetworkErrorPlugin, UnknownErrorPlugin],
+  [LimitPlugin, DuplicationPlugin, BusinessErrorPlugin, NetworkErrorPlugin, UnknownErrorPlugin],
 )
 
 // 注册插件的错误提示事件

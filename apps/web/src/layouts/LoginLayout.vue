@@ -18,7 +18,7 @@ onMounted(() => setTimeout(() => (isLoading.value = false), 500))
       class="relative min-h-auto w-[20rem] flex overflow-hidden rounded-[2rem] bg-white px-1rem py-2rem shadow-lg shadow-slate-500/40 2xl:w-[35rem] lg:w-[35rem] md:w-[35rem] sm:w-[20rem] xl:w-[35rem] dark:bg-slate-950 dark:shadow-primary/40"
     >
       <div class="left hidden min-w-[50%] flex-1 items-center justify-center px-[1rem] md:flex">
-        <ElImage fill="contain" :src="bannerUrl" :alt="t('横幅')" />
+        <ElImage fill="contain" :src="bannerUrl" :alt="t('layouts.LoginLayout.banner')" />
       </div>
       <div class="right flex-1">
         <div class="flex justify-end pb-2">

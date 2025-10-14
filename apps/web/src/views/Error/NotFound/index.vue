@@ -3,5 +3,5 @@ defineOptions({ name: 'NotFound' })
 </script>
 
 <template>
-  <h1 class="color-amber">404</h1>
+  <h1 class="text-center color-red font-bold">404</h1>
 </template>

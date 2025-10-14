@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue'
-import { PageLayout } from '@/layout'
+import { PageLayout } from '@/layouts'
 
 defineOptions({ name: 'DefaultLayout' })
 </script>

@@ -39,8 +39,10 @@ export async function initRedis(options: IInitRedisOptions): Promise<IInitRedisR
   redisConfig!.connectTimeout = DEFAULT_REDIS_CONNECT_TIMEOUT
   redisConfig!.enableOfflineQueue = DEFAULT_REDIS_ENABLE_OFFLINE_QUEUE
   redisConfig!.keepAlive = DEFAULT_REDIS_KEEP_ALIVE
+  redisConfig!.autoResubscribe = true
+  redisConfig!.maxRetriesPerRequest = null
   redisConfig!.retryStrategy = (times) => {
-    return Math.min(times * 500, 5000)
+    return Math.min(times * 50, 2000)
   }
   redisConfig!.reconnectOnError = (error) => {
     const recoverableErrors = ['READONLY', 'ECONNRESET', 'ETIMEDOUT']

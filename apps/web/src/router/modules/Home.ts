@@ -4,7 +4,8 @@ export const homeRoutes: RouteRecordRaw[] = [
   {
     name: 'Home',
     path: '/',
-    component: () => import('@/layout/DefaultLayout.vue'),
+    alias: ['/home'],
+    component: () => import('@/layouts/DefaultLayout.vue'),
     redirect: '/dashboard',
     children: [
       {
@@ -12,7 +13,7 @@ export const homeRoutes: RouteRecordRaw[] = [
         path: 'dashboard',
         component: () => import('@/views/Dashboard/index.vue'),
         meta: {
-          title: 'VIEWS.DASHBOARD.TITLE',
+          title: 'views.Dashboard.title',
         },
       },
       {
@@ -20,7 +21,16 @@ export const homeRoutes: RouteRecordRaw[] = [
         path: 'workspace',
         component: () => import('@/views/Workspace/index.vue'),
         meta: {
-          title: 'VIEWS.WORKSPACE.TITLE',
+          title: 'views.Workspace.title',
+        },
+      },
+
+      {
+        name: 'ColorPalette',
+        path: 'color-palette',
+        component: () => import('@/views/ColorPalette/index.vue'),
+        meta: {
+          title: 'views.ColorPalette.title',
         },
       },
       {
@@ -28,15 +38,7 @@ export const homeRoutes: RouteRecordRaw[] = [
         path: 'test',
         component: () => import('@/views/Test/index.vue'),
         meta: {
-          title: 'VIEWS.WORKSPACE.TITLE',
-        },
-      },
-      {
-        name: 'ColorPalette',
-        path: 'color-palette',
-        component: () => import('@/views/ColorPalette/index.vue'),
-        meta: {
-          title: 'VIEWS.TEST.TITLE',
+          title: 'views.Test.title',
         },
       },
     ],

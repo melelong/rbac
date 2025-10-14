@@ -1,7 +1,6 @@
 import type { ILoginBySvgDTO } from '@packages/types'
 import { CAPTCHA, CAPTCHA_LENGTH, CAPTCHA_TOKEN, CAPTCHA_TOKEN_LENGTH } from '@/common/constants'
-import { InputPwd, InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
-import { ApiModel } from '@/common/decorators'
+import { ApiModel, InputPwd, InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
 import { PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '@/modules/system/user/user.constant'
 
 @ApiModel(

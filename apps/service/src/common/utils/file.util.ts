@@ -6,9 +6,5 @@ import { existsSync, mkdirSync } from 'node:fs'
  * @param _path 目录路径
  */
 export function mkdir(_path: PathLike) {
-  if (!existsSync(_path)) {
-    mkdirSync(_path, {
-      recursive: true,
-    })
-  }
+  if (!existsSync(_path)) mkdirSync(_path, { recursive: true })
 }

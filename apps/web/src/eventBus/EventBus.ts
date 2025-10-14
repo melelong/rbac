@@ -3,7 +3,9 @@ import type { IEventBus, IEventBusEvents, IEventBusOptions, IEventMap } from './
 export class EventBus<T extends IEventBusEvents> implements IEventBus<T> {
   /** EventBus实例 */
   private static instance: EventBus<IEventBusEvents> | null = null
+  /** 事件映射表 */
   private eventMap: IEventMap = {}
+  /** 最大监听数 */
   private maxListeners: number = 10
 
   private constructor(options: IEventBusOptions = { maxListeners: 10 }) {
@@ -19,7 +21,7 @@ export class EventBus<T extends IEventBusEvents> implements IEventBus<T> {
   on<K extends keyof T>(eventName: K, fn: (...args: T[K]) => any, num: number | null = null) {
     if (!this.eventMap[eventName as string]) this.eventMap[eventName as string] = []
     if (this.eventMap[eventName as string].length >= this.maxListeners) {
-      console.warn(`事件总线种 ${eventName as string} 事件监听已达到最大监听数 ${this.maxListeners} `)
+      console.warn(`事件总线中 ${eventName as string} 事件监听已达到最大监听数 ${this.maxListeners} `)
       return
     }
     this.eventMap[eventName as string].push({ fn, num })
@@ -51,7 +53,7 @@ export class EventBus<T extends IEventBusEvents> implements IEventBus<T> {
     if (index !== -1) this.eventMap[eventName as string].splice(index, 1)
   }
 
-  removeAllListeners<K extends keyof T>(eventName?: K) {
+  removeListeners<K extends keyof T>(eventName?: K) {
     if (eventName) {
       if (this.eventMap[eventName as string]) delete this.eventMap[eventName as string]
     } else {

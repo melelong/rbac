@@ -5,8 +5,9 @@ import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common
 import { ClsService } from 'nestjs-cls'
 import { SYSTEM_DEFAULT_BY } from '@/common/constants'
 import { ApiController, ApiMethod } from '@/common/decorators'
+import { EmailGuard } from '@/common/guards/email.guard'
 import { JwtGuard } from '@/common/guards/jwt.guard'
-import { LocalGuard } from '@/common/guards/local.guard'
+import { NameGuard } from '@/common/guards/name.guard'
 import { SEND_EMAIL_CAPTCHA_VO } from '@/infrastructure/captcha/captcha.constant'
 import { CaptchaService } from '@/infrastructure/captcha/captcha.service'
 import { SvgCaptchaVO } from '@/infrastructure/captcha/vo/svgCaptcha.vo'
@@ -46,7 +47,7 @@ export class AuthController implements IAuthController {
     return await this.captchaService.generateEmailCaptcha({ to: emailCaptchaDTO.email, subject: '登录验证码', type: 'login', template: 'Login' })
   }
 
-  @UseGuards(LocalGuard)
+  @UseGuards(EmailGuard)
   @Post('login/email')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '邮箱登录' }],
@@ -56,7 +57,7 @@ export class AuthController implements IAuthController {
     return await this.authService.loginByEmail(response, loginByEmailDTO)
   }
 
-  @UseGuards(LocalGuard)
+  @UseGuards(NameGuard)
   @Post('login/svg')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '图片验证码(登录)' }],
@@ -142,6 +143,6 @@ export class AuthController implements IAuthController {
   })
   async getUserInfo() {
     const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
-    return await this.userService.findOneById({ id: userInfo.id ?? SYSTEM_DEFAULT_BY })
+    return await this.userService.findOneById(userInfo.id ?? SYSTEM_DEFAULT_BY)
   }
 }

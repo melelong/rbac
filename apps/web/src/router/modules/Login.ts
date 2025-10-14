@@ -5,8 +5,11 @@ export const loginRoutes: RouteRecordRaw[] = [
   {
     name: 'Login',
     path: '/login',
-    component: () => import('@/layout/LoginLayout.vue'),
+    component: () => import('@/layouts/LoginLayout.vue'),
     redirect: '/login/svg-login',
+    meta: {
+      type: 'static',
+    },
     children: [
       {
         name: 'SvgLogin',
@@ -14,6 +17,7 @@ export const loginRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/Login/SvgLogin/index.vue'),
         meta: {
           title: 'views.Login.SvgLogin.title',
+          type: 'static',
         },
       },
       {
@@ -22,6 +26,7 @@ export const loginRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/Login/EmailLogin/index.vue'),
         meta: {
           title: 'views.Login.EmailLogin.title',
+          type: 'static',
         },
       },
       {
@@ -30,6 +35,7 @@ export const loginRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/Login/EmailRegister/index.vue'),
         meta: {
           title: 'views.Login.EmailRegister.title',
+          type: 'static',
         },
       },
       {
@@ -38,6 +44,7 @@ export const loginRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/Login/ResetPwd/index.vue'),
         meta: {
           title: 'views.Login.ResetPwd.title',
+          type: 'static',
         },
       },
     ],

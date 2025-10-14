@@ -58,7 +58,7 @@ export class CaptchaService extends CacheTemplate implements ICaptchaService {
     // 生成
     const { data, text } = create({
       /** 噪波线 */
-      noise: 6,
+      noise: 5,
       size: CAPTCHA_LENGTH,
       background,
       ...svgCaptchaConfig,

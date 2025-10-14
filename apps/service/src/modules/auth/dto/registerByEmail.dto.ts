@@ -1,7 +1,7 @@
 import type { IRegisterByEmailDTO } from '@packages/types'
 import { CAPTCHA } from '@/common/constants'
-import { ApiModel } from '@/common/decorators'
-import { EMAIL, PWD, USER_NAME } from '@/modules/system/user/user.constant'
+import { ApiModel, InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
+import { EMAIL, PWD, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '@/modules/system/user/user.constant'
 import { LoginByEmailDTO } from './loginByEmail.dto'
 
 @ApiModel(
@@ -13,4 +13,9 @@ import { LoginByEmailDTO } from './loginByEmail.dto'
   },
   { description: '邮箱注册接口参数校验' },
 )
-export class RegisterByEmailDTO extends LoginByEmailDTO implements IRegisterByEmailDTO {}
+export class RegisterByEmailDTO extends LoginByEmailDTO implements IRegisterByEmailDTO {
+  @NotEmpty(USER_NAME)
+  @InputSpace(USER_NAME)
+  @InputStringLength(USER_NAME_MIN, USER_NAME_MAX, USER_NAME)
+  name: string
+}

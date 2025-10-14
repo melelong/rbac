@@ -29,6 +29,13 @@ export default defineConfig({
     // warmup: {
     //   clientFiles: ['./index.html', './src/{views,components}/*'],
     // },
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:4001/dev',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   },
   build: {
     outDir: 'dist',
@@ -122,7 +129,7 @@ export default defineConfig({
       template: 'index.html',
       inject: {
         data: {
-          title: 'Rbac Admin',
+          title: 'RbacAdmin',
         },
       },
     }),

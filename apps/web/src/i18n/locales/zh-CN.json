@@ -7,34 +7,65 @@
     "form": {
       "username": "请输入用户名",
       "password": "请输入密码",
+      "confirmPwd": "请确认密码",
+      "email": "请输入邮箱",
+      "send": "发送",
       "captcha": "请输入验证码",
       "confirm": "确认",
+      "back": "返回",
       "usernameLength": "用户名长度",
       "passwordLength": "密码长度",
-      "captchaLength": "验证码长度"
+      "captchaLength": "验证码长度",
+      "emailInvalid": "邮箱格式不正确",
+      "passwordNotMatch": "密码不匹配"
     }
   },
   "components": {
     "MI18nBtn": {
       "content": "切换语言"
     },
+    "MThemeBtn": {
+      "content": "主题颜色"
+    },
     "MModeBtn": {
       "content": "主题模式"
     }
   },
+  "layouts": {
+    "LoginLayout": {
+      "banner": "横幅"
+    }
+  },
   "views": {
+    "Error": {
+      "NotFound": {
+        "title": "未找到页面"
+      }
+    },
     "Login": {
       "components": {
         "CaptchaImg": {
           "text": "图片验证码",
           "alt": "图片验证码"
+        },
+        "OtherLogin": {
+          "text": "其他登录方式",
+          "Email": "邮箱",
+          "QRCode": "扫码",
+          "Phone": "手机",
+          "WeChat": "微信",
+          "QQ": "QQ",
+          "Github": "Github",
+          "Google": "谷歌"
         }
       },
       "SvgLogin": {
         "title": "登录",
         "noAccount": "没有账号?",
-        "register": "去注册",
-        "forgetPwd": "忘记密码?"
+        "register": "创建账号",
+        "forgetPwd": "忘记密码?",
+        "success": "登录成功",
+        "captchaWarning": "请输入用户名和密码"
       },
       "EmailLogin": {
         "title": "邮箱登录"
@@ -45,6 +76,18 @@
       "ResetPwd": {
         "title": "重置密码"
       }
+    },
+    "Dashboard": {
+      "title": "仪表盘"
+    },
+    "Workspace": {
+      "title": "工作区"
+    },
+    "ColorPalette": {
+      "title": "调色板"
+    },
+    "Test": {
+      "title": "测试"
     }
   }
 }

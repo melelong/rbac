@@ -1,6 +1,6 @@
 import type { SexEnum } from '@packages/types'
 import type { RoleEntity } from '../role/entities/role.entity'
-import type { AssignRolesByCodesDTO, AssignRolesByIdsDTO, CreateUserDTO, UpdateUserDTO, UserIdDTO, UserNameDTO } from './dto'
+import type { AssignRolesByCodesDTO, AssignRolesByIdsDTO, CreateUserDTO, UpdateUserDTO, UserIdDTO } from './dto'
 import type { UserEntity } from './entities/user.entity'
 import type { UserProfileEntity } from './entities/userProfile.entity'
 import type { FindAllUserVO, UserVO } from './vo'
@@ -104,22 +104,29 @@ export interface IUserService {
 
   /**
    * 根据用户ID查询单个用户
-   * @param userIdDTO 用户ID
+   * @param id 用户ID
    * @param isVO 是否返回VO格式(默认:true)
    */
 
-  findOneById: ((userIdDTO: UserIdDTO, isVO: true) => Promise<UserVO>) &
-    ((userIdDTO: UserIdDTO, isVO: false) => Promise<UserEntity>) &
-    ((userIdDTO: UserIdDTO) => Promise<UserVO>)
+  findOneById: ((id: string, isVO: true) => Promise<UserVO>) & ((id: string, isVO: false) => Promise<UserEntity>) & ((id: string) => Promise<UserVO>)
 
   /**
    * 根据用户名查询单个用户
-   * @param userNameDTO 用户名
+   * @param name 用户名
    * @param isVO 是否返回VO格式(默认:true)
    */
-  findOneByName: ((userNameDTO: UserNameDTO, isVO: true) => Promise<UserVO>) &
-    ((userNameDTO: UserNameDTO, isVO: false) => Promise<UserEntity>) &
-    ((userNameDTO: UserNameDTO) => Promise<UserVO>)
+  findOneByName: ((name: string, isVO: true) => Promise<UserVO>) &
+    ((name: string, isVO: false) => Promise<UserEntity>) &
+    ((name: string) => Promise<UserVO>)
+
+  /**
+   * 根据用户邮箱查询单个用户
+   * @param email 用户邮箱
+   * @param isVO 是否返回VO格式(默认:true)
+   */
+  findOneByEmail: ((email: string, isVO: true) => Promise<UserVO>) &
+    ((email: string, isVO: false) => Promise<UserEntity>) &
+    ((email: string) => Promise<UserVO>)
 
   /**
    * 根据用户ID更新单个用户
