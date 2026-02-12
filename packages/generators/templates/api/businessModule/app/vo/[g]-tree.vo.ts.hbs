@@ -1,0 +1,18 @@
+import type { TTreeNodeVO } from '@packages/types'
+import { ApiSchema } from '@nestjs/swagger'
+import { {{pascalCase moduleName}}DetailsVO } from './{{kebabCase moduleName}}-details.vo'
+import type { {{pascalCase moduleName}}Entity } from '../../domain'
+
+/** {{zhName}}树节点 */
+@ApiSchema({ description: '{{zhName}}树节点' })
+export class {{pascalCase moduleName}}TreeVO extends {{pascalCase moduleName}}DetailsVO implements TTreeNodeVO<{{pascalCase moduleName}}DetailsVO> {
+  /**
+   * {{zhName}}子节点列表
+   * @example []
+   */
+  children: {{pascalCase moduleName}}TreeVO[]
+  constructor({{kebabCase moduleName}}?: {{pascalCase moduleName}}Entity) {
+  super({{kebabCase moduleName}})
+  this.children = []
+  }
+}

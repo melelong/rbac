@@ -1,0 +1,29 @@
+import type { IUpdate{{pascalCase moduleName}}DTO } from '@packages/types'
+import { ApiSchema } from '@nestjs/swagger'
+import { IsOptional } from 'class-validator'
+import { REMARK } from '@/common/constants'
+import { InputTrim, Length } from '@/common/deco'
+import { {{constantCase moduleName}}_NAME }
+from '../../domain'
+
+/** 更新{{zhName}}接口参数校验 */
+@ApiSchema({ description: '更新{{zhName}}接口参数校验' })
+export class Update{{pascalCase moduleName}}DTO implements IUpdate{{pascalCase moduleName}}DTO {
+  /**
+   * {{zhName}}名
+   * @example '{{zhName}}名'
+   */
+  @Length(2, 64, {{constantCase moduleName}}_NAME)
+  @InputTrim({{constantCase moduleName}}_NAME)
+  @IsOptional()
+  name?: string
+
+  /**
+   * 备注
+   * @example 'xxx'
+   */
+  @Length(1, 500, REMARK)
+  @InputTrim(REMARK)
+  @IsOptional()
+  remark?: string
+}

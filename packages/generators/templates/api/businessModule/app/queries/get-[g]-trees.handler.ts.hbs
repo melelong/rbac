@@ -1,0 +1,16 @@
+import type { IQueryHandler } from '@nestjs/cqrs'
+import { QueryHandler } from '@nestjs/cqrs'
+import { {{pascalCase moduleName}}DomainService } from '../../domain'
+import { {{pascalCase moduleName}}TreeVO } from '../vo'
+import { Get{{pascalCase moduleName}}TreesQuery } from './get-{{kebabCase moduleName}}-trees.query'
+
+/** 获取多个{{zhName}}树节点Handler */
+@QueryHandler(Get{{pascalCase moduleName}}TreesQuery)
+export class Get{{pascalCase moduleName}}TreesHandler implements IQueryHandler<Get{{pascalCase moduleName}}TreesQuery> {
+  constructor(private readonly {{camelCase moduleName}}DomainService: {{pascalCase moduleName}}DomainService) {}
+  async execute(query: Get{{pascalCase moduleName}}TreesQuery) {
+    const { ids, depth = -1 } = query.getTreesDTO
+    const {{camelCase moduleName}}Trees = await this.{{camelCase moduleName}}DomainService.get{{pascalCase moduleName}}TreesByIds(ids, {{pascalCase moduleName}}TreeVO, depth)
+    return {{camelCase moduleName}}Trees
+  }
+}

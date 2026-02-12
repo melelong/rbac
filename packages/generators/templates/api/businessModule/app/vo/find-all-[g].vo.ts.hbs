@@ -1,0 +1,21 @@
+import type { IFindAll{{pascalCase moduleName}}VO } from '@packages/types'
+import type { IFindAllVOOptions } from '@/common/vo'
+import { ApiSchema } from '@nestjs/swagger'
+import { FindAllVO } from '@/common/vo'
+import { {{pascalCase moduleName}}DetailsVO } from './{{kebabCase moduleName}}-details.vo'
+
+/** 分页查询{{zhName}}详情列表 */
+@ApiSchema({ description: '分页查询{{zhName}}详情列表' })
+export class FindAll{{pascalCase moduleName}}VO extends FindAllVO<{{pascalCase moduleName}}DetailsVO> implements IFindAll{{pascalCase moduleName}}VO {
+  /**
+  * {{zhName}}详情列表
+  */
+  data: {{pascalCase moduleName}}DetailsVO[]
+  constructor(findAllVOOptions?: IFindAllVOOptions<{{pascalCase moduleName}}DetailsVO>) {
+    super(findAllVOOptions)
+    if (findAllVOOptions) {
+      const { DataConstructor, data } = findAllVOOptions
+      this.data = data.map((data) => new DataConstructor(data))
+    }
+  }
+}

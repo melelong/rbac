@@ -1,0 +1,13 @@
+import type { {{pascalCase moduleName}}IdDTO } from '../dto'
+import type { UpdateSortDTO } from '@/common/dto'
+import { Command } from '@nestjs/cqrs'
+
+/** 更新{{zhName}}排序Command */
+export class Update{{pascalCase moduleName}}SortCommand extends Command<never[]> {
+  constructor(
+    public readonly id: {{pascalCase moduleName}}IdDTO['id'],
+    public readonly updateSortDTO: UpdateSortDTO,
+  ) {
+    super()
+  }
+}

@@ -4,14 +4,14 @@ networks: # 定义网络
     driver: bridge
     ipam:
       config:
-        - subnet: 192.168.3.0/16
+        - subnet: 192.168.3.0/24
 
 services:
   dev_rbac_mysql:
     # 自动重启
     restart: always
     container_name: dev_rbac_mysql
-    image: bitnami/mysql:8.4.2
+    image: ccr.ccs.tencentyun.com/comps/mysql:8.4.2
     # 密码认证
     environment:
       - MYSQL_ROOT_PASSWORD=Aa123456
@@ -40,6 +40,7 @@ services:
       - '6379:6379'
     volumes:
       - ./docker-volumes/redis/data:/bitnami/redis/data
+      - ./docker-volumes/redis/etc:/opt/bitnami/redis/etc
       - ./docker-volumes/redis/logs:/opt/bitnami/redis/logs
       - ./docker-volumes/redis/tmp:/opt/bitnami/redis/tmp
     networks:
@@ -49,7 +50,7 @@ services:
     # 自动重启
     restart: always
     container_name: dev_rbac_mongodb
-    image: bitnami/mongodb:8.0.13
+    image: ccr.ccs.tencentyun.com/comps/mongodb:8.0.13
     # 密码认证
     environment:
       - MONGODB_ROOT_PASSWORD=Aa123456

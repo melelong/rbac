@@ -59,6 +59,7 @@
           "Email": "邮箱",
           "QRCode": "扫码",
           "Phone": "手机",
+          "Gitee": "码云",
           "WeChat": "微信",
           "QQ": "QQ",
           "Github": "Github",
@@ -74,10 +75,14 @@
         "captchaWarning": "请输入用户名和密码"
       },
       "EmailLogin": {
-        "title": "邮箱登录"
+        "title": "邮箱登录",
+        "success": "登录成功"
       },
       "EmailRegister": {
         "title": "邮箱注册"
+      },
+      "GithubLogin": {
+        "title": "Github登录"
       },
       "ResetPwd": {
         "title": "重置密码"

@@ -1,0 +1,15 @@
+import type { I{{pascalCase moduleName}}Entity } from './I{{pascalCase moduleName}}Entity'
+
+/** {{zhName}}树表实体接口 */
+export interface I{{pascalCase moduleName}}TreeEntity {
+  /** 祖先{{zhName}}ID */
+  ancestorId: string
+  /** 后代{{zhName}}ID */
+  descendantId: string
+  /** 路径长度(0 表示自己，1 表示父子 ，>1 表示子孙) */
+  depth: number
+  /** 祖先{{zhName}} */
+  ancestor{{pascalCase moduleName}}: I{{pascalCase moduleName}}Entity
+  /** 后代{{zhName}} */
+  descendant{{pascalCase moduleName}}: I{{pascalCase moduleName}}Entity
+}

@@ -1,0 +1,12 @@
+{{!-- 查 --}}
+export * from './get-{{kebabCase moduleName}}-by-id.handler'
+export * from './get-{{kebabCase moduleName}}-by-id.query'
+export * from './get-{{kebabCase moduleName}}s.handler'
+export * from './get-{{kebabCase moduleName}}s.query'
+{{!-- 树特有 --}}
+{{#if hasTree}}
+export * from './get-{{kebabCase moduleName}}-tree.handler'
+export * from './get-{{kebabCase moduleName}}-tree.query'
+export * from './get-{{kebabCase moduleName}}-trees.handler'
+export * from './get-{{kebabCase moduleName}}-trees.query'
+{{/if}}

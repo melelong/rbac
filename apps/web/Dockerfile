@@ -94,5 +94,3 @@ USER web
 
 # 从安装阶段的容器中复制 /app/apps/web/dist 目录到当前容器的工作目录
 COPY --from=installer /app/apps/web/dist .
-
-# 注意：以上代码块中的注释仅供参考，并非实际执行的命令或操作

@@ -1,0 +1,10 @@
+import type { {{pascalCase moduleName}}IdDTO } from '../dto'
+import type { {{pascalCase moduleName}}DetailsVO } from '../vo'
+import { Query } from '@nestjs/cqrs'
+
+/** 获取{{zhName}}详情Query */
+export class Get{{pascalCase moduleName}}ByIdQuery extends Query<{{pascalCase moduleName}}DetailsVO> {
+  constructor(public readonly id: {{pascalCase moduleName}}IdDTO['id']) {
+    super()
+  }
+}

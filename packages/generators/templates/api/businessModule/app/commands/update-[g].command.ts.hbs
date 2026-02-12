@@ -1,0 +1,12 @@
+import type { Update{{pascalCase moduleName}}DTO, {{pascalCase moduleName}}IdDTO } from '../dto'
+import { Command } from '@nestjs/cqrs'
+
+/** 更新{{zhName}}Command */
+export class Update{{pascalCase moduleName}}Command extends Command<never[]> {
+  constructor(
+    public readonly id: {{pascalCase moduleName}}IdDTO['id'],
+    public readonly update{{pascalCase moduleName}}DTO: Update{{pascalCase moduleName}}DTO,
+  ) {
+    super()
+  }
+}

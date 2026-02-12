@@ -8,6 +8,9 @@
     "node": ">=20.19.2"
   },
   "scripts": {
+    "g:api": "plop --plopfile plopfile.mjs \"api\"",
+    "g:eslint": "eslint",
+    "g:format": "prettier",
     "dev": "vite",
     "g:i18n": "node ./script/gI18n.mjs",
     "g:css": "node ./script/gCss.mjs",
@@ -36,6 +39,7 @@
     "crypto-js": "catalog:cli",
     "dayjs": "catalog:cli",
     "element-plus": "catalog:web_prod",
+    "jsencrypt": "catalog:cli",
     "nprogress": "catalog:web_prod",
     "pinia": "catalog:web_prod",
     "uuid": "catalog:cli",
@@ -44,7 +48,9 @@
     "vue-router": "catalog:web_prod"
   },
   "devDependencies": {
+    "@apidevtools/swagger-parser": "catalog:web_dev",
     "@configs/eslint-config": "workspace:*",
+    "@packages/generators": "workspace:*",
     "@packages/types": "workspace:*",
     "@tsconfig/node22": "catalog:web_dev",
     "@types/chroma-js": "catalog:web_dev",
@@ -61,6 +67,9 @@
     "css": "catalog:cli",
     "eslint": "catalog:cli",
     "npm-run-all2": "catalog:web_dev",
+    "openapi-types": "catalog:web_dev",
+    "plop": "catalog:cli",
+    "prettier": "catalog:cli",
     "rollup-plugin-visualizer": "catalog:web_dev",
     "typescript": "catalog:cli",
     "unocss": "catalog:web_dev",

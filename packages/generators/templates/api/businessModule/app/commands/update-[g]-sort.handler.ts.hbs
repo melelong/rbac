@@ -1,0 +1,30 @@
+import type { ICommandHandler } from '@nestjs/cqrs'
+import { CommandHandler } from '@nestjs/cqrs'
+import { ClsService } from 'nestjs-cls'
+import { EntityManager } from 'typeorm'
+import { SYSTEM_DEFAULT_BY } from '@/common/constants'
+import { LogContextMethod } from '@/common/deco'
+import { LoggingService } from '@/common/infra'
+import { {{pascalCase moduleName}}DomainService } from '../../domain'
+import { Update{{pascalCase moduleName}}SortCommand } from './update-{{kebabCase moduleName}}-sort.command'
+import { REQ_CTX } from '@/common/infra'
+
+/** 更新{{zhName}}排序Handler */
+@CommandHandler(Update{{pascalCase moduleName}}SortCommand)
+export class Update{{pascalCase moduleName}}SortHandler implements ICommandHandler<Update{{pascalCase moduleName}}SortCommand> {
+  constructor(
+    private readonly em: EntityManager,
+    private readonly {{camelCase moduleName}}DomainService: {{pascalCase moduleName}}DomainService,
+    private readonly loggingService: LoggingService,
+    private readonly clsService: ClsService,
+  ) {}
+
+  @LogContextMethod()
+  async execute(command: Update{{pascalCase moduleName}}SortCommand) {
+    return this.em.transaction(async (em: EntityManager) => {
+      const by = this.clsService.get<string>(REQ_CTX.USER_ID) ?? SYSTEM_DEFAULT_BY
+      await this.{{camelCase moduleName}}DomainService.update{{pascalCase moduleName}}sSort(em, [command.id], [command.updateSortDTO], by)
+      return []
+    })
+  }
+}

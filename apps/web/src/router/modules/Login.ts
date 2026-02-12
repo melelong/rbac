@@ -47,6 +47,15 @@ export const loginRoutes: RouteRecordRaw[] = [
           type: 'static',
         },
       },
+      {
+        name: 'LoginCallBack',
+        path: 'login-callback',
+        component: () => import('@/views/Login/LoginCallBack/index.vue'),
+        meta: {
+          title: 'views.Login.LoginCallBack.title',
+          type: 'static',
+        },
+      },
     ],
   },
 ]

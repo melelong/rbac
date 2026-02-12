@@ -8,7 +8,7 @@ export const baseConfig = antfu({
   pnpm: true,
   stylistic: true,
   formatters: ['prettier'],
-  ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**', '**/node_modules/**', '**/apps/service/**', '**/apps/web/**'],
+  ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**', '**/node_modules/**', '**/**/src/metadata.ts', '**/apps/api/**', '**/apps/web/**'],
   rules: {
     'style/operator-linebreak': 'off',
     'style/arrow-parens': 'off',

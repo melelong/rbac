@@ -1,4 +1,4 @@
-import type { ILoginByEmailDTO } from '@packages/types'
+import type { IEmailLoginDTO } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
@@ -6,9 +6,11 @@ import { authApi } from '@/api'
 import { CAPTCHA_LENGTH, PWD_MAX, PWD_MIN } from '@/constants'
 import { t } from '@/i18n'
 import { goTo } from '@/router'
+import { useAuth } from '@/store/modules/auth'
 
 export function useEmailLogin() {
-  const formData = reactive<ILoginByEmailDTO>({
+  const { login } = useAuth()
+  const formData = reactive<IEmailLoginDTO>({
     email: '',
     pwd: '',
     captcha: '',
@@ -33,12 +35,12 @@ export function useEmailLogin() {
   async function getCaptchaHandler() {
     try {
       formData.captcha = ''
-      const { data } = await authApi.loginByEmailCaptcha({ email: formData.email })
-      ElMessage({
-        message: data,
-        type: 'success',
-        duration: 1000,
-      })
+      const { code, msg } = await authApi.emailCaptcha('login', { email: formData.email })
+      if (code !== '0') {
+        ElMessage({ message: msg, type: 'error', duration: 1000 })
+        return
+      }
+      ElMessage({ message: msg, type: 'success', duration: 1000 })
     } catch (e) {
       console.error(e)
     }
@@ -47,16 +49,21 @@ export function useEmailLogin() {
     formInstance.value?.validate(async (isValid: boolean) => {
       if (isValid) {
         try {
-          const { data } = await authApi.loginByEmail(formData)
+          const { code, msg, data } = await login('email', formData)
+          if (code !== '0') {
+            ElMessage({ message: msg, type: 'error', duration: 1000 })
+            return
+          }
           console.warn(data)
+          ElMessage({ message: t('views.Login.EmailLogin.success'), type: 'success', duration: 1000 })
           goTo('Home')
         } catch {
-          await getCaptchaHandler()
+          formData.captcha = ''
         }
       }
     })
   }
-  const formRules = computed<FormRules<ILoginByEmailDTO>>(() => ({
+  const formRules = computed<FormRules<IEmailLoginDTO>>(() => ({
     email: [
       { required: true, message: t('common.form.email'), trigger: ['blur', 'change'] },
       {
@@ -141,6 +148,7 @@ export function useEmailLogin() {
       key: 'submit',
       props: {
         type: 'primary',
+
         disabled: formValidateState.value,
       },
       attrs: {
@@ -157,6 +165,20 @@ export function useEmailLogin() {
       slots: t('common.form.back'),
     },
   ])
+  async function enterHandler(e: KeyboardEvent) {
+    if (e.key !== 'Enter') return
+    if (formValidateState.value && !(emailValidateState.value || pwdValidateState.value)) await getCaptchaHandler()
+    if (!formValidateState.value) await submitHandler()
+  }
+  // 异步组件获取实例
+  watch(formInstance, async (newVal) => {
+    if (!newVal) return
+    await nextTick()
+    window.addEventListener('keydown', enterHandler)
+  })
+  onUnmounted(() => {
+    window.removeEventListener('keydown', enterHandler)
+  })
   return {
     /** 表单数据 */
     formData,

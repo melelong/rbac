@@ -1,0 +1,9 @@
+import type { {{pascalCase moduleName}}IdDTO } from '../dto'
+import { Command } from '@nestjs/cqrs'
+
+/** 删除{{zhName}}Command */
+export class Delete{{pascalCase moduleName}}Command extends Command<never[]> {
+  constructor(public readonly id: {{pascalCase moduleName}}IdDTO['id']) {
+    super()
+  }
+}

@@ -6,7 +6,6 @@ import { useApp } from '@/store/modules/app'
 
 export const localeKeys = ['zh-CN', 'en'] as const
 export type AppLocale = (typeof localeKeys)[number]
-console.warn(messages)
 export const i18n = createI18n({
   legacy: false,
   locale: localeKeys[0],

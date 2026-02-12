@@ -1,15 +1,18 @@
-import type { ILoginBySvgDTO } from '@packages/types'
+import type { ISvgLoginDTO } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
+import type { IOtherLoginItem } from '../components/OtherLogin/IOtherLogin'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
 import { authApi } from '@/api'
 import { CAPTCHA_LENGTH, PWD_MAX, PWD_MIN, USER_NAME_MAX, USER_NAME_MIN } from '@/constants'
 import { t } from '@/i18n'
 import { goTo } from '@/router'
+import { useAuth } from '@/store/modules/auth'
 import { CaptchaImg, OtherLogin } from '../components'
 
 export function useSvgLogin() {
-  const formData = reactive<ILoginBySvgDTO>({
+  const { login, setAccess, setRefresh } = useAuth()
+  const formData = reactive<ISvgLoginDTO>({
     name: '',
     pwd: '',
     captcha: '',
@@ -18,7 +21,7 @@ export function useSvgLogin() {
   const getFormTitle = () => t('views.Login.SvgLogin.title')
   const formInstance = ref<FormInstance | null>(null)
   const captchaImgUrl = ref<null | string>(null)
-  const formRules = computed<FormRules<ILoginBySvgDTO>>(() => ({
+  const formRules = computed<FormRules<ISvgLoginDTO>>(() => ({
     name: [
       { required: true, message: t('common.form.username'), trigger: ['blur', 'change'] },
       {
@@ -57,7 +60,13 @@ export function useSvgLogin() {
     const length = formInstance.value?.fields.length
     return formInstance.value?.fields.filter((item) => item.validateState === 'success').length !== length
   })
-  const otherLoginList = [
+  const baseUrl = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:4001/api'
+  const otherLoginList = computed<IOtherLoginItem[]>(() => [
+    {
+      icon: 'simple-icons:gitee',
+      title: t('views.Login.components.OtherLogin.Gitee'),
+      onClick: () => (window.location.href = `${baseUrl}/auth/login/gitee`),
+    },
     {
       icon: 'icon-park-outline:wechat',
       title: t('views.Login.components.OtherLogin.WeChat'),
@@ -66,26 +75,29 @@ export function useSvgLogin() {
     {
       icon: 'icon-park-outline:tencent-qq',
       title: t('views.Login.components.OtherLogin.QQ'),
-      onClick: () => ElMessage({ message: '功能开发中...', type: 'warning', duration: 1000 }),
+      onClick: () => (window.location.href = `${baseUrl}/auth/login/qq`),
     },
     {
       icon: 'icon-park-outline:github',
       title: t('views.Login.components.OtherLogin.Github'),
-      onClick: () => ElMessage({ message: '功能开发中...', type: 'warning', duration: 1000 }),
+      onClick: () => (window.location.href = `${baseUrl}/auth/login/github`),
     },
     {
       icon: 'icon-park-outline:google',
       title: t('views.Login.components.OtherLogin.Google'),
       onClick: () => ElMessage({ message: '功能开发中...', type: 'warning', duration: 1000 }),
     },
-  ]
+  ])
   async function getCaptchaHandler() {
     try {
       formData.captcha = ''
-      const { data } = await authApi.loginBySvgCaptcha()
-      if (data) {
-        formData.token = data?.token
-        captchaImgUrl.value = data?.svg
+      const a = await authApi.svgCaptcha('login')
+      console.warn(a)
+      if (String(a.code).length === 3) return ElMessage({ message: a.msg, type: 'error', duration: 1000 })
+      if (String(a.code).length > 3) return ElMessage({ message: a.msg, type: 'warning', duration: 1000 })
+      if (a.code === '0') {
+        formData.token = a.data?.token
+        captchaImgUrl.value = a.data?.svg
       }
     } catch (e) {
       console.error(e)
@@ -94,14 +106,15 @@ export function useSvgLogin() {
   async function submitHandler() {
     formInstance.value?.validate(async (isValid: boolean) => {
       if (isValid) {
-        try {
-          const { data } = await authApi.loginBySvg(formData)
-          console.warn(data)
-          ElMessage({ message: t('views.Login.SvgLogin.success'), type: 'success', duration: 1000 })
-          goTo('Home')
-        } catch {
-          await getCaptchaHandler()
+        const { code, data, msg } = await login('svg', formData)
+        if (code !== '0') {
+          ElMessage({ message: msg, type: 'error', duration: 1000 })
+          getCaptchaHandler()
+          return
         }
+        Promise.all([setAccess(data.accessToken), data?.refreshToken ? setRefresh(data?.refreshToken) : null])
+        ElMessage({ message: t('views.Login.SvgLogin.success'), type: 'success', duration: 1000 })
+        goTo('Home')
       }
     })
   }
@@ -149,7 +162,7 @@ export function useSvgLogin() {
       type: () =>
         h(CaptchaImg, {
           captchaImgUrl: captchaImgUrl.value ?? undefined,
-          disabled: nameValidateState.value || pwdValidateState.value,
+          // disabled: nameValidateState.value || pwdValidateState.value,
         }),
       key: 'captchaImg',
       attrs: {
@@ -216,11 +229,24 @@ export function useSvgLogin() {
       span: 8,
     },
     {
-      type: () => h(OtherLogin, { items: otherLoginList }),
+      type: () => h(OtherLogin, { items: otherLoginList.value }),
       key: 'OtherLogin',
     },
   ])
   getCaptchaHandler()
+  async function enterHandler(e: KeyboardEvent) {
+    if (e.key !== 'Enter') return
+    if (formValidateState.value && !(nameValidateState.value || pwdValidateState.value)) await getCaptchaHandler()
+    if (!formValidateState.value) await submitHandler()
+  }
+  // 异步组件获取实例
+  watch(formInstance, (newVal) => {
+    if (!newVal) return
+    nextTick(() => window.addEventListener('keydown', enterHandler))
+  })
+  onUnmounted(() => {
+    window.removeEventListener('keydown', enterHandler)
+  })
   return {
     /** 表单数据 */
     formData,

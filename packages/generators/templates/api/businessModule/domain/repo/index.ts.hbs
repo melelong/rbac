@@ -1,0 +1,6 @@
+/** 基础设施层接口 */
+
+export * from './I{{pascalCase moduleName }}Repository'
+{{#if hasTree}}
+export * from './I{{pascalCase moduleName}}TreeRepository'
+{{/if}}

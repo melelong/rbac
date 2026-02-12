@@ -1,0 +1,44 @@
+import type { EntityManager } from 'typeorm'
+import type { Update{{pascalCase moduleName}}DTO, Create{{pascalCase moduleName}}DTO } from '../../app'
+import type { I{{pascalCase moduleName}}Entity } from '../entities'
+import type { FindAllDTO, UpdateSortDTO, UpdateStatusDTO } from '@/common/dto'
+{{!-- 树特有 --}}
+{{#if hasTree}}
+import type { TTreeNodeVO } from '@packages/types'
+{{/if}}
+
+/** {{zhName}}领域服务接口 */
+export interface I{{pascalCase moduleName}}DomainService {
+  /** 缓存表字段名(用于辨别修改字段属于哪个表) */
+  columns: string[]
+  // 基本
+  /** 创建{{zhName}} */
+  create{{pascalCase moduleName}}s: (em: EntityManager, createDTOList: Create{{pascalCase moduleName}}DTO[], by?: string) => Promise<I{{pascalCase moduleName}}Entity[]>
+  /** 删除{{zhName}} */
+  delete{{pascalCase moduleName}}s: (em: EntityManager, idList: string[], by?: string{{#if hasTree}}, deleteDescendant?: boolean{{/if}}) => Promise<boolean>
+  /** 修改{{zhName}} */
+  update{{pascalCase moduleName}}s: (em: EntityManager, idList: string[], updateDTOList: Update{{pascalCase moduleName}}DTO[], by?: string) => Promise<boolean>
+  /** 修改{{zhName}}状态 */
+  update{{pascalCase moduleName}}sStatus: (em: EntityManager, idList: string[], updateStatusDTOList: UpdateStatusDTO[], by?: string) => Promise<boolean>
+  /** 修改{{zhName}}排序 */
+  update{{pascalCase moduleName}}sSort: (em: EntityManager, idList: string[], UpdateSortDTOList: UpdateSortDTO[], by?: string) => Promise<boolean>
+  /** 获取{{zhName}}详情列表 */
+  get{{pascalCase moduleName}}s: (findAllDTO: FindAllDTO, relations: boolean, em?: EntityManager) => Promise<[I{{pascalCase moduleName}}Entity[], number]>
+  /** 通过{{zhName}}ID获取{{zhName}}详情 */
+  get{{pascalCase moduleName}}sByIds: (idList: string[], relations: boolean, em?: EntityManager) => Promise<I{{pascalCase moduleName}}Entity[]>
+  /** 通过{{zhName}}名获取{{zhName}}详情 */
+  get{{pascalCase moduleName}}sByNames: (nameList: string[], relations: boolean, em?: EntityManager) => Promise<I{{pascalCase moduleName}}Entity[]>
+  // 特有的
+  {{!-- 树特有 --}}
+  {{#if hasTree}}
+  /** 移动{{zhName}}树节点 */
+  move{{pascalCase moduleName}}s: (em: EntityManager, idList: string[], parentIdList: (string | null)[], by?: string) => Promise<I{{pascalCase moduleName}}Entity[]>
+  /** 获取{{zhName}}树节点 */
+  get{{pascalCase moduleName}}TreesByIds: <VO=any>(
+    idList: string[],
+    VOConstructor: new (...args: any[]) => VO,
+    depth?: number,
+    em?: EntityManager,
+  ) => Promise<TTreeNodeVO<VO>[]>
+  {{/if}}
+}

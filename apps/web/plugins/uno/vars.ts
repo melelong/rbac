@@ -10,9 +10,7 @@ function createColorVars() {
   }
   colors.forEach((color) => {
     colorVars[color] = `rgb(var(--${color}-color))`
-    nums.forEach((n) => {
-      colorVars[`${color}-${n}`] = `rgb(var(--${color}-color-${n}))`
-    })
+    nums.forEach((n) => (colorVars[`${color}-${n}`] = `rgb(var(--${color}-color-${n}))`))
   })
   return colorVars
 }

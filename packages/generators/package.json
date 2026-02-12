@@ -1,0 +1,22 @@
+{
+  "name": "@packages/generators",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "description": "代码生成器",
+  "author": "MeltTeam",
+  "license": "MIT",
+  "main": "./src/index.mjs",
+  "module": "./src/index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clear:modules": "if exist node_modules (rmdir /s /q node_modules)",
+    "clear": "pnpm clear:modules"
+  },
+  "devDependencies": {
+    "@apidevtools/swagger-parser": "catalog:web_dev",
+    "glob": "catalog:cli",
+    "openapi-types": "catalog:web_dev",
+    "plop": "catalog:cli"
+  }
+}

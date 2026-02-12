@@ -1,4 +1,4 @@
-import type { IResetPwdByEmailDTO } from '@packages/types'
+import type { IEmailResetPwdDTO } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
@@ -8,7 +8,7 @@ import { t } from '@/i18n'
 import { goTo } from '@/router'
 
 export function useResetPwd() {
-  const formData = reactive<IResetPwdByEmailDTO>({
+  const formData = reactive<IEmailResetPwdDTO>({
     email: '',
     pwd: '',
     confirmPwd: '',
@@ -38,12 +38,12 @@ export function useResetPwd() {
   async function getCaptchaHandler() {
     try {
       formData.captcha = ''
-      const { data } = await authApi.resetPwdByEmailCaptcha({ email: formData.email })
-      ElMessage({
-        message: data,
-        type: 'success',
-        duration: 1000,
-      })
+      const { code, msg } = await authApi.emailCaptcha('resetPwd', { email: formData.email })
+      if (code !== '0') {
+        ElMessage({ message: msg, type: 'error', duration: 1000 })
+        return
+      }
+      ElMessage({ message: msg, type: 'success', duration: 1000 })
     } catch (e) {
       console.error(e)
     }
@@ -52,16 +52,20 @@ export function useResetPwd() {
     formInstance.value?.validate(async (isValid: boolean) => {
       if (isValid) {
         try {
-          const { data } = await authApi.resetPwdByEmail(formData)
-          ElMessage({ message: data, type: 'success', duration: 1000 })
+          const { code, msg } = await authApi.emailResetPwd(formData)
+          if (code !== '0') {
+            ElMessage({ message: msg, type: 'error', duration: 1000 })
+            return
+          }
+          ElMessage({ message: msg, type: 'success', duration: 1000 })
           goTo('SvgLogin')
         } catch {
-          await getCaptchaHandler()
+          formData.captcha = ''
         }
       }
     })
   }
-  const formRules = computed<FormRules<IResetPwdByEmailDTO>>(() => ({
+  const formRules = computed<FormRules<IEmailResetPwdDTO>>(() => ({
     email: [
       { required: true, message: t('common.form.email'), trigger: ['blur', 'change'] },
       {
@@ -165,6 +169,7 @@ export function useResetPwd() {
       key: 'submit',
       props: {
         type: 'primary',
+
         disabled: formValidateState.value,
       },
       attrs: {
@@ -181,6 +186,20 @@ export function useResetPwd() {
       slots: t('common.form.back'),
     },
   ])
+  async function enterHandler(e: KeyboardEvent) {
+    if (e.key !== 'Enter') return
+    if (formValidateState.value && !(emailValidateState.value || pwdValidateState.value || confirmPwdValidateState.value)) await getCaptchaHandler()
+    if (!formValidateState.value) await submitHandler()
+  }
+  // 异步组件获取实例
+  watch(formInstance, async (newVal) => {
+    if (!newVal) return
+    await nextTick()
+    window.addEventListener('keydown', enterHandler)
+  })
+  onUnmounted(() => {
+    window.removeEventListener('keydown', enterHandler)
+  })
   return {
     /** 表单数据 */
     formData,

@@ -60,6 +60,7 @@
           "Email": "Email",
           "QRCode": "QR",
           "Phone": "Phone",
+          "Gitee": "Gitee",
           "WeChat": "WeChat",
           "QQ": "QQ",
           "Github": "Github",
@@ -75,13 +76,17 @@
         "captchaWarning": "Please enter your username and password"
       },
       "EmailLogin": {
-        "title": "EmailLogin"
+        "title": "EmailLogin",
+        "success": "Login Success"
       },
       "EmailRegister": {
         "title": "EmailRegister"
       },
       "ResetPwd": {
         "title": "ResetPwd"
+      },
+      "GithubLogin": {
+        "title": "GithubLogin"
       }
     },
     "Dashboard": {

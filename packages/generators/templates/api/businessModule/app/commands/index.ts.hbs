@@ -1,0 +1,18 @@
+{{!-- 增 --}}
+export * from './create-{{kebabCase moduleName}}-by-name.command'
+export * from './create-{{kebabCase moduleName}}-by-name.handler'
+{{!-- 删 --}}
+export * from './delete-{{kebabCase moduleName}}.command'
+export * from './delete-{{kebabCase moduleName}}.handler'
+{{!-- 改 --}}
+export * from './update-{{kebabCase moduleName}}-sort.command'
+export * from './update-{{kebabCase moduleName}}-sort.handler'
+export * from './update-{{kebabCase moduleName}}-status.command'
+export * from './update-{{kebabCase moduleName}}-status.handler'
+export * from './update-{{kebabCase moduleName}}.command'
+export * from './update-{{kebabCase moduleName}}.handler'
+{{!-- 树特有 --}}
+{{#if hasTree}}
+export * from './move-{{kebabCase moduleName}}.command'
+export * from './move-{{kebabCase moduleName}}.handler'
+{{/if}}

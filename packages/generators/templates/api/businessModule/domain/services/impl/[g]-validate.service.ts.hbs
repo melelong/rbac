@@ -1,0 +1,28 @@
+import type { EntityManager } from 'typeorm'
+import { Injectable } from '@nestjs/common'
+import { LogContextClass } from '@/common/deco'
+import { BusinessException, ExceptionCode, ExceptionCodeTextMap } from '@/common/exceptions'
+import { {{pascalCase moduleName}}Repository } from '../../../infra/repo'
+import type { I{{pascalCase moduleName}}ValidateService } from '../I{{pascalCase moduleName}}ValidateService'
+
+/** {{zhName}}校验服务实现 */
+@Injectable()
+@LogContextClass()
+export class {{pascalCase moduleName}}ValidateService implements I{{pascalCase moduleName}}ValidateService{
+  constructor(private readonly {{camelCase moduleName}}Repo: {{pascalCase moduleName}}Repository) {}
+  async validateId(idList: string[], expectExists: boolean = true, em?: EntityManager) {
+    const exists = await this.{{camelCase moduleName}}Repo.existsById(idList, em)
+    // 验证不存在
+    if (!expectExists && exists) throw new BusinessException(ExceptionCode.{{ constantCase moduleName}}_ALREADY_EXISTS, ExceptionCodeTextMap)
+    // 验证存在
+    if (expectExists && !exists) throw new BusinessException(ExceptionCode.{{ constantCase moduleName}}_NOT_FOUND, ExceptionCodeTextMap)
+  }
+
+  async validateName(nameList: string[], expectExists: boolean = true, em?: EntityManager) {
+    const exists = await this.{{camelCase moduleName}}Repo.existsByName(nameList, em)
+    // 验证不存在
+    if (!expectExists && exists) throw new BusinessException(ExceptionCode.{{ constantCase moduleName}}_NAME_ALREADY_EXISTS, ExceptionCodeTextMap)
+    // 验证存在
+    if (expectExists && !exists) throw new BusinessException(ExceptionCode.{{ constantCase moduleName}}_NAME_NOT_FOUND, ExceptionCodeTextMap)
+  }
+}

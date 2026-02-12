@@ -1,0 +1,153 @@
+import type { I{{pascalCase moduleName}}Controller } from '../I{{pascalCase moduleName}}Controller'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common'
+import { CommandBus, QueryBus } from '@nestjs/cqrs'
+import { ApiExtraModels } from '@nestjs/swagger'
+import { ResourceTypeEnum } from '@packages/types'
+import { ApiController, ApiMethod, ResourceDomain, ResourceMethod, ResourceType } from '@/common/deco'
+import { FindAllDTO, UpdateSortDTO, UpdateStatusDTO } from '@/common/dto'
+import { ResVO } from '@/common/vo'
+import {
+  Create{{pascalCase moduleName}}ByNameCommand,
+  Create{{pascalCase moduleName}}DTO,
+  Delete{{pascalCase moduleName}}Command,
+  FindAll{{pascalCase moduleName}}VO,
+  Get{{pascalCase moduleName}}ByIdQuery,
+  Get{{pascalCase moduleName}}sQuery,
+  Update{{pascalCase moduleName}}Command,
+  Update{{pascalCase moduleName}}DTO,
+  Update{{pascalCase moduleName}}SortCommand,
+  Update{{pascalCase moduleName}}StatusCommand,
+  {{pascalCase moduleName}}DetailsVO,
+  {{pascalCase moduleName}}IdDTO,
+} from '../../../app'
+{{!-- 树特有 --}}
+{{#if hasTree}}
+import { Move{{pascalCase moduleName}}DTO, Move{{pascalCase moduleName}}Command, Get{{pascalCase moduleName}}TreeQuery, Get{{pascalCase moduleName}}TreesQuery, {{pascalCase moduleName}}TreeVO,  } from '../../../app'
+import { GetTreeDepthDTO, GetTreesDTO } from '@/common/dto'
+{{/if}}
+
+/** {{zhName}}控制器实现 */
+@Controller('{{pathCase moduleName}}')
+@ResourceType(ResourceTypeEnum.API)
+@ResourceDomain('{{constantCase moduleName}}')
+@ApiController({ ApiTagsOptions: ['{{pascalCase moduleName}}'] })
+@ApiExtraModels(FindAll{{pascalCase moduleName}}VO, {{pascalCase moduleName}}DetailsVO{{#if hasTree}}, {{pascalCase moduleName}}TreeVO{{/if}})
+export class {{pascalCase moduleName}}Controller implements I{{pascalCase moduleName}}Controller {
+  constructor(
+  private readonly queryBus: QueryBus,
+  private readonly commandBus: CommandBus,
+  ) {}
+
+  @Post()
+  @ResourceMethod('create')
+  @ApiMethod({
+  ApiOperationOptions: [{ summary: '创建{{zhName}}' }],
+  ApiResponseOptions: [ResVO.SwaggerSuccess({{pascalCase moduleName}}DetailsVO)],
+  ApiBearerAuthOptions: 'JWT',
+  })
+  async create(@Body() create{{pascalCase moduleName}}DTO: Create{{pascalCase moduleName}}DTO) {
+    return await this.commandBus.execute(new Create{{pascalCase moduleName}}ByNameCommand(create{{pascalCase moduleName}}DTO))
+  }
+
+  @Delete(':id')
+  @ResourceMethod('delete')
+  @ApiMethod({
+  ApiOperationOptions: [{ summary: '删除{{zhName}}' }],
+  ApiResponseOptions: [ResVO.SwaggerSuccess()],
+  ApiBearerAuthOptions: 'JWT',
+  })
+  async delete(@Param() {{camelCase moduleName}}IdDTO: {{pascalCase moduleName}}IdDTO) {
+    return await this.commandBus.execute(new Delete{{pascalCase moduleName}}Command({{camelCase moduleName}}IdDTO.id))
+  }
+
+  @Patch(':id')
+  @ResourceMethod('update')
+  @ApiMethod({
+  ApiOperationOptions: [{ summary: '更新{{zhName}}' }],
+  ApiResponseOptions: [ResVO.SwaggerSuccess()],
+  ApiBearerAuthOptions: 'JWT',
+  })
+  async update(@Param() {{camelCase moduleName}}IdDTO: {{pascalCase moduleName}}IdDTO, @Body() update{{pascalCase moduleName}}DTO: Update{{pascalCase moduleName}}DTO) {
+    return await this.commandBus.execute(new Update{{pascalCase moduleName}}Command({{camelCase moduleName}}IdDTO.id, update{{pascalCase moduleName}}DTO))
+  }
+
+  @Patch(':id/status')
+  @ResourceMethod('updateStatus')
+  @ApiMethod({
+  ApiOperationOptions: [{ summary: '更新{{zhName}}状态' }],
+  ApiResponseOptions: [ResVO.SwaggerSuccess()],
+  ApiBearerAuthOptions: 'JWT',
+  })
+  async updateStatus(@Param() {{camelCase moduleName}}IdDTO: {{pascalCase moduleName}}IdDTO, @Body() updateStatusDTO: UpdateStatusDTO) {
+    return await this.commandBus.execute(new Update{{pascalCase moduleName}}StatusCommand({{camelCase moduleName}}IdDTO.id, updateStatusDTO))
+  }
+
+  @Patch(':id/sort')
+  @ResourceMethod('updateSort')
+  @ApiMethod({
+  ApiOperationOptions: [{ summary: '更新{{zhName}}排序优先级' }],
+  ApiResponseOptions: [ResVO.SwaggerSuccess()],
+  ApiBearerAuthOptions: 'JWT',
+  })
+  async updateSort(@Param() {{camelCase moduleName}}IdDTO: {{pascalCase moduleName}}IdDTO, @Body() updateSortDTO: UpdateSortDTO) {
+    return await this.commandBus.execute(new Update{{pascalCase moduleName}}SortCommand({{camelCase moduleName}}IdDTO.id, updateSortDTO))
+  }
+
+  @Get()
+  @ResourceMethod('list')
+  @ApiMethod({
+  ApiOperationOptions: [{ summary: '获取{{zhName}}列表' }],
+  ApiResponseOptions: [ResVO.SwaggerSuccess(FindAll{{pascalCase moduleName}}VO)],
+  ApiBearerAuthOptions: 'JWT',
+  })
+  async list(@Query() findAllDTO: FindAllDTO) {
+    return await this.queryBus.execute(new Get{{pascalCase moduleName}}sQuery(findAllDTO))
+  }
+
+  @Get(':id')
+  @ResourceMethod('detail')
+  @ApiMethod({
+  ApiOperationOptions: [{ summary: '查看单个{{zhName}}详情' }],
+  ApiResponseOptions: [ResVO.SwaggerSuccess({{pascalCase moduleName}}DetailsVO)],
+  ApiBearerAuthOptions: 'JWT',
+  })
+  async detail(@Param() {{camelCase moduleName}}IdDTO: {{pascalCase moduleName}}IdDTO) {
+    return await this.queryBus.execute(new Get{{pascalCase moduleName}}ByIdQuery({{camelCase moduleName}}IdDTO.id))
+  }
+  {{!-- 树特有--}}
+  {{#if hasTree}}
+
+  @Patch(':id/move')
+  @ResourceMethod('move')
+  @ApiMethod({
+    ApiOperationOptions: [{ summary: '移动{{zhName}}' }],
+    ApiResponseOptions: [ResVO.SwaggerSuccess()],
+    ApiBearerAuthOptions: 'JWT',
+  })
+  async move(@Param() {{camelCase moduleName}}IdDTO: {{pascalCase moduleName}}IdDTO, @Body() move{{pascalCase moduleName}}DTO: Move{{pascalCase moduleName}}DTO) {
+    return await this.commandBus.execute(new Move{{pascalCase moduleName}}Command({{camelCase moduleName}}IdDTO.id, move{{pascalCase moduleName}}DTO))
+  }
+
+  @Get('tree/:id')
+  @ResourceMethod('tree')
+  @ApiMethod({
+    ApiOperationOptions: [{ summary: '查看单个{{zhName}}树结构' }],
+    ApiResponseOptions: [ResVO.SwaggerSuccess({{pascalCase moduleName}}TreeVO)],
+    ApiBearerAuthOptions: 'JWT',
+  })
+  async tree(@Param() {{camelCase moduleName}}IdDTO: {{pascalCase moduleName}}IdDTO, @Query() getTreeDepthDTO: GetTreeDepthDTO) {
+    return await this.queryBus.execute(new Get{{pascalCase moduleName}}TreeQuery({{camelCase moduleName}}IdDTO.id, getTreeDepthDTO))
+  }
+  
+  @Post('trees')
+  @ResourceMethod('trees')
+  @ApiMethod({
+    ApiOperationOptions: [{ summary: '查看多个{{zhName}}树结构' }],
+    ApiResponseOptions: [ResVO.SwaggerSuccess({{pascalCase moduleName}}TreeVO, true)],
+    ApiBearerAuthOptions: 'JWT',
+  })
+  async trees(@Body() getTreesDTO: GetTreesDTO) {
+    return await this.queryBus.execute(new Get{{pascalCase moduleName}}TreesQuery(getTreesDTO))
+  }
+  {{/if}}
+}

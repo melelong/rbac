@@ -1,10 +1,12 @@
 <script lang="ts" setup>
+import type { ButtonProps, MessageProps } from 'element-plus'
 import { Icon } from '@iconify/vue'
+import { createAuth } from '@/api/auth'
 import { MModeBtn } from '@/components'
 import { goTo } from '@/router'
 
-const types: InstanceType<typeof ElButton>['$props']['type'][] = ['default', 'text', 'primary', 'success', 'warning', 'danger', 'info']
-const map: { [key: string]: string } = {
+const types: ButtonProps['type'][] = ['default', 'text', 'primary', 'success', 'warning', 'danger', 'info']
+const map: { [key: string]: MessageProps['type'] } = {
   default: 'primary',
   text: 'primary',
   primary: 'primary',
@@ -13,11 +15,15 @@ const map: { [key: string]: string } = {
   danger: 'error',
   info: 'info',
 }
-function handleClick(type: string | keyof typeof map) {
+function handleClick(type: ButtonProps['type']) {
   ElMessage({
     message: type,
-    type: map[type as keyof typeof map],
+    type: map[type],
   })
+}
+async function testPlugin() {
+  const res = await createAuth({ name: 'admin', remark: '测试插件' })
+  console.warn(res)
 }
 const iconRef = ref('icon-park-outline:components')
 setTimeout(() => {
@@ -32,6 +38,7 @@ setTimeout(() => {
     </div>
     <div class="mb-4 flex">
       <MModeBtn></MModeBtn>
+      <MButton @click="testPlugin">testPlugin</MButton>
       <MButton @click="goTo('Login')">Login</MButton>
       <MButton @click="goTo('Workspace')">Workspace</MButton>
     </div>

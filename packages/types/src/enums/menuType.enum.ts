@@ -23,3 +23,13 @@ export const MenuTypeTextMap: Record<MenuTypeEnum, string> = {
   [MenuTypeEnum.LINK]: '外链',
   [MenuTypeEnum.INNER_LINK]: '内链',
 }
+
+/** 菜单类型枚举编码映射 */
+export const MenuTypeCodeMap: Record<MenuTypeEnum, string> = {
+  [MenuTypeEnum.MENU]: 'MENU',
+  [MenuTypeEnum.BUTTON]: 'BUTTON',
+  [MenuTypeEnum.DIRECTORY]: 'DIRECTORY',
+  [MenuTypeEnum.COMPONENT]: 'COMPONENT',
+  [MenuTypeEnum.LINK]: 'LINK',
+  [MenuTypeEnum.INNER_LINK]: 'INNER_LINK',
+}

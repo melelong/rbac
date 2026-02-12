@@ -1,4 +1,8 @@
 export default {
+  // 公共
+  semi: false,
+  singleQuote: true,
+  printWidth: 150,
   overrides: [
     {
       files: ['*.json5'],
@@ -8,8 +12,4 @@ export default {
       },
     },
   ],
-  semi: false,
-  singleQuote: true,
-  printWidth: 150,
-  plugins: ['prettier-plugin-ejs'],
 }

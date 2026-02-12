@@ -1,0 +1,5 @@
+export * from './auth/auth.module'
+export * from './rbac/menu/menu.module'
+export * from './rbac/resource/resource.module'
+export * from './rbac/role/role.module'
+export * from './rbac/user/user.module'

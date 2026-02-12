@@ -8,10 +8,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    copy: typeof import('./../components/MThemeBtn copy/index.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElColorPicker: typeof import('element-plus/es')['ElColorPicker']
     ElContainer: typeof import('element-plus/es')['ElContainer']
@@ -22,31 +20,23 @@ declare module 'vue' {
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElImage: typeof import('element-plus/es')['ElImage']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
-    ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
-    ElText: typeof import('element-plus/es')['ElText']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     MButton: typeof import('./../components/MButton/index.vue')['default']
     MForm: typeof import('./../components/MForm/index.vue')['default']
     MI18nBtn: typeof import('./../components/MI18nBtn/index.vue')['default']
-    MIcon: typeof import('./../components/MIcon/index.vue')['default']
     MLoading: typeof import('./../components/MLoading/index.vue')['default']
-    MMenu: typeof import('./../components/MMenu/index.vue')['default']
     MModeBtn: typeof import('./../components/MModeBtn/index.vue')['default']
     MThemeBtn: typeof import('./../components/MThemeBtn/index.vue')['default']
     MVideo: typeof import('./../components/MVideo/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-  }
-  export interface GlobalDirectives {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

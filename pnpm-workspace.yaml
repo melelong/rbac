@@ -7,12 +7,17 @@ packages:
   # 工程化脚本
   - 'scripts'
 catalog:
-  mongodb: 6.5.0
+  '@swc/cli': ^0.7.9
+  '@swc/core': ^1.15.8
+  '@swc/jest': ^0.2.39
+  swc-loader: ^0.2.6
+  thread-loader: ^4.0.4
 
 catalogs:
-  #web和server
   # 工程化相关依赖
   cli:
+    glob: ^13.0.0
+    plop: ^4.0.4
     '@types/lodash-es': ^4.17.12
     lodash-es: ^4.17.21
     '@types/css': ^0.0.38
@@ -41,6 +46,7 @@ catalogs:
     '@types/node': ^22.14.0
     axios: ^1.10.0
     crypto-js: ^4.2.0
+    jsencrypt: ^3.5.4
     '@types/crypto-js': ^4.2.2
     dayjs: ^1.11.13
     uuid: ^11.1.0
@@ -54,6 +60,7 @@ catalogs:
     '@nestjs/mapped-types': ^2.1.0
     '@nestjs/event-emitter': ^3.0.1
     '@nestjs/platform-express': ^10.4.20
+    '@nestjs/cqrs': ^11.0.3
     # 请求
     etag: ^1.8.1
     class-validator: ^0.14.1
@@ -65,19 +72,27 @@ catalogs:
     typeorm: 0.3.20
     '@nestjs/mongoose': ^10.1.0
     mongoose: ^8.18.0
+    mongodb: 6.5.0
     # 配置
     joi: ^17.13.3
     '@nestjs/config': ^4.0.2
     cross-env: ^7.0.3
     # 日志
+    nest-winston: ^1.10.2
     winston-daily-rotate-file: ^5.0.0
     winston: ^3.17.0
     chalk: ^5.6.0
     winston-mongodb: ^7.0.1
     # 缓存
-    '@nestjs/cache-manager': ^2.3.0
-    cache-manager: ^5.7.6
+    '@nestjs/cache-manager': ^3.1.0
+    '@keyv/valkey': ^1.0.11
+    cache-manager: ^7.2.8
+    cacheable: ^2.3.2
+    keyv: ^5.6.0
+    ioredis: ^5.6.1
+    redis-errors: ^1.2.0
     # 邮箱
+    hbs: ^4.2.0
     ejs: ^3.1.10
     nodemailer: ^7.0.3
     '@nestjs-modules/mailer': ^2.0.2
@@ -85,20 +100,19 @@ catalogs:
     csrf-csrf: ^4.0.3
     helmet: ^8.1.0
     '@nestjs/jwt': ^10.2.0
-    'passport-jwt': ^4.0.1
     cookie-parser: ^1.4.7
     '@nestjs/passport': ^11.0.5
-    'passport-local': ^1.0.0
     passport: ^0.7.0
+    passport-custom: ^1.1.1
     '@nestjs/throttler': ^6.4.0
     '@nest-lab/throttler-storage-redis': ^1.1.0
     # 健康
     '@nestjs/terminus': ^10.3.0
+    systeminformation: ^5.27.11
     # 定时任务
     '@nestjs/schedule': ^6.0.0
     # 验证码
     'svg-captcha': ^1.4.0
-    ioredis: ^5.6.1
     # 第三方请求
     '@nestjs/axios': ^3.1.3
     # 队列
@@ -107,16 +121,19 @@ catalogs:
     # 部署
     pm2: ^6.0.8
     # 文档
+    '@scalar/nestjs-api-reference': ^1.0.7
     '@nestjs/swagger': ^8.1.1
   # api开发依赖
   api_dev:
+    '@types/redis-errors': ^1.2.3
     '@types/multer': ^2.0.0
     '@types/cookie-parser': ^1.4.9
+    '@types/passport-local': ^0.0.0
     copy-webpack-plugin: ^13.0.0
     webpack-bundle-analyzer: ^4.10.2
     '@types/ejs': ^3.1.5
+    '@types/hbs': ^4.0.5
     '@types/nodemailer': ^6.4.17
-    '@types/passport-jwt': ^4.0.1
     run-script-webpack-plugin: ^0.2.3
     webpack: ^5.99.9
     webpack-node-externals: ^3.0.0
@@ -130,7 +147,6 @@ catalogs:
     tsconfig-paths: ^4.2.0
     globals: ^16.0.0
     '@types/jest': ^29.5.14
-    '@types/passport-local': ^1.0.38
     '@types/etag': ^1.8.4
     '@types/express': ^5.0.0
     '@types/supertest': ^6.0.2
@@ -153,21 +169,26 @@ catalogs:
     '@unocss/reset': ^66.1.4
   # web开发依赖
   web_dev:
-    '@types/chroma-js': ^3.1.1
+    # 接口文件生成
+    '@apidevtools/swagger-parser': ^12.1.0
+    openapi-types: ^12.1.3
+    # css工程化
     '@unocss/preset-icons': ^66.3.3
+    unocss: ^66.1.4
+    autoprefixer: ^10.4.21
+    postcss: ^8.5.4
+    '@unocss/preset-attributify': ^66.1.4
+    # vite插件
     vite-plugin-compression: ^0.5.1
     vite-plugin-imagemin: ^0.6.1
     vite-plugin-html: ^3.2.2
+    rollup-plugin-visualizer: ^6.0.3
     '@tsconfig/node22': ^22.0.1
-    '@types/nprogress': ^0.2.3
-    '@unocss/preset-attributify': ^66.1.4
     '@vitejs/plugin-vue': ^5.2.3
     '@vitejs/plugin-vue-jsx': ^4.1.2
     '@vue/tsconfig': ^0.7.0
-    autoprefixer: ^10.4.21
-    postcss: ^8.5.4
-    rollup-plugin-visualizer: ^6.0.3
-    unocss: ^66.1.4
+    '@types/nprogress': ^0.2.3
+    '@types/chroma-js': ^3.1.1
     unplugin-auto-import: ^19.3.0
     unplugin-vue-components: ^28.7.0
     vite: ^6.2.4

@@ -20,3 +20,12 @@ export const ResourceTypeTextMap: Record<ResourceTypeEnum, string> = {
   [ResourceTypeEnum.SCHEDULED_TASK]: '定时任务',
   [ResourceTypeEnum.DATA]: '数据权限',
 }
+
+/** 资源类型枚举编码映射 */
+export const ResourceTypeCodeMap: Record<ResourceTypeEnum, string> = {
+  [ResourceTypeEnum.API]: 'API',
+  [ResourceTypeEnum.STATIC_RESOURCE]: 'STATIC_RESOURCE',
+  [ResourceTypeEnum.WEBSOCKET]: 'WEBSOCKET',
+  [ResourceTypeEnum.SCHEDULED_TASK]: 'SCHEDULED_TASK',
+  [ResourceTypeEnum.DATA]: 'DATA',
+}

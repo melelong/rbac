@@ -1,0 +1,14 @@
+import type { I{{pascalCase moduleName}}IdsVO } from '@packages/types'
+import type { {{pascalCase moduleName}}Entity } from '../../domain'
+
+/** {{zhName}}ID列表VO */
+export class {{pascalCase moduleName}}IdsVO implements I{{pascalCase moduleName}}IdsVO {
+  /**
+  * {{zhName}}ID列表
+  * @example []
+  */
+  ids: string[]
+  constructor({{camelCase moduleName}}s?: {{pascalCase moduleName}}Entity[]) {
+    if ({{camelCase moduleName}}s) this.ids = {{camelCase moduleName}}s.map((item) => item.id)
+  }
+}

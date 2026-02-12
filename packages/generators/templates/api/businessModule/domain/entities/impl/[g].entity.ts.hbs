@@ -1,0 +1,43 @@
+import type { I{{pascalCase moduleName}}Entity } from '../I{{pascalCase moduleName}}Entity'
+import { Column, Entity, Index } from 'typeorm'
+import { CommonEntity } from '@/common/entities'
+import { {{constantCase moduleName}}_TABLE, {{constantCase moduleName}}_NAME, {{constantCase moduleName}}_NAME_MAX } from '../../../domain'
+{{#if hasTree}}
+import { {{pascalCase moduleName}}TreeEntity } from './{{kebabCase moduleName}}-tree.entity'
+import { UUID_V4_LENGTH } from '@/common/constants'
+import { {{constantCase moduleName}}_PARENT_ID } from '../../../domain'
+import { OneToMany } from 'typeorm'
+{{/if}}
+
+/** {{zhName}}表实体实现 */
+@Entity({ name: {{constantCase moduleName}}_TABLE, comment: '{{zhName}}表' })
+@Index(['name'])
+{{#if hasTree}}@Index(['parentId']){{/if}}
+export class {{pascalCase moduleName}}Entity extends CommonEntity implements I{{pascalCase moduleName}}Entity {
+  @Column({
+    comment: {{constantCase moduleName}}_NAME,
+    name: 'name',
+    type: 'varchar',
+    length: {{constantCase moduleName}}_NAME_MAX,
+    charset: 'utf8mb4',
+  })
+  name: string
+
+  {{#if hasTree}}
+  @Column({
+    comment: {{constantCase moduleName}}_PARENT_ID,
+    name: 'parent_id',
+    type: 'varchar',
+    length: UUID_V4_LENGTH,
+    charset: 'ascii',
+    nullable: true,
+  })
+  parentId: string | null
+
+  @OneToMany(() => {{pascalCase moduleName}}TreeEntity, (node) => node.descendant{{pascalCase moduleName}})
+  ancestorNodes: {{pascalCase moduleName}}TreeEntity[]
+  
+  @OneToMany(() => {{pascalCase moduleName}}TreeEntity, (node) => node.ancestor{{pascalCase moduleName}})
+  descendantNodes: {{pascalCase moduleName}}TreeEntity[]
+  {{/if}}
+}

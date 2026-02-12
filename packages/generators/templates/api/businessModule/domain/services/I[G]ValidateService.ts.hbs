@@ -1,0 +1,11 @@
+import type { EntityManager } from "typeorm"
+
+/** {{zhName}}校验服务接口 */
+export interface I{{pascalCase moduleName}}ValidateService {
+  // 基本
+  /** 校验{{zhName}}ID */
+  validateId: (idList: string[], expectExists?: boolean, em?: EntityManager) => Promise<void>
+  /** 校验{{zhName}}名 */
+  validateName: (nameList: string[], expectExists?: boolean, em?: EntityManager) => Promise<void>
+  // 特有
+}

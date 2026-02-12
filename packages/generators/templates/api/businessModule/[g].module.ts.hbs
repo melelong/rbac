@@ -1,0 +1,81 @@
+import type { ModuleMetadata } from '@nestjs/common'
+import type { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type'
+import { Module } from '@nestjs/common'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import {
+  Create{{pascalCase moduleName}}ByNameHandler,
+  Delete{{pascalCase moduleName}}Handler,
+  Get{{pascalCase moduleName}}ByIdHandler,
+  Get{{pascalCase moduleName}}sHandler,
+  Update{{pascalCase moduleName}}Handler,
+  Update{{pascalCase moduleName}}SortHandler,
+  Update{{pascalCase moduleName}}StatusHandler,
+} from './app'
+import { {{pascalCase moduleName}}DomainListener, {{pascalCase moduleName}}DomainService, {{pascalCase moduleName}}Entity, {{pascalCase moduleName}}ValidateService } from './domain'
+import { {{pascalCase moduleName}}Repository } from './infra/repo'
+import { {{pascalCase moduleName}}Controller } from './iface/controllers'
+import { Global } from '@nestjs/common'
+{{!-- 树特有导入 --}}
+{{#if hasTree}}
+import { {{pascalCase moduleName}}TreeEntity } from './domain'
+import {
+  Move{{pascalCase moduleName}}Handler,
+  Get{{pascalCase moduleName}}TreeHandler,
+  Get{{pascalCase moduleName}}TreesHandler,
+} from './app'
+import { {{pascalCase moduleName}}TreeRepository } from './infra/repo'
+{{/if}}
+
+/** 实体 */
+const entities: EntityClassOrSchema[] = [
+  {{pascalCase moduleName}}Entity,
+  {{!-- 树特有实体 --}}
+  {{#if hasTree}}
+  {{pascalCase moduleName}}TreeEntity,
+  {{/if}}
+]
+/** 控制器 */
+const controllers: ModuleMetadata['controllers'] = [{{pascalCase moduleName}}Controller]
+/** 命令处理 */
+const commandHandlers: ModuleMetadata['providers'] = [
+  Create{{pascalCase moduleName}}ByNameHandler,
+  Delete{{pascalCase moduleName}}Handler,
+  Update{{pascalCase moduleName}}Handler,
+  Update{{pascalCase moduleName}}SortHandler,
+  Update{{pascalCase moduleName}}StatusHandler,
+  {{!-- 树特有命令处理 --}}
+  {{#if hasTree}}
+  Move{{pascalCase moduleName}}Handler,
+  {{/if}}
+]
+/** 查询处理 */
+const queryHandlers: ModuleMetadata['providers'] = [
+  Get{{pascalCase moduleName}}sHandler, 
+  Get{{pascalCase moduleName}}ByIdHandler,
+  {{!-- 树特有查询处理 --}}
+  {{#if hasTree}}
+  Get{{pascalCase moduleName}}TreeHandler,
+  Get{{pascalCase moduleName}}TreesHandler,
+  {{/if}}
+]
+/** 事件处理 */
+const eventHandlers: ModuleMetadata['providers'] = [{{pascalCase moduleName}}DomainListener]
+/** 服务 */
+const services: ModuleMetadata['providers'] = [{{pascalCase moduleName}}ValidateService, {{pascalCase moduleName}}DomainService]
+/** 仓库 */
+const repo: ModuleMetadata['providers'] = [
+  {{pascalCase moduleName}}Repository,
+  {{!-- 树特有仓库 --}}
+  {{#if hasTree}}
+  {{pascalCase moduleName}}TreeRepository,
+  {{/if}}
+]
+/** {{zhName}}模块 */
+@Global()
+@Module({
+  imports: [TypeOrmModule.forFeature(entities)],
+  controllers,
+  providers: [...repo, ...services, ...commandHandlers, ...queryHandlers, ...eventHandlers],
+  exports: [...repo, ...services, ...commandHandlers, ...queryHandlers, ...eventHandlers],
+})
+export class {{pascalCase moduleName}}Module {}

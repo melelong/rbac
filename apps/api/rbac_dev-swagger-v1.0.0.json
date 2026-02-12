@@ -1,0 +1,5612 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/menu": {
+      "post": {
+        "operationId": "MenuController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMenuDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/MenuDetailsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "创建菜单",
+        "tags": ["Menu"]
+      },
+      "get": {
+        "operationId": "MenuController_list_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "第几页",
+            "schema": {
+              "minimum": 1,
+              "maximum": 200,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "一页几条数据",
+            "schema": {
+              "minimum": 1,
+              "maximum": 2000,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "keyword",
+            "required": false,
+            "in": "query",
+            "description": "搜索关键词",
+            "schema": {
+              "example": "张三",
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderBy",
+            "required": false,
+            "in": "query",
+            "description": "排序字段(创建时间:createdAt 更新时间:updatedAt 名称:name)",
+            "schema": {
+              "example": "createdAt",
+              "enum": ["createdAt", "updatedAt", "name"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderType",
+            "required": false,
+            "in": "query",
+            "description": "排序方式(升序:asc 降序:desc)",
+            "schema": {
+              "example": "asc",
+              "enum": ["asc", "desc"],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/FindAllMenuVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取菜单列表",
+        "tags": ["Menu"]
+      }
+    },
+    "/api/v1/menu/{id}": {
+      "delete": {
+        "operationId": "MenuController_delete_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "删除菜单",
+        "tags": ["Menu"]
+      },
+      "patch": {
+        "operationId": "MenuController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMenuDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新菜单",
+        "tags": ["Menu"]
+      },
+      "get": {
+        "operationId": "MenuController_detail_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/MenuDetailsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "查看单个菜单详情",
+        "tags": ["Menu"]
+      }
+    },
+    "/api/v1/menu/{id}/status": {
+      "patch": {
+        "operationId": "MenuController_updateStatus_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatusDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新菜单状态",
+        "tags": ["Menu"]
+      }
+    },
+    "/api/v1/menu/{id}/sort": {
+      "patch": {
+        "operationId": "MenuController_updateSort_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSortDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新菜单排序优先级",
+        "tags": ["Menu"]
+      }
+    },
+    "/api/v1/menu/{id}/move": {
+      "patch": {
+        "operationId": "MenuController_move_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveMenuDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "移动菜单",
+        "tags": ["Menu"]
+      }
+    },
+    "/api/v1/menu/tree/{id}": {
+      "get": {
+        "operationId": "MenuController_tree_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          },
+          {
+            "name": "depth",
+            "required": false,
+            "in": "query",
+            "description": "树深度,-1是深度无限制",
+            "schema": {
+              "minimum": -1,
+              "example": -1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/MenuTreeVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "查看单个菜单树结构",
+        "tags": ["Menu"]
+      }
+    },
+    "/api/v1/menu/trees": {
+      "post": {
+        "operationId": "MenuController_trees_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTreesDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/MenuTreeVO"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "查看多个菜单树结构",
+        "tags": ["Menu"]
+      }
+    },
+    "/api/v1/resource": {
+      "post": {
+        "operationId": "ResourceController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateResourceDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/ResourceDetailsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "创建资源",
+        "tags": ["Resource"]
+      },
+      "get": {
+        "operationId": "ResourceController_list_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "第几页",
+            "schema": {
+              "minimum": 1,
+              "maximum": 200,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "一页几条数据",
+            "schema": {
+              "minimum": 1,
+              "maximum": 2000,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "keyword",
+            "required": false,
+            "in": "query",
+            "description": "搜索关键词",
+            "schema": {
+              "example": "张三",
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderBy",
+            "required": false,
+            "in": "query",
+            "description": "排序字段(创建时间:createdAt 更新时间:updatedAt 名称:name)",
+            "schema": {
+              "example": "createdAt",
+              "enum": ["createdAt", "updatedAt", "name"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderType",
+            "required": false,
+            "in": "query",
+            "description": "排序方式(升序:asc 降序:desc)",
+            "schema": {
+              "example": "asc",
+              "enum": ["asc", "desc"],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/FindAllResourceVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取资源列表",
+        "tags": ["Resource"]
+      }
+    },
+    "/api/v1/resource/{id}": {
+      "delete": {
+        "operationId": "ResourceController_delete_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "删除资源",
+        "tags": ["Resource"]
+      },
+      "patch": {
+        "operationId": "ResourceController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateResourceDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新资源",
+        "tags": ["Resource"]
+      },
+      "get": {
+        "operationId": "ResourceController_detail_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/ResourceDetailsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "查看单个资源详情",
+        "tags": ["Resource"]
+      }
+    },
+    "/api/v1/resource/{id}/status": {
+      "patch": {
+        "operationId": "ResourceController_updateStatus_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatusDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新资源状态",
+        "tags": ["Resource"]
+      }
+    },
+    "/api/v1/resource/{id}/sort": {
+      "patch": {
+        "operationId": "ResourceController_updateSort_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSortDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新资源排序优先级",
+        "tags": ["Resource"]
+      }
+    },
+    "/api/v1/role": {
+      "post": {
+        "operationId": "RoleController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoleDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/RoleDetailsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "创建角色",
+        "tags": ["Role"]
+      },
+      "get": {
+        "operationId": "RoleController_list_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "第几页",
+            "schema": {
+              "minimum": 1,
+              "maximum": 200,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "一页几条数据",
+            "schema": {
+              "minimum": 1,
+              "maximum": 2000,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "keyword",
+            "required": false,
+            "in": "query",
+            "description": "搜索关键词",
+            "schema": {
+              "example": "张三",
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderBy",
+            "required": false,
+            "in": "query",
+            "description": "排序字段(创建时间:createdAt 更新时间:updatedAt 名称:name)",
+            "schema": {
+              "example": "createdAt",
+              "enum": ["createdAt", "updatedAt", "name"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderType",
+            "required": false,
+            "in": "query",
+            "description": "排序方式(升序:asc 降序:desc)",
+            "schema": {
+              "example": "asc",
+              "enum": ["asc", "desc"],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/FindAllRoleVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取角色列表",
+        "tags": ["Role"]
+      }
+    },
+    "/api/v1/role/{id}": {
+      "delete": {
+        "operationId": "RoleController_delete_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "删除角色",
+        "tags": ["Role"]
+      },
+      "patch": {
+        "operationId": "RoleController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoleDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新角色",
+        "tags": ["Role"]
+      },
+      "get": {
+        "operationId": "RoleController_detail_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/RoleDetailsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "查看单个角色详情",
+        "tags": ["Role"]
+      }
+    },
+    "/api/v1/role/{id}/status": {
+      "patch": {
+        "operationId": "RoleController_updateStatus_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatusDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新角色状态",
+        "tags": ["Role"]
+      }
+    },
+    "/api/v1/role/{id}/sort": {
+      "patch": {
+        "operationId": "RoleController_updateSort_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSortDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新角色排序优先级",
+        "tags": ["Role"]
+      }
+    },
+    "/api/v1/role/{id}/move": {
+      "patch": {
+        "operationId": "RoleController_move_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveRoleDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "移动角色",
+        "tags": ["Role"]
+      }
+    },
+    "/api/v1/role/tree/{id}": {
+      "get": {
+        "operationId": "RoleController_tree_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          },
+          {
+            "name": "depth",
+            "required": false,
+            "in": "query",
+            "description": "树深度,-1是深度无限制",
+            "schema": {
+              "minimum": -1,
+              "example": -1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/RoleTreeVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "查看单个角色树结构",
+        "tags": ["Role"]
+      }
+    },
+    "/api/v1/role/trees": {
+      "post": {
+        "operationId": "RoleController_trees_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTreesDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/RoleTreeVO"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "查看多个角色树结构",
+        "tags": ["Role"]
+      }
+    },
+    "/api/v1/role/menu": {
+      "post": {
+        "operationId": "RoleMenuController_assign_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignRoleMenuDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "给角色分配菜单",
+        "tags": ["RoleMenu"]
+      }
+    },
+    "/api/v1/role/menu/batch": {
+      "post": {
+        "operationId": "RoleMenuController_batchAssign_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignRolesMenuDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "批量给角色分配菜单",
+        "tags": ["RoleMenu"]
+      }
+    },
+    "/api/v1/role/menu/{id}/menu-ids": {
+      "get": {
+        "operationId": "RoleMenuController_menuIds_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/MenuIdsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取角色的菜单ID列表",
+        "tags": ["RoleMenu"]
+      }
+    },
+    "/api/v1/role/menu/{id}/role-ids": {
+      "get": {
+        "operationId": "RoleMenuController_roleIds_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/RoleIdsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取菜单的角色ID列表",
+        "tags": ["RoleMenu"]
+      }
+    },
+    "/api/v1/role/resource": {
+      "post": {
+        "operationId": "RoleResourceController_assign_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignRoleResourceDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "给角色分配资源",
+        "tags": ["RoleResource"]
+      }
+    },
+    "/api/v1/role/resource/batch": {
+      "post": {
+        "operationId": "RoleResourceController_batchAssign_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignRolesResourceDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "批量给角色分配资源",
+        "tags": ["RoleResource"]
+      }
+    },
+    "/api/v1/role/resource/{id}/resource-ids": {
+      "get": {
+        "operationId": "RoleResourceController_resourceIds_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/ResourceIdsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取角色的资源ID列表",
+        "tags": ["RoleResource"]
+      }
+    },
+    "/api/v1/role/resource/{id}/role-ids": {
+      "get": {
+        "operationId": "RoleResourceController_roleIds_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/RoleIdsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取资源的角色ID列表",
+        "tags": ["RoleResource"]
+      }
+    },
+    "/api/v1/user": {
+      "post": {
+        "operationId": "UserController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/UserDetailsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "创建用户",
+        "tags": ["User"]
+      },
+      "get": {
+        "operationId": "UserController_list_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "第几页",
+            "schema": {
+              "minimum": 1,
+              "maximum": 200,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "一页几条数据",
+            "schema": {
+              "minimum": 1,
+              "maximum": 2000,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "keyword",
+            "required": false,
+            "in": "query",
+            "description": "搜索关键词",
+            "schema": {
+              "example": "张三",
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderBy",
+            "required": false,
+            "in": "query",
+            "description": "排序字段(创建时间:createdAt 更新时间:updatedAt 名称:name)",
+            "schema": {
+              "example": "createdAt",
+              "enum": ["createdAt", "updatedAt", "name"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderType",
+            "required": false,
+            "in": "query",
+            "description": "排序方式(升序:asc 降序:desc)",
+            "schema": {
+              "example": "asc",
+              "enum": ["asc", "desc"],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/FindAllUserVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取用户列表",
+        "tags": ["User"]
+      }
+    },
+    "/api/v1/user/{id}": {
+      "delete": {
+        "operationId": "UserController_delete_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "删除用户",
+        "tags": ["User"]
+      },
+      "patch": {
+        "operationId": "UserController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新用户",
+        "tags": ["User"]
+      },
+      "get": {
+        "operationId": "UserController_detail_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/UserDetailsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "查看单个用户详情",
+        "tags": ["User"]
+      }
+    },
+    "/api/v1/user/{id}/status": {
+      "patch": {
+        "operationId": "UserController_updateStatus_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatusDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新用户状态",
+        "tags": ["User"]
+      }
+    },
+    "/api/v1/user/{id}/sort": {
+      "patch": {
+        "operationId": "UserController_updateSort_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSortDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新用户排序优先级",
+        "tags": ["User"]
+      }
+    },
+    "/api/v1/user/role": {
+      "post": {
+        "operationId": "UserRoleController_assign_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignUserRoleDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "给用户分配角色",
+        "tags": ["UserRole"]
+      }
+    },
+    "/api/v1/user/role/batch": {
+      "post": {
+        "operationId": "UserRoleController_batchAssign_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignUsersRoleDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "批量给用户分配角色",
+        "tags": ["UserRole"]
+      }
+    },
+    "/api/v1/user/role/{id}/role-ids": {
+      "get": {
+        "operationId": "UserRoleController_roleIds_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/RoleIdsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取用户的角色ID列表",
+        "tags": ["UserRole"]
+      }
+    },
+    "/api/v1/user/role/{id}/user-ids": {
+      "get": {
+        "operationId": "UserRoleController_userIds_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/UserIdsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取角色的用户ID列表",
+        "tags": ["UserRole"]
+      }
+    },
+    "/api/v1/auth/svg/{name}": {
+      "get": {
+        "operationId": "AuthController_svgCaptcha_v1",
+        "parameters": [
+          {
+            "name": "name",
+            "required": true,
+            "in": "path",
+            "description": "验证名 [\"test\", \"register\", \"login\", \"resetPwd\", \"updateInfo\"]",
+            "schema": {
+              "example": "test",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/SvgCaptchaVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "获取SVG验证码",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth/email/{name}": {
+      "post": {
+        "operationId": "AuthController_emailCaptcha_v1",
+        "parameters": [
+          {
+            "name": "name",
+            "required": true,
+            "in": "path",
+            "description": "验证名 [\"test\", \"register\", \"login\", \"resetPwd\", \"updateInfo\"]",
+            "schema": {
+              "example": "test",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailCaptchaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "发送邮件验证码",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth/login/svg": {
+      "post": {
+        "operationId": "AuthController_svgLogin_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SvgLoginDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/TokenVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "SVG登录",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth/register/email": {
+      "post": {
+        "operationId": "AuthController_emailRegister_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailRegisterDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "邮箱注册",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth/login/email": {
+      "post": {
+        "operationId": "AuthController_emailLogin_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailLoginDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/TokenVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "邮箱登录",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth/reset-pwd/email": {
+      "post": {
+        "operationId": "AuthController_emailResetPwd_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailResetPwdDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "邮箱重置密码",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refreshToken_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/TokenVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "刷新令牌",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "AuthController_loginOut_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "登出",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "AuthController_meInfo_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/UserDetailsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取当前登录用户信息",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth": {
+      "post": {
+        "operationId": "AuthController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAuthDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/AuthDetailsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "创建认证",
+        "tags": ["Auth"]
+      },
+      "get": {
+        "operationId": "AuthController_list_v1",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "第几页",
+            "schema": {
+              "minimum": 1,
+              "maximum": 200,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "一页几条数据",
+            "schema": {
+              "minimum": 1,
+              "maximum": 2000,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "keyword",
+            "required": false,
+            "in": "query",
+            "description": "搜索关键词",
+            "schema": {
+              "example": "张三",
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderBy",
+            "required": false,
+            "in": "query",
+            "description": "排序字段(创建时间:createdAt 更新时间:updatedAt 名称:name)",
+            "schema": {
+              "example": "createdAt",
+              "enum": ["createdAt", "updatedAt", "name"],
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderType",
+            "required": false,
+            "in": "query",
+            "description": "排序方式(升序:asc 降序:desc)",
+            "schema": {
+              "example": "asc",
+              "enum": ["asc", "desc"],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/FindAllAuthVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "获取认证列表",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth/{id}": {
+      "delete": {
+        "operationId": "AuthController_delete_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "删除认证",
+        "tags": ["Auth"]
+      },
+      "patch": {
+        "operationId": "AuthController_update_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAuthDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新认证",
+        "tags": ["Auth"]
+      },
+      "get": {
+        "operationId": "AuthController_detail_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/AuthDetailsVO"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "查看单个认证详情",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth/{id}/status": {
+      "patch": {
+        "operationId": "AuthController_updateStatus_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatusDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新认证状态",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1/auth/{id}/sort": {
+      "patch": {
+        "operationId": "AuthController_updateSort_v1",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "业务ID",
+            "schema": {
+              "minLength": 36,
+              "maxLength": 36,
+              "example": "xxx",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSortDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResVO"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "example": []
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "COOKIE-JWT": []
+          }
+        ],
+        "summary": "更新认证排序优先级",
+        "tags": ["Auth"]
+      }
+    },
+    "/api/v1": {
+      "get": {
+        "operationId": "BootController_boot_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "跳转swagger文档",
+        "tags": ["跳转swagger文档"]
+      }
+    },
+    "/api/v1/set-str": {
+      "get": {
+        "operationId": "BootController_setStr_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["跳转swagger文档"]
+      }
+    },
+    "/api/v1/get-str": {
+      "get": {
+        "operationId": "BootController_getStr_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["跳转swagger文档"]
+      }
+    },
+    "/api/v1/del-str": {
+      "get": {
+        "operationId": "BootController_delStr_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["跳转swagger文档"]
+      }
+    },
+    "/api/v1/update-str": {
+      "get": {
+        "operationId": "BootController_updateStr_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["跳转swagger文档"]
+      }
+    },
+    "/api/v1/set-arr": {
+      "get": {
+        "operationId": "BootController_setArr_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["跳转swagger文档"]
+      }
+    },
+    "/api/v1/get-obj": {
+      "get": {
+        "operationId": "BootController_getObj_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["跳转swagger文档"]
+      }
+    },
+    "/api/v1/del-obj": {
+      "get": {
+        "operationId": "BootController_delObj_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["跳转swagger文档"]
+      }
+    },
+    "/api/v1/set-obj": {
+      "get": {
+        "operationId": "BootController_setObj_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["跳转swagger文档"]
+      }
+    },
+    "/api/v1/put-obj": {
+      "get": {
+        "operationId": "BootController_putObj_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["跳转swagger文档"]
+      }
+    },
+    "/api/v1/dd-obj": {
+      "get": {
+        "operationId": "BootController_ddObj_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["跳转swagger文档"]
+      }
+    }
+  },
+  "info": {
+    "title": "rbac_dev",
+    "description": "rbac_dev 项目的接口文档",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "Menu",
+      "description": "菜单模块"
+    },
+    {
+      "name": "Resource",
+      "description": "资源模块"
+    },
+    {
+      "name": "RoleMenu",
+      "description": "角色菜单模块"
+    },
+    {
+      "name": "RoleResource",
+      "description": "角色资源模块"
+    },
+    {
+      "name": "Role",
+      "description": "角色模块"
+    },
+    {
+      "name": "UserRole",
+      "description": "用户角色模块"
+    },
+    {
+      "name": "User",
+      "description": "用户模块"
+    },
+    {
+      "name": "Auth",
+      "description": "认证模块"
+    }
+  ],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "JWT": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "description": "在请求头Authorization中携带JWT，格式: Bearer <JWT_TOKEN>"
+      },
+      "COOKIE-JWT": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "Authorization",
+        "description": "在Cookie Authorization中携带JWT，格式: Bearer <JWT_TOKEN>"
+      }
+    },
+    "schemas": {
+      "MenuDetailsVO": {
+        "type": "object",
+        "properties": {
+          "parentId": {
+            "type": "string",
+            "nullable": true,
+            "description": "菜单父节点ID",
+            "example": "菜单父节点ID"
+          },
+          "id": {
+            "type": "string",
+            "description": "菜单ID",
+            "example": "xxx"
+          },
+          "name": {
+            "type": "string",
+            "description": "菜单名",
+            "example": "菜单名"
+          },
+          "menuCode": {
+            "type": "string",
+            "description": "菜单编码(菜单类型:领域:操作类型)",
+            "example": "MENU:USER:MANAGEMENT"
+          },
+          "menuType": {
+            "description": "菜单类型",
+            "example": 10,
+            "enum": [10, 20, 30, 40, 50, 60],
+            "type": "number"
+          },
+          "domain": {
+            "type": "string",
+            "description": "菜单领域",
+            "example": "USER"
+          },
+          "action": {
+            "type": "string",
+            "description": "菜单操作类型",
+            "example": "MANAGEMENT"
+          },
+          "path": {
+            "type": "string",
+            "nullable": true,
+            "description": "访问路径(MENU,LINK,INNER_LINK)",
+            "example": "/user"
+          },
+          "query": {
+            "type": "string",
+            "nullable": true,
+            "description": "路由参数(MENU)",
+            "example": "\"{id:\"xxx\"}\""
+          },
+          "component": {
+            "type": "string",
+            "nullable": true,
+            "description": "组件路径(COMPONENT)",
+            "example": "UserButton"
+          },
+          "icon": {
+            "type": "string",
+            "nullable": true,
+            "description": "图标地址(MENU,DIRECTORY,LINK,INNER_LINK)",
+            "example": "https://www.icon.com"
+          },
+          "isCache": {
+            "description": "是否缓存(MENU,COMPONENT,INNER_LINK)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "isVisible": {
+            "description": "是否隐藏(MENU)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "isRefresh": {
+            "description": "是否刷新(MENU)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "创建者",
+            "example": "xxx"
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "更新者",
+            "example": "xxx"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "创建时间",
+            "example": "xxx"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "更新时间",
+            "example": "xxx"
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true,
+            "description": "备注",
+            "example": ""
+          },
+          "status": {
+            "description": "状态(未知:10 启用:20 禁用:30)",
+            "example": 20,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "sort": {
+            "description": "排序优先级(低优先级:10 中等优先级:20 高优先级:30)",
+            "example": 10,
+            "enum": [10, 20, 30],
+            "type": "number"
+          }
+        },
+        "description": "菜单详情",
+        "required": [
+          "parentId",
+          "id",
+          "name",
+          "menuCode",
+          "menuType",
+          "domain",
+          "action",
+          "path",
+          "query",
+          "component",
+          "icon",
+          "isCache",
+          "isVisible",
+          "isRefresh",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "remark",
+          "status",
+          "sort"
+        ]
+      },
+      "FindAllMenuVO": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "菜单详情列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuDetailsVO"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "总数",
+            "example": 1000
+          },
+          "page": {
+            "type": "number",
+            "description": "第几页",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "description": "一页几条数据",
+            "example": 100
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "总页数",
+            "example": 200
+          }
+        },
+        "description": "分页查询菜单详情列表",
+        "required": ["data", "total", "page", "limit", "totalPages"]
+      },
+      "MenuTreeVO": {
+        "type": "object",
+        "properties": {
+          "parentId": {
+            "type": "string",
+            "nullable": true,
+            "description": "菜单父节点ID",
+            "example": "菜单父节点ID"
+          },
+          "id": {
+            "type": "string",
+            "description": "菜单ID",
+            "example": "xxx"
+          },
+          "name": {
+            "type": "string",
+            "description": "菜单名",
+            "example": "菜单名"
+          },
+          "menuCode": {
+            "type": "string",
+            "description": "菜单编码(菜单类型:领域:操作类型)",
+            "example": "MENU:USER:MANAGEMENT"
+          },
+          "menuType": {
+            "description": "菜单类型",
+            "example": 10,
+            "enum": [10, 20, 30, 40, 50, 60],
+            "type": "number"
+          },
+          "domain": {
+            "type": "string",
+            "description": "菜单领域",
+            "example": "USER"
+          },
+          "action": {
+            "type": "string",
+            "description": "菜单操作类型",
+            "example": "MANAGEMENT"
+          },
+          "path": {
+            "type": "string",
+            "nullable": true,
+            "description": "访问路径(MENU,LINK,INNER_LINK)",
+            "example": "/user"
+          },
+          "query": {
+            "type": "string",
+            "nullable": true,
+            "description": "路由参数(MENU)",
+            "example": "\"{id:\"xxx\"}\""
+          },
+          "component": {
+            "type": "string",
+            "nullable": true,
+            "description": "组件路径(COMPONENT)",
+            "example": "UserButton"
+          },
+          "icon": {
+            "type": "string",
+            "nullable": true,
+            "description": "图标地址(MENU,DIRECTORY,LINK,INNER_LINK)",
+            "example": "https://www.icon.com"
+          },
+          "isCache": {
+            "description": "是否缓存(MENU,COMPONENT,INNER_LINK)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "isVisible": {
+            "description": "是否隐藏(MENU)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "isRefresh": {
+            "description": "是否刷新(MENU)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "创建者",
+            "example": "xxx"
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "更新者",
+            "example": "xxx"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "创建时间",
+            "example": "xxx"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "更新时间",
+            "example": "xxx"
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true,
+            "description": "备注",
+            "example": ""
+          },
+          "status": {
+            "description": "状态(未知:10 启用:20 禁用:30)",
+            "example": 20,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "sort": {
+            "description": "排序优先级(低优先级:10 中等优先级:20 高优先级:30)",
+            "example": 10,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "children": {
+            "description": "菜单子节点列表",
+            "example": [],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuTreeVO"
+            }
+          }
+        },
+        "description": "菜单树节点",
+        "required": [
+          "parentId",
+          "id",
+          "name",
+          "menuCode",
+          "menuType",
+          "domain",
+          "action",
+          "path",
+          "query",
+          "component",
+          "icon",
+          "isCache",
+          "isVisible",
+          "isRefresh",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "remark",
+          "status",
+          "sort",
+          "children"
+        ]
+      },
+      "CreateMenuDTO": {
+        "type": "object",
+        "properties": {
+          "parentId": {
+            "type": "string",
+            "description": "父节点ID",
+            "example": "xxx",
+            "minLength": 36,
+            "maxLength": 36
+          },
+          "name": {
+            "type": "string",
+            "description": "菜单名",
+            "example": "菜单名",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "menuType": {
+            "description": "菜单类型(10:菜单 20:按钮 30:组件 40:目录 50:外链 60:内链)",
+            "example": 10,
+            "enum": [10, 20, 30, 40, 50, 60],
+            "type": "number"
+          },
+          "domain": {
+            "type": "string",
+            "description": "菜单领域",
+            "example": "USER",
+            "minLength": 2,
+            "maxLength": 40
+          },
+          "action": {
+            "type": "string",
+            "description": "菜单操作类型",
+            "example": "MANAGEMENT",
+            "minLength": 2,
+            "maxLength": 40
+          },
+          "path": {
+            "type": "string",
+            "description": "访问路径(MENU,LINK,INNER_LINK)",
+            "example": "/user",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "query": {
+            "type": "string",
+            "description": "路由参数(MENU)",
+            "example": "\"{id:\"xxx\"}\"",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "component": {
+            "type": "string",
+            "description": "组件路径(COMPONENT)",
+            "example": "UserButton",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "icon": {
+            "type": "string",
+            "description": "图标地址(MENU,DIRECTORY,LINK,INNER_LINK)",
+            "example": "https://www.icon.com",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "isCache": {
+            "description": "是否缓存(MENU,COMPONENT,INNER_LINK)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "isVisible": {
+            "description": "是否隐藏(MENU)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "isRefresh": {
+            "description": "是否刷新(MENU)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "example": "xxx",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "description": "菜单名参数校验",
+        "required": ["name", "menuType", "domain", "action", "path"]
+      },
+      "UpdateMenuDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "菜单名",
+            "example": "菜单名",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "menuType": {
+            "description": "菜单类型(10:菜单 20:按钮 30:组件 40:目录 50:外链 60:内链)",
+            "example": 10,
+            "enum": [10, 20, 30, 40, 50, 60],
+            "type": "number"
+          },
+          "domain": {
+            "type": "string",
+            "description": "菜单领域",
+            "example": "USER",
+            "minLength": 2,
+            "maxLength": 40
+          },
+          "action": {
+            "type": "string",
+            "description": "菜单操作类型",
+            "example": "MANAGEMENT",
+            "minLength": 2,
+            "maxLength": 40
+          },
+          "path": {
+            "type": "string",
+            "description": "访问路径(MENU,LINK,INNER_LINK)",
+            "example": "/user",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "query": {
+            "type": "string",
+            "description": "路由参数(MENU)",
+            "example": "\"{id:\"xxx\"}\"",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "component": {
+            "type": "string",
+            "description": "组件路径(COMPONENT)",
+            "example": "UserButton",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "icon": {
+            "type": "string",
+            "description": "图标地址(MENU,DIRECTORY,LINK,INNER_LINK)",
+            "example": "https://www.icon.com",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "isCache": {
+            "description": "是否缓存(MENU,COMPONENT,INNER_LINK)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "isVisible": {
+            "description": "是否隐藏(MENU)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "isRefresh": {
+            "description": "是否刷新(MENU)",
+            "example": 10,
+            "enum": [10, 20],
+            "type": "number"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "example": "xxx",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "description": "更新菜单接口参数校验"
+      },
+      "UpdateStatusDTO": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "description": "状态(未知:10 启用:20 禁用:30)",
+            "example": 20,
+            "default": 20,
+            "enum": [10, 20, 30],
+            "type": "number"
+          }
+        },
+        "description": "更新状态接口参数校验",
+        "required": ["status"]
+      },
+      "UpdateSortDTO": {
+        "type": "object",
+        "properties": {
+          "sort": {
+            "description": "排序优先级(低优先级:10 中等优先级:20 高优先级:30)",
+            "example": 10,
+            "default": 10,
+            "enum": [10, 20, 30],
+            "type": "number"
+          }
+        },
+        "description": "更新排序优先级接口参数校验",
+        "required": ["sort"]
+      },
+      "MoveMenuDTO": {
+        "type": "object",
+        "properties": {
+          "parentId": {
+            "type": "string",
+            "description": "父节点ID",
+            "example": "xxx",
+            "minLength": 36,
+            "maxLength": 36
+          }
+        },
+        "description": "移动菜单接口参数校验"
+      },
+      "GetTreesDTO": {
+        "type": "object",
+        "properties": {
+          "depth": {
+            "type": "number",
+            "description": "树深度,-1是深度无限制",
+            "example": -1,
+            "minimum": -1
+          },
+          "ids": {
+            "description": "业务ID列表",
+            "example": ["xxx", "xxx"],
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 36
+            }
+          }
+        },
+        "description": "查看多个树结构参数校验",
+        "required": ["ids"]
+      },
+      "ResourceDetailsVO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "资源名",
+            "example": "资源名"
+          },
+          "resourceCode": {
+            "type": "string",
+            "description": "资源编码(资源类型:领域:方法)",
+            "example": "API:SYSTEM_USER:CREATE"
+          },
+          "resourceType": {
+            "description": "资源类型(接口:10 静态资源:20 WebSocket连接点:30 定时任务:40 数据权限:50)",
+            "example": 10,
+            "enum": [10, 20, 30, 40, 50],
+            "type": "number"
+          },
+          "domain": {
+            "type": "string",
+            "description": "领域",
+            "example": "SYSTEM"
+          },
+          "method": {
+            "type": "string",
+            "description": "方法",
+            "example": "CREATE"
+          },
+          "id": {
+            "type": "string",
+            "description": "资源ID",
+            "example": "xxx"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "创建者",
+            "example": "xxx"
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "更新者",
+            "example": "xxx"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "创建时间",
+            "example": "xxx"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "更新时间",
+            "example": "xxx"
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true,
+            "description": "备注",
+            "example": ""
+          },
+          "status": {
+            "description": "状态(未知:10 启用:20 禁用:30)",
+            "example": 20,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "sort": {
+            "description": "排序优先级(低优先级:10 中等优先级:20 高优先级:30)",
+            "example": 10,
+            "enum": [10, 20, 30],
+            "type": "number"
+          }
+        },
+        "description": "资源详情",
+        "required": [
+          "name",
+          "resourceCode",
+          "resourceType",
+          "domain",
+          "method",
+          "id",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "remark",
+          "status",
+          "sort"
+        ]
+      },
+      "FindAllResourceVO": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "资源详情列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceDetailsVO"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "总数",
+            "example": 1000
+          },
+          "page": {
+            "type": "number",
+            "description": "第几页",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "description": "一页几条数据",
+            "example": 100
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "总页数",
+            "example": 200
+          }
+        },
+        "description": "分页查询资源详情列表",
+        "required": ["data", "total", "page", "limit", "totalPages"]
+      },
+      "CreateResourceDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "资源名",
+            "example": "用户创建接口",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "resourceType": {
+            "description": "资源类型(接口:10 静态资源:20 WebSocket连接点:30 定时任务:40 数据权限:50)",
+            "example": 10,
+            "enum": [10, 20, 30, 40, 50],
+            "type": "number"
+          },
+          "domain": {
+            "type": "string",
+            "description": "资源领域",
+            "example": "USER",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "method": {
+            "type": "string",
+            "description": "资源方法",
+            "example": "CREATE",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "example": "xxx",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "description": "资源名参数校验",
+        "required": ["name", "resourceType", "domain", "method"]
+      },
+      "UpdateResourceDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "资源名",
+            "example": "资源名",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "resourceType": {
+            "description": "资源类型(接口:10 静态资源:20 WebSocket连接点:30 定时任务:40 数据权限:50)",
+            "example": 10,
+            "enum": [10, 20, 30, 40, 50],
+            "type": "number"
+          },
+          "domain": {
+            "type": "string",
+            "description": "资源领域",
+            "example": "USER",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "method": {
+            "type": "string",
+            "description": "资源方法",
+            "example": "CREATE",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "example": "xxx",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "description": "更新资源接口参数校验"
+      },
+      "RoleDetailsVO": {
+        "type": "object",
+        "properties": {
+          "parentId": {
+            "type": "string",
+            "nullable": true,
+            "description": "角色父节点ID",
+            "example": "角色父节点ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "角色名",
+            "example": "超级管理员"
+          },
+          "roleCode": {
+            "type": "string",
+            "description": "角色编码",
+            "example": "SUPER"
+          },
+          "dataScope": {
+            "description": "数据范围(全部:10 仅本人:20 本部门:30 本部门及以下部门:40 自定义:50)",
+            "example": 10,
+            "enum": [10, 20, 30, 40, 50],
+            "type": "number"
+          },
+          "id": {
+            "type": "string",
+            "description": "角色ID",
+            "example": "xxx"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "创建者",
+            "example": "xxx"
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "更新者",
+            "example": "xxx"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "创建时间",
+            "example": "xxx"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "更新时间",
+            "example": "xxx"
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true,
+            "description": "备注",
+            "example": ""
+          },
+          "status": {
+            "description": "状态(未知:10 启用:20 禁用:30)",
+            "example": 20,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "sort": {
+            "description": "排序优先级(低优先级:10 中等优先级:20 高优先级:30)",
+            "example": 10,
+            "enum": [10, 20, 30],
+            "type": "number"
+          }
+        },
+        "description": "角色详情",
+        "required": [
+          "parentId",
+          "name",
+          "roleCode",
+          "dataScope",
+          "id",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "remark",
+          "status",
+          "sort"
+        ]
+      },
+      "FindAllRoleVO": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "角色详情列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleDetailsVO"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "总数",
+            "example": 1000
+          },
+          "page": {
+            "type": "number",
+            "description": "第几页",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "description": "一页几条数据",
+            "example": 100
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "总页数",
+            "example": 200
+          }
+        },
+        "description": "分页查询角色详情列表",
+        "required": ["data", "total", "page", "limit", "totalPages"]
+      },
+      "RoleTreeVO": {
+        "type": "object",
+        "properties": {
+          "parentId": {
+            "type": "string",
+            "nullable": true,
+            "description": "角色父节点ID",
+            "example": "角色父节点ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "角色名",
+            "example": "超级管理员"
+          },
+          "roleCode": {
+            "type": "string",
+            "description": "角色编码",
+            "example": "SUPER"
+          },
+          "dataScope": {
+            "description": "数据范围(全部:10 仅本人:20 本部门:30 本部门及以下部门:40 自定义:50)",
+            "example": 10,
+            "enum": [10, 20, 30, 40, 50],
+            "type": "number"
+          },
+          "id": {
+            "type": "string",
+            "description": "角色ID",
+            "example": "xxx"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "创建者",
+            "example": "xxx"
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "更新者",
+            "example": "xxx"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "创建时间",
+            "example": "xxx"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "更新时间",
+            "example": "xxx"
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true,
+            "description": "备注",
+            "example": ""
+          },
+          "status": {
+            "description": "状态(未知:10 启用:20 禁用:30)",
+            "example": 20,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "sort": {
+            "description": "排序优先级(低优先级:10 中等优先级:20 高优先级:30)",
+            "example": 10,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "children": {
+            "description": "角色子节点列表",
+            "example": [],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleTreeVO"
+            }
+          }
+        },
+        "description": "角色树节点",
+        "required": [
+          "parentId",
+          "name",
+          "roleCode",
+          "dataScope",
+          "id",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "remark",
+          "status",
+          "sort",
+          "children"
+        ]
+      },
+      "CreateRoleDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "角色名",
+            "example": "超级管理员",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "roleCode": {
+            "type": "string",
+            "description": "角色编码",
+            "example": "SUPER",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "dataScope": {
+            "description": "数据范围(全部:10 仅本人:20 本部门:30 本部门及以下部门:40 自定义:50)",
+            "example": 10,
+            "enum": [10, 20, 30, 40, 50],
+            "type": "number"
+          },
+          "parentId": {
+            "type": "string",
+            "description": "父节点ID",
+            "example": "xxx",
+            "minLength": 36,
+            "maxLength": 36
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "example": "xxx",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "description": "角色名参数校验",
+        "required": ["name", "roleCode", "dataScope"]
+      },
+      "UpdateRoleDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "角色名",
+            "example": "角色名",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "roleCode": {
+            "type": "string",
+            "description": "角色编码",
+            "example": "SUPER",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "dataScope": {
+            "description": "数据范围(全部:10 仅本人:20 本部门:30 本部门及以下部门:40 自定义:50)",
+            "example": 10,
+            "enum": [10, 20, 30, 40, 50],
+            "type": "number"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "example": "xxx",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "description": "更新角色接口参数校验"
+      },
+      "MoveRoleDTO": {
+        "type": "object",
+        "properties": {
+          "parentId": {
+            "type": "string",
+            "description": "父节点ID",
+            "example": "xxx",
+            "minLength": 36,
+            "maxLength": 36
+          }
+        },
+        "description": "移动角色接口参数校验"
+      },
+      "MenuIdsVO": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "菜单ID列表",
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["ids"]
+      },
+      "RoleIdsVO": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "角色ID列表",
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["ids"]
+      },
+      "AssignRoleMenuDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "业务ID",
+            "example": "xxx",
+            "minLength": 36,
+            "maxLength": 36
+          },
+          "menuIds": {
+            "description": "菜单ID列表",
+            "example": ["xxx", "xxx"],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 36
+            }
+          }
+        },
+        "description": "给角色分配菜单参数校验",
+        "required": ["id", "menuIds"]
+      },
+      "AssignRolesMenuDTO": {
+        "type": "object",
+        "properties": {
+          "menuIds": {
+            "description": "菜单ID列表",
+            "example": ["xxx", "xxx"],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 36
+            }
+          },
+          "ids": {
+            "description": "业务ID列表",
+            "example": ["xxx", "xxx"],
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 36
+            }
+          }
+        },
+        "description": "批量给角色分配菜单参数校验",
+        "required": ["menuIds", "ids"]
+      },
+      "ResourceIdsVO": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "资源ID列表",
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["ids"]
+      },
+      "AssignRoleResourceDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "业务ID",
+            "example": "xxx",
+            "minLength": 36,
+            "maxLength": 36
+          },
+          "resourceIds": {
+            "description": "资源ID列表",
+            "example": ["xxx", "xxx"],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 36
+            }
+          }
+        },
+        "description": "给角色分配资源参数校验",
+        "required": ["id", "resourceIds"]
+      },
+      "AssignRolesResourceDTO": {
+        "type": "object",
+        "properties": {
+          "resourceIds": {
+            "description": "资源ID列表",
+            "example": ["xxx", "xxx"],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 36
+            }
+          },
+          "ids": {
+            "description": "业务ID列表",
+            "example": ["xxx", "xxx"],
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 36
+            }
+          }
+        },
+        "description": "批量给角色分配资源参数校验",
+        "required": ["resourceIds", "ids"]
+      },
+      "UserProfileVO": {
+        "type": "object",
+        "properties": {
+          "nickName": {
+            "type": "string",
+            "description": "昵称",
+            "example": "张三"
+          },
+          "sex": {
+            "type": "number",
+            "description": "性别(未知:10 男:20 女:30)",
+            "example": 10,
+            "enum": [10, 20, 30]
+          },
+          "birthday": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true,
+            "description": "出生日期",
+            "example": "2000-01-01"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "description": "邮箱",
+            "example": "zhangsan@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true,
+            "description": "电话号码",
+            "example": "13800000000"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "头像地址",
+            "example": "https://cn.cravatar.com/avatar"
+          }
+        },
+        "description": "用户档案",
+        "required": ["nickName", "sex", "birthday", "email", "phone", "avatar"]
+      },
+      "UserDetailsVO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "用户名",
+            "example": "用户名"
+          },
+          "profile": {
+            "description": "用户档案",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserProfileVO"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "用户ID",
+            "example": "xxx"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "创建者",
+            "example": "xxx"
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "更新者",
+            "example": "xxx"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "创建时间",
+            "example": "xxx"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "更新时间",
+            "example": "xxx"
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true,
+            "description": "备注",
+            "example": ""
+          },
+          "status": {
+            "description": "状态(未知:10 启用:20 禁用:30)",
+            "example": 20,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "sort": {
+            "description": "排序优先级(低优先级:10 中等优先级:20 高优先级:30)",
+            "example": 10,
+            "enum": [10, 20, 30],
+            "type": "number"
+          }
+        },
+        "description": "用户详情",
+        "required": ["name", "profile", "id", "createdBy", "updatedBy", "createdAt", "updatedAt", "remark", "status", "sort"]
+      },
+      "FindAllUserVO": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "用户详情列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDetailsVO"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "总数",
+            "example": 1000
+          },
+          "page": {
+            "type": "number",
+            "description": "第几页",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "description": "一页几条数据",
+            "example": 100
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "总页数",
+            "example": 200
+          }
+        },
+        "description": "分页查询用户详情列表",
+        "required": ["data", "total", "page", "limit", "totalPages"]
+      },
+      "CreateUserDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "用户名",
+            "example": "用户名",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "email": {
+            "type": "string",
+            "description": "邮箱",
+            "example": "zhangsan@example.com",
+            "minLength": 2,
+            "maxLength": 191
+          },
+          "phone": {
+            "type": "string",
+            "description": "电话号码",
+            "example": "13800000000",
+            "minLength": 2,
+            "maxLength": 11
+          },
+          "pwd": {
+            "type": "string",
+            "description": "密码",
+            "example": "Aa123456",
+            "minLength": 8,
+            "maxLength": 64
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "example": "xxx",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "description": "用户名参数校验",
+        "required": ["name", "pwd"]
+      },
+      "UpdateUserDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "用户名",
+            "example": "Admin",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "nickName": {
+            "type": "string",
+            "description": "昵称",
+            "example": "张三",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "sex": {
+            "description": "性别(未知:10 男:20 女:30)",
+            "example": 10,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "birthday": {
+            "format": "date-time",
+            "type": "string",
+            "description": "出生日期",
+            "example": "2000-01-01"
+          },
+          "email": {
+            "type": "string",
+            "description": "邮箱",
+            "example": "zhangsan@example.com",
+            "minLength": 2,
+            "maxLength": 191
+          },
+          "phone": {
+            "type": "string",
+            "description": "手机号",
+            "example": "13800000000"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "头像地址",
+            "example": "https://cn.cravatar.com/avatar",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "example": "xxx",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "description": "更新用户接口参数校验"
+      },
+      "UserIdsVO": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "description": "用户ID列表",
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["ids"]
+      },
+      "AssignUserRoleDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "业务ID",
+            "example": "xxx",
+            "minLength": 36,
+            "maxLength": 36
+          },
+          "roleIds": {
+            "description": "角色ID列表",
+            "example": ["xxx", "xxx"],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 36
+            }
+          }
+        },
+        "description": "给用户分配角色参数校验",
+        "required": ["id", "roleIds"]
+      },
+      "AssignUsersRoleDTO": {
+        "type": "object",
+        "properties": {
+          "roleIds": {
+            "description": "角色ID列表",
+            "example": ["xxx", "xxx"],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 36
+            }
+          },
+          "ids": {
+            "description": "业务ID列表",
+            "example": ["xxx", "xxx"],
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 36,
+              "minLength": 36
+            }
+          }
+        },
+        "description": "批量给用户分配角色参数校验",
+        "required": ["roleIds", "ids"]
+      },
+      "AuthDetailsVO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "认证名",
+            "example": "认证名"
+          },
+          "id": {
+            "type": "string",
+            "description": "认证ID",
+            "example": "xxx"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "创建者",
+            "example": "xxx"
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "更新者",
+            "example": "xxx"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "创建时间",
+            "example": "xxx"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "更新时间",
+            "example": "xxx"
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true,
+            "description": "备注",
+            "example": ""
+          },
+          "status": {
+            "description": "状态(未知:10 启用:20 禁用:30)",
+            "example": 20,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "sort": {
+            "description": "排序优先级(低优先级:10 中等优先级:20 高优先级:30)",
+            "example": 10,
+            "enum": [10, 20, 30],
+            "type": "number"
+          }
+        },
+        "description": "认证详情",
+        "required": ["name", "id", "createdBy", "updatedBy", "createdAt", "updatedAt", "remark", "status", "sort"]
+      },
+      "FindAllAuthVO": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "认证详情列表",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthDetailsVO"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "总数",
+            "example": 1000
+          },
+          "page": {
+            "type": "number",
+            "description": "第几页",
+            "example": 1
+          },
+          "limit": {
+            "type": "number",
+            "description": "一页几条数据",
+            "example": 100
+          },
+          "totalPages": {
+            "type": "number",
+            "description": "总页数",
+            "example": 200
+          }
+        },
+        "description": "分页查询认证详情列表",
+        "required": ["data", "total", "page", "limit", "totalPages"]
+      },
+      "SvgCaptchaVO": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "svg验证码凭证",
+            "example": "svg验证码凭证"
+          },
+          "svg": {
+            "type": "string",
+            "description": "svg验证码Base64",
+            "example": "data:image/svg+xml;base64,XXXX"
+          }
+        },
+        "description": "svg验证码",
+        "required": ["token", "svg"]
+      },
+      "TokenVO": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "访问令牌"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "刷新令牌"
+          }
+        },
+        "description": "令牌详情",
+        "required": ["accessToken"]
+      },
+      "EmailCaptchaDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "邮箱",
+            "example": "zhangsan@example.com",
+            "minLength": 2,
+            "maxLength": 191
+          }
+        },
+        "description": "邮箱验证码接口参数校验",
+        "required": ["email"]
+      },
+      "SvgLoginDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "用户名",
+            "example": "zhangsan",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "pwd": {
+            "type": "string",
+            "description": "密码",
+            "example": "Aa123456",
+            "minLength": 8,
+            "maxLength": 64
+          },
+          "token": {
+            "type": "string",
+            "description": "验证码令牌",
+            "example": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "minLength": 36,
+            "maxLength": 36
+          },
+          "captcha": {
+            "type": "string",
+            "description": "验证码",
+            "example": "123456",
+            "minLength": 6,
+            "maxLength": 6
+          }
+        },
+        "required": ["name", "pwd", "token", "captcha"]
+      },
+      "EmailRegisterDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "用户名",
+            "example": "zhangsan",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "email": {
+            "type": "string",
+            "description": "邮箱",
+            "example": "zhangsan@example.com",
+            "minLength": 2,
+            "maxLength": 191
+          },
+          "pwd": {
+            "type": "string",
+            "description": "密码",
+            "example": "Aa123456",
+            "minLength": 8,
+            "maxLength": 64
+          },
+          "captcha": {
+            "type": "string",
+            "description": "验证码",
+            "example": "123456",
+            "minLength": 6,
+            "maxLength": 6
+          }
+        },
+        "description": "邮箱注册接口参数校验",
+        "required": ["name", "email", "pwd", "captcha"]
+      },
+      "EmailLoginDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "邮箱",
+            "example": "zhangsan@example.com",
+            "minLength": 2,
+            "maxLength": 191
+          },
+          "pwd": {
+            "type": "string",
+            "description": "密码",
+            "example": "Aa123456",
+            "minLength": 8,
+            "maxLength": 64
+          },
+          "captcha": {
+            "type": "string",
+            "description": "验证码",
+            "example": "123456",
+            "minLength": 6,
+            "maxLength": 6
+          }
+        },
+        "description": "邮箱登录接口参数校验",
+        "required": ["email", "pwd", "captcha"]
+      },
+      "EmailResetPwdDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "邮箱",
+            "example": "zhangsan@example.com",
+            "minLength": 2,
+            "maxLength": 191
+          },
+          "pwd": {
+            "type": "string",
+            "description": "密码",
+            "example": "Aa123456",
+            "minLength": 8,
+            "maxLength": 64
+          },
+          "captcha": {
+            "type": "string",
+            "description": "验证码",
+            "example": "123456",
+            "minLength": 6,
+            "maxLength": 6
+          },
+          "confirmPwd": {
+            "type": "string",
+            "description": "确认密码",
+            "example": "Aa123456",
+            "minLength": 8,
+            "maxLength": 64
+          }
+        },
+        "description": "邮箱重置密码接口参数校验",
+        "required": ["email", "pwd", "captcha", "confirmPwd"]
+      },
+      "RefreshTokenDTO": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "刷新令牌",
+            "example": "xxx",
+            "minLength": 271,
+            "maxLength": 271
+          }
+        },
+        "description": "刷新令牌接口参数校验"
+      },
+      "CreateAuthDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "认证名",
+            "example": "认证名",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "example": "xxx",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "description": "认证名参数校验",
+        "required": ["name"]
+      },
+      "UpdateAuthDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "认证名",
+            "example": "认证名",
+            "minLength": 2,
+            "maxLength": 64
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "example": "xxx",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "description": "更新认证接口参数校验"
+      },
+      "ResVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "业务码",
+            "example": "0"
+          },
+          "msg": {
+            "type": "string",
+            "description": "业务信息",
+            "example": "操作成功"
+          },
+          "data": {
+            "type": "object",
+            "description": "业务数据(对象或数组)"
+          },
+          "originUrl": {
+            "type": "string",
+            "description": "请求地址",
+            "example": "xxx"
+          },
+          "referer": {
+            "type": "string",
+            "description": "请求源",
+            "example": "xxx"
+          },
+          "userAgent": {
+            "type": "string",
+            "description": "客户端信息",
+            "example": "xxx"
+          },
+          "timestamp": {
+            "type": "number",
+            "description": "时间戳",
+            "example": 1672531200000
+          },
+          "clientIp": {
+            "type": "string",
+            "description": "客户端IP",
+            "example": "xxx"
+          }
+        },
+        "description": "响应格式化",
+        "required": ["code", "msg", "data", "originUrl", "referer", "userAgent", "timestamp", "clientIp"]
+      }
+    }
+  }
+}

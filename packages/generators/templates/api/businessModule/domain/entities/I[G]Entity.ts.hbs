@@ -1,0 +1,17 @@
+import type { ICommonEntity } from '@/common/entities'
+{{#if hasTree}}
+import type { I{{pascalCase moduleName}}TreeEntity } from './I{{pascalCase moduleName}}TreeEntity'
+{{/if}}
+/** {{zhName}}表实体接口 */
+export interface I{{pascalCase moduleName}}Entity extends ICommonEntity {
+  /** {{zhName}}名 */
+  name: string
+  {{#if hasTree}}
+  /** 父{{zhName}}ID */
+  parentId: string | null
+  /** {{zhName}}N-1{{zhName}}树(所有祖先路径) */
+  ancestorNodes: I{{pascalCase moduleName}}TreeEntity[]
+  /** {{zhName}}N-1{{zhName}}树(所有后代路径) */
+  descendantNodes: I{{pascalCase moduleName}}TreeEntity[]
+  {{/if}}
+}

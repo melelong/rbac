@@ -1,0 +1,44 @@
+import type { ICreate{{pascalCase moduleName}}DTO } from '@packages/types'
+import { ApiSchema } from '@nestjs/swagger'
+import { IsOptional } from 'class-validator'
+import { REMARK } from '@/common/constants'
+import { InputSpace, InputTrim, Length, NotEmpty } from '@/common/deco'
+import { {{constantCase moduleName}}_NAME } from '../../domain'
+{{!-- 树特有 --}}
+{{#if hasTree}}
+import { {{constantCase moduleName}}_PARENT_ID } from '../../domain'
+{{/if}}
+
+/** 创建{{zhName}}接口参数校验 */
+@ApiSchema({ description: '{{zhName}}名参数校验' })
+export class Create{{pascalCase moduleName}}DTO implements ICreate{{pascalCase moduleName}}DTO {
+  /**
+   * {{zhName}}名
+   * @example '{{zhName}}名'
+   */
+  @Length(2, 64, {{constantCase moduleName}}_NAME)
+  @InputTrim({{constantCase moduleName}}_NAME)
+  @NotEmpty({{constantCase moduleName}}_NAME)
+  name: string
+
+  {{!-- 树特有 --}}
+  {{#if hasTree}}
+  /**
+   * 父节点ID
+   * @example 'xxx'
+   */
+  @Length(36, 36, {{constantCase moduleName}}_PARENT_ID)
+  @InputSpace({{constantCase moduleName}}_PARENT_ID)
+  @IsOptional()
+  parentId?: string
+  {{/if}}
+
+  /**
+   * 备注
+   * @example 'xxx'
+   */
+  @Length(1, 500, REMARK)
+  @InputTrim(REMARK)
+  @IsOptional()
+  remark?: string
+}

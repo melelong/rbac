@@ -4,4 +4,6 @@ export enum LoginTypeEnum {
   SVG = 'SVG',
   /** 邮箱登录 */
   EMAIL = 'EMAIL',
+  /** GITEE登录 */
+  GITEE = 'GITEE',
 }

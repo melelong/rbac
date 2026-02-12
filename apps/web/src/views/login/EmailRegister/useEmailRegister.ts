@@ -1,4 +1,4 @@
-import type { IRegisterByEmailDTO } from '@packages/types'
+import type { IEmailRegisterDTO } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
@@ -8,7 +8,7 @@ import { t } from '@/i18n'
 import { goTo } from '@/router'
 
 export function useEmailRegister() {
-  const formData = reactive<IRegisterByEmailDTO>({
+  const formData = reactive<IEmailRegisterDTO>({
     name: '',
     pwd: '',
     email: '',
@@ -38,12 +38,12 @@ export function useEmailRegister() {
   async function getCaptchaHandler() {
     try {
       formData.captcha = ''
-      const { data } = await authApi.registerByEmailCaptcha({ email: formData.email })
-      ElMessage({
-        message: data,
-        type: 'success',
-        duration: 1000,
-      })
+      const { code, msg } = await authApi.emailCaptcha('register', { email: formData.email })
+      if (code !== '0') {
+        ElMessage({ message: msg, type: 'error', duration: 1000 })
+        return
+      }
+      ElMessage({ message: msg, type: 'success', duration: 1000 })
     } catch (e) {
       console.error(e)
     }
@@ -52,16 +52,20 @@ export function useEmailRegister() {
     formInstance.value?.validate(async (isValid: boolean) => {
       if (isValid) {
         try {
-          const { data } = await authApi.registerByEmail(formData)
-          ElMessage({ message: data, type: 'success', duration: 1000 })
+          const { code, msg } = await authApi.emailRegister(formData)
+          if (code !== '0') {
+            ElMessage({ message: msg, type: 'error', duration: 1000 })
+            return
+          }
+          ElMessage({ message: msg, type: 'success', duration: 1000 })
           goTo('SvgLogin')
         } catch {
-          await getCaptchaHandler()
+          formData.captcha = ''
         }
       }
     })
   }
-  const formRules = computed<FormRules<IRegisterByEmailDTO>>(() => ({
+  const formRules = computed<FormRules<IEmailRegisterDTO>>(() => ({
     name: [
       { required: true, message: t('common.form.username'), trigger: ['blur', 'change'] },
       {
@@ -163,6 +167,7 @@ export function useEmailRegister() {
       key: 'submit',
       props: {
         type: 'primary',
+
         disabled: formValidateState.value,
       },
       attrs: {
@@ -179,6 +184,20 @@ export function useEmailRegister() {
       slots: t('common.form.back'),
     },
   ])
+  async function enterHandler(e: KeyboardEvent) {
+    if (e.key !== 'Enter') return
+    if (formValidateState.value && !(nameValidateState.value || pwdValidateState.value || emailValidateState.value)) await getCaptchaHandler()
+    if (!formValidateState.value) await submitHandler()
+  }
+  // 异步组件获取实例
+  watch(formInstance, async (newVal) => {
+    if (!newVal) return
+    await nextTick()
+    window.addEventListener('keydown', enterHandler)
+  })
+  onUnmounted(() => {
+    window.removeEventListener('keydown', enterHandler)
+  })
   return {
     /** 表单数据 */
     formData,

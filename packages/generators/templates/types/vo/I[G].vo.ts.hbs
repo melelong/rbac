@@ -1,0 +1,17 @@
+import type { ICommonVO, IFindAllVO, IIdsVO } from './ICommon.vo'
+
+/** {{zhName}}详情 */
+export interface I{{pascalCase moduleName}}DetailsVO extends ICommonVO {
+  {{#if hasTree}}
+  /** 父{{zhName}}ID */
+  parentId: string | null
+  {{/if}}
+  /** {{zhName}}名 */
+  name: string
+}
+
+/** 分页查询{{zhName}}详情列表 */
+export interface IFindAll{{pascalCase moduleName}}VO extends IFindAllVO<I{{pascalCase moduleName}}DetailsVO> {}
+
+/** {{zhName}}ID列表 */
+export interface I{{pascalCase moduleName}}IdsVO extends IIdsVO {}

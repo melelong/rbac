@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-import { authApi } from '@/api'
 import { goTo } from '@/router'
+import { useAuth } from '@/store/modules/auth'
 
 defineOptions({ name: 'Dashboard' })
-async function logout() {
-  await authApi.logout()
-  goTo('Login')
-}
+const { logOut, getMeInfo } = useAuth()
 </script>
 
 <template>
-  <div class="color-amber">
-    <ElButton @click="logout()">登出</ElButton>
+  <div class="Workspace_container max-h-full flex-center py-10">
+    <MButton @click="goTo('ColorPalette')">ColorPalette</MButton>
+    <MButton @click="goTo('Test')">Test</MButton>
+    <MButton @click="getMeInfo()">MeInfo</MButton>
+    <MButton @click="goTo('Login')">Login</MButton>
+    <MButton @click="logOut({})">Logout</MButton>
   </div>
 </template>

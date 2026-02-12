@@ -1,0 +1,28 @@
+import type { ICommandHandler } from '@nestjs/cqrs'
+import { CommandHandler } from '@nestjs/cqrs'
+import { ClsService } from 'nestjs-cls'
+import { EntityManager } from 'typeorm'
+import { SYSTEM_DEFAULT_BY } from '@/common/constants'
+import { LogContextMethod } from '@/common/deco'
+import { {{pascalCase moduleName}}DomainService } from '../../domain'
+import { Delete{{pascalCase moduleName}}Command } from './delete-{{kebabCase moduleName}}.command'
+import { REQ_CTX } from '@/common/infra'
+
+/** 删除{{zhName}}Handler */
+@CommandHandler(Delete{{pascalCase moduleName}}Command)
+export class Delete{{pascalCase moduleName}}Handler implements ICommandHandler<Delete{{pascalCase moduleName}}Command> {
+  constructor(
+    private readonly em: EntityManager,
+    private readonly {{camelCase moduleName}}DomainService: {{pascalCase moduleName}}DomainService,
+    private readonly clsService: ClsService,
+  ) {}
+
+  @LogContextMethod()
+  async execute(command: Delete{{pascalCase moduleName}}Command) {
+    return this.em.transaction(async (em: EntityManager) => {
+      const by = this.clsService.get<string>(REQ_CTX.USER_ID) ?? SYSTEM_DEFAULT_BY
+      await Promise.all([this.{{camelCase moduleName}}DomainService.delete{{pascalCase moduleName}}s(em, [command.id], by)])
+      return []
+    })
+  }
+}

@@ -1,0 +1,13 @@
+import type { Move{{pascalCase moduleName}}DTO, {{pascalCase moduleName}}IdDTO } from '../dto'
+import type { {{pascalCase moduleName}}DetailsVO } from '../vo'
+import { Command } from '@nestjs/cqrs'
+
+/** 移动{{zhName}}树节点Command */
+export class Move{{pascalCase moduleName}}Command extends Command<{{pascalCase moduleName}}DetailsVO> {
+  constructor(
+    public readonly id: {{pascalCase moduleName}}IdDTO['id'],
+    public readonly move{{pascalCase moduleName}}DTO: Move{{pascalCase moduleName}}DTO,
+  ) {
+    super()
+  }
+}

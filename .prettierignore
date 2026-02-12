@@ -9,7 +9,7 @@ CODEOWNERS
 .nitro
 .output
 **/cache/*
-
+apps/**/* */
 
 **/*.svg
 **/*.sh

@@ -7,7 +7,7 @@ export const serviceConfig = antfu({
   pnpm: true,
   stylistic: true,
   formatters: ['prettier'],
-  ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**', '**/node_modules/**'],
+  ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**', '**/node_modules/**', 'system/**', '**/src/metadata.ts'],
   rules: {
     'style/operator-linebreak': 'off',
     'style/arrow-parens': 'off',

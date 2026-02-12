@@ -1,0 +1,19 @@
+/** {{zhName}}ID key */
+export const {{constantCase moduleName}}_ID = '{{zhName}}ID'
+/** {{zhName}}名 key */
+export const {{constantCase moduleName}}_NAME = '{{zhName}}名'
+/** {{zhName}}名最小长度 */
+export const {{constantCase moduleName}}_NAME_MIN = 2
+/** {{zhName}}名最大长度 */
+export const {{constantCase moduleName}}_NAME_MAX = 64
+
+// 表名
+/** {{zhName}}表名 */
+export const {{constantCase moduleName}}_TABLE = '{{snakeCase moduleName}}'
+{{#if hasTree}}
+/** {{zhName}}树表名 */
+export const {{constantCase moduleName}}_TREE_TABLE = '{{snakeCase moduleName}}_tree'
+
+/** {{zhName}}父ID key */
+export const {{constantCase moduleName}}_PARENT_ID = '{{zhName}}父ID'
+{{/if}}

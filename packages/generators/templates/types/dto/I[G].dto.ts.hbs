@@ -1,0 +1,19 @@
+/** 创建{{zhName}}接口参数校验 */
+export interface ICreate{{pascalCase moduleName}}DTO {
+  /** {{zhName}}名 */
+  name: string
+  {{#if hasTree}}
+  /** 父{{zhName}}ID */
+  parentId?: string
+  {{/if}}
+  /** 备注 */
+  remark?: string
+}
+
+/** 更新{{zhName}}接口参数校验 */
+export interface IUpdate{{pascalCase moduleName}}DTO {
+  /** {{zhName}}名 */
+  name?: string
+  /** 备注 */
+  remark?: string
+}

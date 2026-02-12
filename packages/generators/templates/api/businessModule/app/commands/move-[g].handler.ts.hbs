@@ -1,0 +1,30 @@
+import type { ICommandHandler } from '@nestjs/cqrs'
+import { CommandHandler } from '@nestjs/cqrs'
+import { ClsService } from 'nestjs-cls'
+import { EntityManager } from 'typeorm'
+import { SYSTEM_DEFAULT_BY } from '@/common/constants'
+import { LogContextMethod } from '@/common/deco'
+import { {{pascalCase moduleName}}DomainService } from '../../domain'
+import { {{pascalCase moduleName}}VOAssembler } from '../assemblers'
+import { Move{{pascalCase moduleName}}Command } from './move-{{kebabCase moduleName}}.command'
+import { REQ_CTX } from '@/common/infra'
+
+/** 移动{{zhName}}树节点Handler */
+@CommandHandler(Move{{pascalCase moduleName}}Command)
+export class Move{{pascalCase moduleName}}Handler implements ICommandHandler<Move{{pascalCase moduleName}}Command> {
+  constructor(
+    private readonly em: EntityManager,
+    private readonly {{camelCase moduleName}}DomainService: {{pascalCase moduleName}}DomainService,
+    private readonly clsService: ClsService,
+  ) {}
+
+  @LogContextMethod()
+  async execute(command: Move{{pascalCase moduleName}}Command) {
+    return this.em.transaction(async (em: EntityManager) => {
+      const { parentId } = command.move{{pascalCase moduleName}}DTO
+      const by = this.clsService.get<string>(REQ_CTX.USER_ID) ?? SYSTEM_DEFAULT_BY
+      const [{{camelCase moduleName}}] = await this.{{camelCase moduleName}}DomainService.move{{pascalCase moduleName}}s(em, [command.id], [parentId ?? null], by)
+      return {{pascalCase moduleName}}VOAssembler.toDetailsVO({{camelCase moduleName}})
+    })
+  }
+}

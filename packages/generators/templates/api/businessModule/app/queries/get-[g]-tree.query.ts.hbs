@@ -1,0 +1,15 @@
+import type { TTreeNodeVO } from '@packages/types'
+import type { {{pascalCase moduleName}}IdDTO } from '../dto'
+import type { {{pascalCase moduleName}}DetailsVO } from '../vo'
+import type { GetTreeDepthDTO } from '@/common/dto'
+import { Query } from '@nestjs/cqrs'
+
+/** 获取单个{{zhName}}树节点Query */
+export class Get{{pascalCase moduleName}}TreeQuery extends Query<TTreeNodeVO<{{pascalCase moduleName}}DetailsVO>> {
+  constructor(
+    public readonly id: {{pascalCase moduleName}}IdDTO['id'],
+    public readonly getTreeDepthDTO: GetTreeDepthDTO,
+  ) {
+    super()
+  }
+}

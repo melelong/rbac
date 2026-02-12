@@ -1,0 +1,6 @@
+export * from './impl/{{kebabCase moduleName}}.entity'
+export * from './I{{pascalCase moduleName}}Entity'
+{{#if hasTree}}
+export * from './impl/{{kebabCase moduleName}}-tree.entity'
+export * from './I{{pascalCase moduleName}}TreeEntity'
+{{/if}}

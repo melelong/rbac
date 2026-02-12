@@ -1,0 +1,44 @@
+import type { {{pascalCase moduleName}}CreatedEvent, {{pascalCase moduleName}}ViewedEvent, {{pascalCase moduleName}}UpdatedEvent, {{pascalCase moduleName}}DeletedEvent } from '../events'
+import type { I{{pascalCase moduleName}}DomainListener } from './I{{pascalCase moduleName}}DomainListener'
+import { Injectable } from '@nestjs/common'
+import { OnEvent } from '@nestjs/event-emitter'
+import { LogContextMethod } from '@/common/deco'
+import { LoggingService } from '@/common/infra'
+
+/** {{zhName}}领域事件枚举 */
+export enum {{pascalCase moduleName}}DomainEvent {
+  CREATED = '{{constantCase moduleName}}.CREATED',
+  VIEWED = '{{constantCase moduleName}}.VIEWED',
+  UPDATED = '{{constantCase moduleName}}.UPDATED',
+  DELETED = '{{constantCase moduleName}}.DELETED',
+}
+
+/** {{zhName}}领域事件监听器实现 */
+@Injectable()
+export class {{pascalCase moduleName}}DomainListener implements I{{pascalCase moduleName}}DomainListener {
+  constructor(private readonly loggingService: LoggingService) {}
+
+  @OnEvent({{pascalCase moduleName}}DomainEvent.CREATED)
+  @LogContextMethod()
+  async created(_event: {{pascalCase moduleName}}CreatedEvent) {
+    this.loggingService.debug('删除缓存')
+  }
+
+  @OnEvent({{pascalCase moduleName}}DomainEvent.VIEWED)
+  @LogContextMethod()
+  async viewed(_event: {{pascalCase moduleName}}ViewedEvent) {
+    this.loggingService.debug('读取缓存')
+  }
+
+  @OnEvent({{pascalCase moduleName}}DomainEvent.UPDATED)
+  @LogContextMethod()
+  async updated(_event: {{pascalCase moduleName}}UpdatedEvent) {
+    this.loggingService.debug('删除缓存')
+  }
+
+  @OnEvent({{pascalCase moduleName}}DomainEvent.DELETED)
+  @LogContextMethod()
+  async deleted(_event: {{pascalCase moduleName}}DeletedEvent) {
+    this.loggingService.debug('删除缓存')
+  }
+}

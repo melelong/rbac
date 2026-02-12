@@ -1,0 +1,200 @@
+import type { Update{{pascalCase moduleName}}DTO, Create{{pascalCase moduleName}}DTO } from '../../../app'
+import type { I{{pascalCase moduleName}}DomainService } from '../I{{pascalCase moduleName}}DomainService'
+import type { FindAllDTO, UpdateSortDTO, UpdateStatusDTO } from '@/common/dto'
+import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { isUndefined } from 'lodash-es'
+import { EntityManager } from 'typeorm'
+import { SYSTEM_DEFAULT_BY } from '@/common/constants'
+import { LogContextClass } from '@/common/deco'
+import { BusinessException, ExceptionCode, ExceptionCodeTextMap } from '@/common/exceptions'
+import { uuid_v4 } from '@/common/utils'
+import { {{pascalCase moduleName}}Repository } from '../../../infra/repo'
+import { {{pascalCase moduleName}}Entity} from '../../entities'
+import { {{pascalCase moduleName}}ValidateService } from './{{kebabCase moduleName}}-validate.service'
+{{#if hasTree}}
+import { {{pascalCase moduleName}}TreeRepository } from '../../../infra/repo'
+{{/if}}
+
+/** {{zhName}}领域服务实现 */
+@Injectable()
+@LogContextClass()
+export class {{pascalCase moduleName}}DomainService implements I{{pascalCase moduleName}}DomainService {
+  columns: string[]
+  constructor(
+    private readonly {{camelCase moduleName}}Repo: {{pascalCase moduleName}}Repository,
+    {{#if hasTree}}
+    private readonly treeRepo: {{pascalCase moduleName}}TreeRepository,
+    {{/if}}
+    private readonly validateService: {{pascalCase moduleName}}ValidateService,
+    private readonly configService: ConfigService,
+  ) {
+    // 获取表字段名
+    this.columns = this.{{camelCase moduleName}}Repo.metadata.columns.map((c) => c.propertyName)
+  }
+
+  async create{{pascalCase moduleName}}s(em: EntityManager, createDTOList: Create{{pascalCase moduleName}}DTO[], by: string = SYSTEM_DEFAULT_BY) {
+    const nameList: string[] = []
+    {{#if hasTree}}
+    const parentIdList: string[] = []
+    {{/if}}
+    const createList: {{pascalCase moduleName}}Entity[] = []
+    const now = new Date()
+    const base = { createdBy: by, createdAt: now, updatedBy: by, updatedAt: now }
+    for (let i = 0, len = createDTOList.length; i < len; i++) {
+      const { name {{#if hasTree}}, parentId{{/if}} } = createDTOList[i]
+      nameList.push(name)
+      {{#if hasTree}}
+      if (parentId) parentIdList.push(parentId)
+      {{/if}}
+      // {{zhName}}
+      const id = uuid_v4()
+      createList.push(em.create({{pascalCase moduleName}}Entity, { id,...createDTOList[i], ...base }))
+      {{#if hasTree}}
+      // {{zhName}}树
+      await this.treeRepo.addClosureNode(id, em, parentId)
+      {{/if}}
+    }
+    await Promise.all([
+      this.validateService.validateName(nameList, false, em),
+      {{#if hasTree}}
+      parentIdList.length > 0 ? this.validateService.validateId(parentIdList, true, em) : null,
+      {{/if}}
+    ])
+    const {{camelCase moduleName}}s = await this.{{camelCase moduleName}}Repo.addMany(createList, by, em)
+    return {{camelCase moduleName}}s
+  }
+
+  async delete{{pascalCase moduleName}}s(em: EntityManager, idList: string[], by: string = SYSTEM_DEFAULT_BY {{#if hasTree}}, deleteDescendant: boolean = false{{/if}}) {
+    const {{camelCase moduleName}}s = await this.get{{pascalCase moduleName}}sByIds(idList, false, em)
+    {{#if hasTree}}
+    const ids: string[] = []
+    for (let i = 0, len = {{camelCase moduleName}}s.length; i < len; i++) {
+      const id = idList[i]
+      // 删除角色树相关记录(包括后代)
+      const descendantRelations = await this.treeRepo.deleteClosureNodeCascade(id, em)
+      ids.push(...descendantRelations.map((item) => item.descendantId))
+    }
+    const patchList = await this.get{{pascalCase moduleName}}sByIds([...new Set(ids)], false, em)
+    patchList.forEach((item) => (item.parentId = null))
+    {{/if}}
+    // 删除{{zhName}}
+    await Promise.all([
+      this.{{camelCase moduleName}}Repo.deleteMany({{camelCase moduleName}}s, by, em),
+      {{#if hasTree}}
+      // 删除后代节点 或 后代节点变游离节点(父节点变null)
+      deleteDescendant ? this.{{camelCase moduleName}}Repo.deleteMany(patchList, by, em) : this.{{camelCase moduleName}}Repo.patch(patchList, by, em),
+      {{/if}}
+    ])
+    return true
+  }
+
+  async update{{pascalCase moduleName}}s(em: EntityManager, idList: string[], updateDTOList: Update{{pascalCase moduleName}}DTO[], by: string = SYSTEM_DEFAULT_BY) {
+    // id列表和更新列表数量不一致
+    if (idList.length !== updateDTOList.length) throw new BusinessException(ExceptionCode.COMMON_PROMPT_FOR_MODIFICATION, ExceptionCodeTextMap)
+    const {{camelCase moduleName}}s = await this.get{{pascalCase moduleName}}sByIds(idList, false, em)
+    const nameList: string[] = []
+    for (let i = 0, len = {{camelCase moduleName}}s.length; i < len; i++) {
+      const DTO = updateDTOList[i]
+      const {{camelCase moduleName}} = {{camelCase moduleName}}s[i]
+      const { name, remark } = DTO
+      if (name) nameList.push(name)
+      // 与表字段名对比
+      let hasData = false
+      for (const [k, v] of Object.entries(DTO)) {
+        if (isUndefined(v)) continue
+        hasData = true
+        if (this.columns.includes(k)) ({{camelCase moduleName}} as any)[k] = v
+      }
+      if (remark) {{camelCase moduleName}}.remark = remark
+      // 没有修改数据
+      if (!hasData) throw new BusinessException(ExceptionCode.COMMON_PROMPT_FOR_MODIFICATION, ExceptionCodeTextMap)
+    }
+    await Promise.all([
+      nameList.length > 0 ? this.validateService.validateName(nameList, false, em) : null,
+    ])
+    await Promise.all([this.{{camelCase moduleName}}Repo.patch({{camelCase moduleName}}s, by, em)])
+    return true
+  }
+
+  async update{{pascalCase moduleName}}sStatus(em: EntityManager, idList: string[], updateStatusDTOList: UpdateStatusDTO[], by: string = SYSTEM_DEFAULT_BY) {
+    // id列表和更新列表数量不一致
+    if (idList.length !== updateStatusDTOList.length) throw new BusinessException(ExceptionCode.COMMON_PROMPT_FOR_MODIFICATION, ExceptionCodeTextMap)
+    const {{camelCase moduleName}}s = await this.get{{pascalCase moduleName}}sByIds(idList, false, em)
+    for (let i = 0, len = {{camelCase moduleName}}s.length; i < len; i++) {
+      const updateStatusDTO = updateStatusDTOList[i]
+      const {{camelCase moduleName}} = {{camelCase moduleName}}s[i]
+      {{camelCase moduleName}}.status = updateStatusDTO.status
+    }
+    await Promise.all([this.{{camelCase moduleName}}Repo.patch({{camelCase moduleName}}s, by, em)])
+    return true
+  }
+
+  async update{{pascalCase moduleName}}sSort(em: EntityManager, idList: string[], updateSortDTOList: UpdateSortDTO[], by: string = SYSTEM_DEFAULT_BY) {
+    // id列表和更新列表数量不一致
+    if (idList.length !== updateSortDTOList.length) throw new BusinessException(ExceptionCode.COMMON_PROMPT_FOR_MODIFICATION, ExceptionCodeTextMap)
+    const {{camelCase moduleName}}s = await this.get{{pascalCase moduleName}}sByIds(idList, false, em)
+    for (let i = 0, len = {{camelCase moduleName}}s.length; i < len; i++) {
+      const updateSortDTO = updateSortDTOList[i]
+      const {{camelCase moduleName}} = {{camelCase moduleName}}s[i]
+      {{camelCase moduleName}}.sort = updateSortDTO.sort
+    }
+    await Promise.all([this.{{camelCase moduleName}}Repo.patch({{camelCase moduleName}}s, by, em)])
+    return true
+  }
+
+  async get{{pascalCase moduleName}}s(findAllDTO: FindAllDTO, relations: boolean = false, em?: EntityManager) {
+    return this.{{camelCase moduleName}}Repo.findAll(findAllDTO, relations, em)
+  }
+
+  async get{{pascalCase moduleName}}sByIds(idList: string[], relations: boolean = false, em?: EntityManager) {
+    const {{camelCase moduleName}}s = await this.{{camelCase moduleName}}Repo.findManyById(idList, relations, em)
+    if (idList.length !== {{camelCase moduleName}}s.length) throw new BusinessException(ExceptionCode.{{constantCase moduleName}}_NOT_FOUND, ExceptionCodeTextMap)
+    return {{camelCase moduleName}}s
+  }
+
+  async get{{pascalCase moduleName}}sByNames(nameList: string[], relations: boolean = false, em?: EntityManager) {
+    const {{camelCase moduleName}}s = await this.{{camelCase moduleName}}Repo.findManyByName(nameList, relations, em)
+    if (nameList.length !== {{camelCase moduleName}}s.length) throw new BusinessException(ExceptionCode.{{constantCase moduleName}}_NOT_FOUND, ExceptionCodeTextMap)
+    return {{camelCase moduleName}}s
+  }
+
+  {{#if hasTree}}
+  async move{{pascalCase moduleName}}s(em: EntityManager, idList: string[], parentIdList: (string | null)[], by: string = SYSTEM_DEFAULT_BY) {
+    // id列表和更新列表数量不一致
+    if (idList.length !== parentIdList.length) throw new BusinessException(ExceptionCode.COMMON_PROMPT_FOR_MODIFICATION, ExceptionCodeTextMap)
+    const ids: Set<string> = new Set<string>()
+    for (let i = 0, len = idList.length; i < len; i++) {
+      const id = idList[i]
+      const parentId = parentIdList[i]
+      if (id === parentId) throw new BusinessException(ExceptionCode.COMMON_CANNOT_MOVE_TO_SELF, ExceptionCodeTextMap)
+      if (parentId) {
+        const isDescendant = await this.treeRepo.isDescendant(id, parentId, em)
+        if (isDescendant) throw new BusinessException(ExceptionCode.COMMON_CANNOT_MOVE_TO_CHILD,ExceptionCodeTextMap)
+        ids.add(parentId)
+      }
+      ids.add(id)
+    }
+    await this.validateService.validateId([...ids], true, em)
+    const {{camelCase moduleName}}s = await this.get{{pascalCase moduleName}}sByIds(idList, false, em)
+    {{camelCase moduleName}}s.forEach((item, i) => (item.parentId = parentIdList[i]))
+    for (let i = 0, len = idList.length; i < len; i++) {
+      const id = idList[i]
+      const parentId = parentIdList[i]
+      await this.treeRepo.moveTree(id, parentId, em)
+    }
+    await this.{{camelCase moduleName}}Repo.patch({{camelCase moduleName}}s, by, em)
+    const _{{camelCase moduleName}}s = await this.get{{pascalCase moduleName}}sByIds(idList, false, em)
+    return _{{camelCase moduleName}}s
+  }
+
+  async get{{pascalCase moduleName}}TreesByIds<VO = any>(idList: string[], VOConstructor: new (...args: any[]) => VO, depth: number = -1, em?: EntityManager) {
+    if (idList.length <= 0) return []
+    await this.validateService.validateId(idList, true, em)
+    const descendantIds = await this.treeRepo.getTreeDescendantIds(idList, depth, em)
+    // 所有后代节点
+    const {{camelCase moduleName}}s = await this.get{{pascalCase moduleName}}sByIds(descendantIds, false, em)
+    return await this.treeRepo.buildTree<{{pascalCase moduleName}}Entity, VO>(idList, {{camelCase moduleName}}s, VOConstructor)
+  }
+  {{/if}}
+}

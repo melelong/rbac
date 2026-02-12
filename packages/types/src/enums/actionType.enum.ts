@@ -26,3 +26,14 @@ export const ActionTypeTextMap: Record<ActionTypeEnum, string> = {
   [ActionTypeEnum.EXPORT]: '导出',
   [ActionTypeEnum.IMPORT]: '导入',
 }
+
+/** 操作类型枚举Code映射 */
+export const ActionTypeCodeMap: Record<ActionTypeEnum, string> = {
+  [ActionTypeEnum.MANAGE]: 'MANAGE',
+  [ActionTypeEnum.READ]: 'READ',
+  [ActionTypeEnum.CREATE]: 'CREATE',
+  [ActionTypeEnum.UPDATE]: 'UPDATE',
+  [ActionTypeEnum.DELETE]: 'DELETE',
+  [ActionTypeEnum.EXPORT]: 'EXPORT',
+  [ActionTypeEnum.IMPORT]: 'IMPORT',
+}

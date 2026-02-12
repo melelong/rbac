@@ -16,7 +16,6 @@
     "clear": "pnpm clear:modules"
   },
   "devDependencies": {
-    "prettier": "catalog:cli",
-    "prettier-plugin-ejs": "catalog:cli"
+    "prettier": "catalog:cli"
   }
 }

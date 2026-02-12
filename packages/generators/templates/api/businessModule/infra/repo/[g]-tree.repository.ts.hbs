@@ -1,0 +1,19 @@
+import type { I{{pascalCase moduleName}}TreeRepository } from '../../domain'
+import { Injectable } from '@nestjs/common'
+import { EntityManager } from 'typeorm'
+import { LogContextClass } from '@/common/deco'
+import { LoggingService } from '@/common/infra'
+import { TreeRepositoryTemplate } from '@/common/template'
+import { {{pascalCase moduleName}}TreeEntity } from '../../domain'
+
+/** {{zhName}}树仓库实现 */
+@Injectable()
+@LogContextClass()
+export class {{pascalCase moduleName}}TreeRepository extends TreeRepositoryTemplate<{{pascalCase moduleName}}TreeEntity> implements I{{pascalCase moduleName}}TreeRepository {
+  constructor(
+    protected readonly em: EntityManager,
+    protected readonly loggingService: LoggingService,
+  ) {
+    super({{pascalCase moduleName}}TreeEntity, em, loggingService)
+  }
+}

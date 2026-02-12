@@ -1,0 +1,5 @@
+export * from './create-resource.dto'
+export * from './resource-id.dto'
+export * from './resource-ids.dto'
+export * from './resource-name.dto'
+export * from './update-resource.dto'

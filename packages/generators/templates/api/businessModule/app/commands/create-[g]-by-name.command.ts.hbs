@@ -1,0 +1,10 @@
+import type { Create{{pascalCase moduleName}}DTO } from '../dto'
+import type { {{pascalCase moduleName}}DetailsVO } from '../vo'
+import { Command } from '@nestjs/cqrs'
+
+/** 通过名字创建{{zhName}}Command */
+export class Create{{pascalCase moduleName}}ByNameCommand extends Command<{{pascalCase moduleName}}DetailsVO> {
+  constructor(public readonly create{{pascalCase moduleName}}DTO: Create{{pascalCase moduleName}}DTO) {
+    super()
+  }
+}

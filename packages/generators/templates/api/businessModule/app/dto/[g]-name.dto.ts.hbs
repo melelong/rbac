@@ -1,0 +1,17 @@
+import type { INameDTO } from '@packages/types'
+import { ApiSchema } from '@nestjs/swagger'
+import { InputTrim, Length, NotEmpty } from '@/common/deco'
+import { {{constantCase moduleName}}_NAME } from '../../domain'
+
+/** {{zhName}}名参数校验 */
+@ApiSchema({ description: '{{zhName}}名参数校验' })
+export class {{pascalCase moduleName}}NameDTO implements INameDTO {
+  /**
+   * {{zhName}}名
+   * @example '{{zhName}}名'
+   */
+  @Length(2, 64, {{constantCase moduleName}}_NAME)
+  @InputTrim({{constantCase moduleName}}_NAME)
+  @NotEmpty({{constantCase moduleName}}_NAME)
+  name: string
+}

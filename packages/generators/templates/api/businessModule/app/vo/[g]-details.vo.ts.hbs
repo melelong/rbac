@@ -1,0 +1,36 @@
+import type { I{{pascalCase moduleName}}DetailsVO } from '@packages/types'
+import type { {{pascalCase moduleName}}Entity } from '../../domain'
+import { ApiSchema } from '@nestjs/swagger'
+import { omit } from 'lodash-es'
+import { BaseVO } from '@/common/vo'
+
+/** {{zhName}}详情 */
+@ApiSchema({ description: '{{zhName}}详情' })
+export class {{pascalCase moduleName}}DetailsVO extends BaseVO implements I{{pascalCase moduleName}}DetailsVO {
+  {{!-- 树特有 --}}
+  {{#if hasTree}}
+  /**
+   * {{zhName}}父节点ID
+   * @example '{{zhName}}父节点ID'
+   */
+  parentId: string | null
+  {{/if}}
+  /**
+   * {{zhName}}名
+   * @example '{{zhName}}名'
+   */
+  name: string
+  /**
+   * {{zhName}}ID
+   * @example 'xxx'
+   */
+  id: string
+  constructor({{camelCase moduleName}}?: {{pascalCase moduleName}}Entity) {
+    super()
+    if ({{camelCase moduleName}}) {
+      const keys = ['_id'{{#if hasTree}}, 'ancestorNodes', 'descendantNodes'{{/if}}]
+      const omitResult = omit({{camelCase moduleName}}, keys)
+      Object.assign(this, omitResult)
+    }
+  }
+}

@@ -1,0 +1,64 @@
+import type { I{{pascalCase moduleName}}TreeEntity } from '../I{{pascalCase moduleName}}TreeEntity'
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
+import { {{pascalCase moduleName}}Entity } from './{{kebabCase moduleName}}.entity'
+import { {{constantCase moduleName}}_TREE_TABLE }from '../../../domain'
+
+/** {{zhName}}树表实体实现 */
+@Entity({ name: {{constantCase moduleName}}_TREE_TABLE, comment: '{{zhName}}树表' })
+@Index(['ancestorId', 'descendantId'], { unique: true })
+@Index(['ancestorId', 'depth'])
+@Index(['descendantId', 'depth'])
+export class {{pascalCase moduleName}}TreeEntity implements I{{pascalCase moduleName}}TreeEntity {
+  @PrimaryColumn({
+    comment: '祖先{{zhName}}ID',
+    name: 'ancestor_id',
+    type: 'varchar',
+    length: 36,
+    charset: 'ascii',
+  })
+  ancestorId: string
+
+  @PrimaryColumn({
+    comment: '后代{{zhName}}ID',
+    name: 'descendant_id',
+    type: 'varchar',
+    length: 36,
+    charset: 'ascii',
+  })
+  descendantId: string
+
+  @Column({
+    comment: '路径长度(0 表示自己)',
+    name: 'depth',
+    type: 'tinyint',
+    unsigned: true,
+    default: 0,
+  })
+  depth: number
+
+  @ManyToOne(() => {{pascalCase moduleName}}Entity, (role) => role.ancestorNodes, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    createForeignKeyConstraints: false,
+    eager: false,
+  })
+  @JoinColumn({
+    name: 'ancestor_id',
+    referencedColumnName: 'id',
+  })
+  ancestor{{pascalCase moduleName}}: {{pascalCase moduleName}}Entity
+
+  @ManyToOne(() => {{pascalCase moduleName}}Entity, (role) => role.descendantNodes, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    createForeignKeyConstraints: false,
+    eager: false,
+  })
+  @JoinColumn({
+    name: 'descendant_id',
+    referencedColumnName: 'id',
+  })
+  descendant{{pascalCase moduleName}}: {{pascalCase moduleName}}Entity
+}

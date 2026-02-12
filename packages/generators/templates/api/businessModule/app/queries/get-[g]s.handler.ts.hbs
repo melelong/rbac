@@ -1,0 +1,16 @@
+import type { IQueryHandler } from '@nestjs/cqrs'
+import { QueryHandler } from '@nestjs/cqrs'
+import { {{pascalCase moduleName}}DomainService } from '../../domain'
+import { {{pascalCase moduleName}}VOAssembler } from '../assemblers'
+import { Get{{pascalCase moduleName}}sQuery } from './get-{{kebabCase moduleName}}s.query'
+
+/** 获取{{zhName}}列表Handler */
+@QueryHandler(Get{{pascalCase moduleName}}sQuery)
+export class Get{{pascalCase moduleName}}sHandler implements IQueryHandler<Get{{pascalCase moduleName}}sQuery> {
+  constructor(private readonly {{camelCase moduleName}}DomainService: {{pascalCase moduleName}}DomainService) {}
+  async execute(query: Get{{pascalCase moduleName}}sQuery) {
+    const { limit = 10, page = 1 } = query.findAllDTO
+    const [data, total] = await this.{{camelCase moduleName}}DomainService.get{{pascalCase moduleName}}s(query.findAllDTO)
+    return {{pascalCase moduleName}}VOAssembler.toFindAllVO({ data, limit, page, total })
+  }
+}

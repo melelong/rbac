@@ -1,0 +1,22 @@
+import type { ExcludeKeys } from '@/common/utils'
+import type { IFindAllVOOptions } from '@/common/vo'
+import { {{pascalCase moduleName}}Entity } from '../../domain'
+import { FindAll{{pascalCase moduleName}}VO, {{pascalCase moduleName}}DetailsVO, {{pascalCase moduleName}}IdsVO } from '../vo'
+
+/** {{zhName}}转换器 */
+export class {{pascalCase moduleName}}VOAssembler {
+  /** 将实体转换为详情VO */
+  static toDetailsVO({{camelCase moduleName}}: {{pascalCase moduleName}}Entity) {
+    return new {{pascalCase moduleName}}DetailsVO({{camelCase moduleName}})
+  }
+  /** 将实体转换为分页VO */
+  static toFindAllVO(options: ExcludeKeys<IFindAllVOOptions<{{pascalCase moduleName}}Entity>, 'DataConstructor'>) {
+    const { data, limit, page, total } = options
+    return new FindAll{{pascalCase moduleName}}VO({ DataConstructor: {{pascalCase moduleName}}DetailsVO, data, limit, page, total })
+  }
+
+  /** 将实体列表转换为ID列表VO */
+  static toIdsVO({{camelCase moduleName}}s: {{pascalCase moduleName}}Entity[]) {
+    return new {{pascalCase moduleName}}IdsVO({{camelCase moduleName}}s)
+  }
+}

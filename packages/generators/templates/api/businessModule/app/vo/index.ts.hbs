@@ -1,0 +1,7 @@
+export * from './find-all-{{kebabCase moduleName}}.vo'
+export * from './{{kebabCase moduleName}}-details.vo'
+export * from './{{kebabCase moduleName}}-ids.vo'
+{{!-- 树特有 --}}
+{{#if hasTree}}
+export * from './{{kebabCase moduleName}}-tree.vo'
+{{/if}}

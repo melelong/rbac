@@ -18,13 +18,14 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
+**/**/.rollup.cache
 .DS_Store
 dist
 dist-ssr
 coverage
 *.local
-
+apps/service1
+apps/service/system
 /cypress/videos/
 /cypress/screenshots/
 
@@ -39,3 +40,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+# skills
+.trae
+.agents

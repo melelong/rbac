@@ -13,6 +13,10 @@ export default [
         format: 'esm',
       },
       {
+        file: 'dist/index.js',
+        format: 'esm',
+      },
+      {
         file: 'dist/index.cjs',
         format: 'cjs',
       },

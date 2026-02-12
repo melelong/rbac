@@ -1,0 +1,15 @@
+import type { IQueryHandler } from '@nestjs/cqrs'
+import { QueryHandler } from '@nestjs/cqrs'
+import { {{pascalCase moduleName}}DomainService } from '../../domain'
+import { {{pascalCase moduleName}}VOAssembler } from '../assemblers'
+import { Get{{pascalCase moduleName}}ByIdQuery } from './get-{{kebabCase moduleName}}-by-id.query'
+
+/** 获取{{zhName}}详情Handler */
+@QueryHandler(Get{{pascalCase moduleName}}ByIdQuery)
+export class Get{{pascalCase moduleName}}ByIdHandler implements IQueryHandler<Get{{pascalCase moduleName}}ByIdQuery> {
+  constructor(private readonly {{camelCase moduleName}}DomainService: {{pascalCase moduleName}}DomainService) {}
+  async execute(query: Get{{pascalCase moduleName}}ByIdQuery) {
+    const [{{camelCase moduleName}}] = await this.{{camelCase moduleName}}DomainService.get{{pascalCase moduleName}}sByIds([query.id])
+    return {{pascalCase moduleName}}VOAssembler.toDetailsVO({{camelCase moduleName}})
+  }
+}

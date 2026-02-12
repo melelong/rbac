@@ -1,0 +1,11 @@
+import type { {{pascalCase moduleName}}CreatedEvent, {{pascalCase moduleName}}ViewedEvent, {{pascalCase moduleName}}UpdatedEvent, {{pascalCase moduleName}}DeletedEvent } from '../events'
+
+/** {{zhName}}领域事件监听器接口 */
+export interface I{{pascalCase moduleName}}DomainListener {
+  // 基本
+  created: (event: {{pascalCase moduleName}}CreatedEvent) => Promise<any>
+  viewed: (event: {{pascalCase moduleName}}ViewedEvent) => Promise<any>
+  updated: (event: {{pascalCase moduleName}}UpdatedEvent) => Promise<any>
+  deleted: (event: {{pascalCase moduleName}}DeletedEvent) => Promise<any>
+  // 特有
+}

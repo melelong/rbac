@@ -8,8 +8,9 @@ export interface IEventBus<T extends IEventBusEvents> {
    * 监听事件
    * @param eventName 事件名
    * @param fn 事件函数
+   * @param num 监听次数(null为无限监听)
    */
-  on: <K extends keyof T>(eventName: K, fn: (...args: T[K]) => any) => void
+  on: <K extends keyof T>(eventName: K, fn: (...args: T[K]) => any, num?: number | null) => void
   /**
    * 触发事件
    * @param eventName 事件名

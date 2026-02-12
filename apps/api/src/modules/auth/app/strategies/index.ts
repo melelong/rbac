@@ -1,0 +1,7 @@
+export * from './email-login.strategy'
+export * from './email-register.strategy'
+export * from './email-reset-pwd.strategy'
+export * from './jwt.strategy'
+export * from './phone-login.strategy'
+export * from './refresh-token.strategy'
+export * from './svg-login.strategy'

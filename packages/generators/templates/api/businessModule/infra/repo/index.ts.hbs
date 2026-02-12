@@ -1,0 +1,4 @@
+export * from './{{kebabCase moduleName}}.repository'
+{{#if hasTree}}
+export * from './{{kebabCase moduleName}}-tree.repository'
+{{/if}}

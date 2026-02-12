@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "generateOptions": {
+    "spec": false
+  },
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "builder": "webpack",
+    "assets": [
+      {
+        "include": "templates/**/*.hbs",
+        "watchAssets": true
+      },
+      {
+        "include": ".env",
+        "watchAssets": true
+      },
+      {
+        "include": ".env.local",
+        "watchAssets": true
+      }
+    ],
+    "deleteOutDir": true
+  }
+}

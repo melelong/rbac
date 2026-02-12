@@ -1,0 +1,18 @@
+import type { IMoveTreeNodeDTO } from '@packages/types'
+import { ApiSchema } from '@nestjs/swagger'
+import { IsOptional } from 'class-validator'
+import { InputSpace, Length } from '@/common/deco'
+import { {{constantCase moduleName}}_PARENT_ID } from '../../domain'
+
+/** 移动{{zhName}}接口参数校验 */
+@ApiSchema({ description: '移动{{zhName}}接口参数校验' })
+export class Move{{pascalCase moduleName}}DTO implements IMoveTreeNodeDTO {
+  /**
+   * 父节点ID
+   * @example 'xxx'
+   */
+  @Length(36, 36, {{constantCase moduleName}}_PARENT_ID)
+  @InputSpace({{constantCase moduleName}}_PARENT_ID)
+  @IsOptional()
+  parentId?: string
+}

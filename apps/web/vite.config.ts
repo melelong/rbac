@@ -28,12 +28,12 @@ export default defineConfig({
     host: '0.0.0.0',
     hmr: true,
     port: 4002,
-    // warmup: {
-    //   clientFiles: ['./index.html', './src/{views,components}/*'],
-    // },
+    warmup: {
+      clientFiles: ['./index.html', './src/{views,components}/*'],
+    },
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:4001/dev',
+        target: 'http://192.168.0.105:4001/api/v1',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
         configure(proxy: HttpProxy.Server, _options: ProxyOptions) {

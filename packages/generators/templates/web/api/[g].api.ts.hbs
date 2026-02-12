@@ -1,0 +1,13 @@
+import { request } from './http'
+import { REQUEST_ID_RULES } from './http/IHttpUtils'
+/** {{Tags}} */
+
+const BasePath = '/auth'
+
+/** SVG登录 */
+export async function svgLogin(DTO: ISvgLoginDTO) {
+  return await request.post<ISvgLoginDTO, ITokenVO>(`${BasePath}/login/svg`, DTO, {
+    requestIdRules: REQUEST_ID_RULES.METHOD_URL_DATA,
+    customConfig: {}
+  })
+}

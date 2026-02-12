@@ -1,0 +1,5 @@
+import type { I{{pascalCase moduleName }}Entity } from '../entities'
+import type { ICrudRepositoryTemplate } from '@/common/template'
+
+/** {{ zhName }}仓库接口 */
+export interface I{{pascalCase moduleName }}Repository extends ICrudRepositoryTemplate<I{{pascalCase moduleName }}Entity> {}

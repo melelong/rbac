@@ -1,0 +1,9 @@
+export * from './create-{{kebabCase moduleName}}.dto'
+export * from './update-{{kebabCase moduleName}}.dto'
+export * from './{{kebabCase moduleName}}-id.dto'
+export * from './{{kebabCase moduleName}}-ids.dto'
+export * from './{{kebabCase moduleName}}-name.dto'
+{{!-- 树特有 --}}
+{{#if hasTree}}
+export * from './move-{{kebabCase moduleName}}.dto'
+{{/if}}
