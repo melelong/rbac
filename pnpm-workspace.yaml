@@ -23,6 +23,8 @@ catalogs:
     '@types/css': ^0.0.38
     css: ^3.0.0
     prettier-plugin-ejs: ^1.0.3
+    ejs: ^3.1.10
+    '@types/ejs': ^3.1.5
     '@rollup/plugin-alias': ^5.1.1
     '@rollup/plugin-commonjs': ^28.0.6
     '@rollup/plugin-node-resolve': ^16.0.1
@@ -85,15 +87,18 @@ catalogs:
     winston-mongodb: ^7.0.1
     # 缓存
     '@nestjs/cache-manager': ^3.1.0
+    # 官方推荐@keyv/redis 但是底层用的是node-redis
+    # 由于当前项目连接redis的底层库都是ioredis,所以用@keyv/valkey，底层是ioredis的分支
     '@keyv/valkey': ^1.0.11
+    iovalkey: ^0.3.3
     cache-manager: ^7.2.8
     cacheable: ^2.3.2
     keyv: ^5.6.0
     ioredis: ^5.6.1
+    # ioredis用到的异常库，
     redis-errors: ^1.2.0
     # 邮箱
     hbs: ^4.2.0
-    ejs: ^3.1.10
     nodemailer: ^7.0.3
     '@nestjs-modules/mailer': ^2.0.2
     # 安全
@@ -131,7 +136,6 @@ catalogs:
     '@types/passport-local': ^0.0.0
     copy-webpack-plugin: ^13.0.0
     webpack-bundle-analyzer: ^4.10.2
-    '@types/ejs': ^3.1.5
     '@types/hbs': ^4.0.5
     '@types/nodemailer': ^6.4.17
     run-script-webpack-plugin: ^0.2.3

@@ -7,7 +7,7 @@
     "node": ">=20.19.2"
   },
   "scripts": {
-    "swag": "ts-node src/generate-metadata.ts",
+    "g:swag": "ts-node src/generate-metadata.ts",
     "g:bm": "plop --plopfile plopfile.mjs \"bm\"",
     "g:eslint": "eslint",
     "g:format": "prettier",
@@ -79,7 +79,7 @@
     "hbs": "catalog:api_prod",
     "helmet": "catalog:api_prod",
     "ioredis": "catalog:api_prod",
-    "iovalkey": "^0.3.3",
+    "iovalkey": "catalog:api_prod",
     "joi": "catalog:api_prod",
     "jsencrypt": "catalog:cli",
     "keyv": "catalog:api_prod",

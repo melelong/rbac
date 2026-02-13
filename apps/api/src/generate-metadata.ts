@@ -1,6 +1,17 @@
+import { writeFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { PluginMetadataGenerator } from '@nestjs/cli/lib/compiler/plugins/plugin-metadata-generator'
 import { ReadonlyVisitor } from '@nestjs/swagger/dist/plugin'
 
+// 先清空metadata.ts并写入文件结构框架
+writeFileSync(
+  resolve(__dirname, './metadata.ts'),
+  `/* eslint-disable */
+export default async () => {
+  const t = {}
+  return {}
+}`,
+)
 /** 生成手动导入swagger需要的数据(swc对swagger不兼容，不能自动导入swagger装饰器的数据) */
 const generator = new PluginMetadataGenerator()
 generator.generate({
