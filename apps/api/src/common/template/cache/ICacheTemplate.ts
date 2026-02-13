@@ -5,8 +5,6 @@ import type { TRedis } from '@/common/utils'
 
 /** 缓存模板抽象类配置接口 */
 export interface ICacheTemplateOptions {
-  /** 应用模板的类名 */
-  className: string
   /** 缓存实例 */
   cache: Cache
   /** 日志用于提供给模板调试 */
@@ -44,11 +42,6 @@ export interface ICacheTemplate extends ICacheTemplateOptions {
    * @returns 回调函数的返回值
    */
   withLock: <T>(key: string, callback: () => Promise<T>, options?: ICacheLockOptions) => Promise<T>
-  /**
-   * 获取缓存键名
-   * @param key 键名
-   */
-  getCacheKey: (key: string) => string
   /**
    * 写入缓存
    * @param key 缓存键名

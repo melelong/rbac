@@ -25,7 +25,9 @@
     // 连接mongodb
     "mongodb.mongodb-vscode",
     // 画图
-    "hediet.vscode-drawio"
+    "hediet.vscode-drawio",
+    // iconify 图标插件
+    "antfu.iconify"
   ],
   "unwantedRecommendations": [
     // 和 volar 冲突

@@ -7,6 +7,7 @@ import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { CacheService, LoggingService } from '@/common/infra'
 import { APP_CONFIG_KEY } from '@/config'
+import { BootController } from './boot.controller'
 import { initGlobalSettings, initMiddlewares, initPipes, initResource, initRole, initSwagger, initUser } from './init'
 
 /** webpack热更新模块 */
@@ -48,7 +49,7 @@ export class BootImpl implements IBoot {
     const { name, port, hostname, globalPrefix, defaultVersion } = this.appConfig
     await this.appInstance.listen(port, hostname, async () => {
       const cacheService = this.appInstance.get(CacheService)
-      await cacheService.set('startTime', new Date().toISOString())
+      await cacheService.set(BootController.BOOT_START_TIME, new Date().toISOString())
       const logger = new Logger(BootImpl.name)
       const url = await this.appInstance.getUrl()
       const baseUrl = `${url}${globalPrefix ? `/${globalPrefix}` : ''}${defaultVersion ? `/v${defaultVersion}` : ''}`

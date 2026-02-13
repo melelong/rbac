@@ -19,6 +19,7 @@ export class QueueModuleHelper {
    * @param config Redis配置
    */
   public static async create(config: RedisOptions) {
+    config.keyPrefix = `${QueueModuleHelper.name}:`
     if (!QueueModuleHelper.instance) {
       QueueModuleHelper.instance = new QueueModuleHelper()
       QueueModuleHelper.instance.logger = new Logger(QueueModule.name)

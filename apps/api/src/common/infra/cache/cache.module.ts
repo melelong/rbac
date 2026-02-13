@@ -25,6 +25,7 @@ export class CacheModuleHelper {
    * @param config Redis配置
    */
   public static async create(config: RedisOptions) {
+    config.keyPrefix = `${CacheModuleHelper.name}:`
     if (!CacheModuleHelper.instance) {
       CacheModuleHelper.instance = new CacheModuleHelper()
       CacheModuleHelper.instance.logger = new Logger(CacheModule.name)

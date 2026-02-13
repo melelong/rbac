@@ -12,7 +12,6 @@ import { redisIsOk, uuid_v4 } from '@/common/utils'
  */
 /** 缓存模板抽象类 */
 export abstract class CacheTemplate implements ICacheTemplate, OnApplicationBootstrap {
-  className: string
   cache: Cache
   loggingService: LoggingService
   queue?: Queue<any, any, string, any, any, string>
@@ -20,8 +19,7 @@ export abstract class CacheTemplate implements ICacheTemplate, OnApplicationBoot
   channelName: string = CacheTemplate.name
   sub: IOValkey | null = null
   constructor(options: ICacheTemplateOptions) {
-    const { className, cache, loggingService, queue, queueRedis } = options
-    this.className = className
+    const { cache, loggingService, queue, queueRedis } = options
     this.cache = cache
     this.loggingService = loggingService
     if (queue) {
@@ -35,11 +33,7 @@ export abstract class CacheTemplate implements ICacheTemplate, OnApplicationBoot
   }
 
   getLockKey(key: string) {
-    return `${this.className}:lock:${key}`
-  }
-
-  getCacheKey(key: string) {
-    return `${this.className}:${key}`
+    return `lock:${key}`
   }
 
   async withLock<T>(key: string, callback: () => Promise<T>, options: ICacheLockOptions = {}): Promise<T> {
@@ -85,27 +79,25 @@ export abstract class CacheTemplate implements ICacheTemplate, OnApplicationBoot
 
   async set<T = unknown>(key: string, value: T, ttl: number = 0) {
     return this.withLock(key, async () => {
-      const _key = this.getCacheKey(key)
-      await this.cache.set<T>(_key, value, ttl)
+      await this.cache.set<T>(key, value, ttl)
       /** 发布通知 */
-      await this.RedisClient.publish(this.channelName, _key)
+      await this.RedisClient.publish(this.channelName, key)
     })
   }
 
   async get<T = unknown>(key: string) {
-    const _key = this.getCacheKey(key)
-    const memoryValue = await this.L1Store.get<T>(_key)
+    const memoryValue = await this.L1Store.get<T>(key)
     if (memoryValue !== undefined && !Object.is(memoryValue, null)) {
       this.loggingService.debug(`l1命中`)
       return memoryValue as T
     }
     if (redisIsOk(this.RedisClient)) {
-      const redisValue = await this.L2Store.get(_key)
+      const redisValue = await this.L2Store.get(key)
       if (Object.is(redisValue, null)) return null
-      const ttl = await this.RedisClient.ttl(_key)
+      const ttl = await this.RedisClient.ttl(key)
       this.loggingService.debug(`l2命中`)
       /** ttl * 1000 * 0.8 (ms) 0.8是弥补操作衰减 */
-      await this.L1Store.set<T>(_key, redisValue, Math.max(ttl * 800, 0))
+      await this.L1Store.set<T>(key, redisValue, Math.max(ttl * 800, 0))
       return redisValue as T
     }
     return null
@@ -125,10 +117,9 @@ export abstract class CacheTemplate implements ICacheTemplate, OnApplicationBoot
 
   async del(key: string) {
     return this.withLock(key, async () => {
-      const _key = this.getCacheKey(key)
-      await this.cache.del(_key)
+      await this.cache.del(key)
       /** 发布通知 */
-      await this.RedisClient.publish(this.channelName, _key)
+      await this.RedisClient.publish(this.channelName, key)
     })
   }
 
@@ -138,12 +129,11 @@ export abstract class CacheTemplate implements ICacheTemplate, OnApplicationBoot
 
   async update<T = unknown>(key: string, value: T) {
     return this.withLock(key, async () => {
-      const _key = this.getCacheKey(key)
-      const [ttl, old] = await Promise.all([this.RedisClient.ttl(_key), this.get(key)])
+      const [ttl, old] = await Promise.all([this.RedisClient.ttl(key), this.get(key)])
       if (!old) return
-      await this.cache.set<T>(_key, value, Math.max(ttl * 800, 0))
+      await this.cache.set<T>(key, value, Math.max(ttl * 800, 0))
       /** 发布通知 */
-      await this.RedisClient.publish(this.channelName, _key)
+      await this.RedisClient.publish(this.channelName, key)
     })
   }
 

@@ -155,7 +155,6 @@ export async function swagger(answers, config, plop) {
     console.warn(apiG.actions)
     return `Swagger文档解析成功: ${info?.title || 'Unknown API'}`
   } catch (err) {
-    console.error('❌ Swagger解析失败:', err.message)
     throw new Error(`Swagger文档解析失败: ${err.message}`)
   }
 }

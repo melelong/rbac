@@ -7,7 +7,7 @@ import { CacheExceptionFilter, HttpExceptionFilter, OrmExceptionFilter, UnknownE
 import { JwtGuard, ResourceGuard, ThrottlerGuard } from '@/common/guards'
 import { CacheModule, EmailModule, HttpModule, LoggingModule, OrmModule, QueueModule, ThrottlerModule } from '@/common/infra'
 import { CtxModule } from '@/common/infra/ctx'
-import { HttpInterceptor } from '@/common/interceptors'
+import { CacheInterceptor, HttpInterceptor } from '@/common/interceptors'
 import { CtxMiddleware } from '@/common/middlewares'
 import { ConfigModule } from '@/config'
 import { AuthModule, MenuModule, ResourceModule, RoleModule, UserModule } from '@/modules'
@@ -63,6 +63,10 @@ const globalInterceptor: ModuleMetadata['providers'] = [
   {
     provide: APP_INTERCEPTOR,
     useClass: HttpInterceptor,
+  },
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: CacheInterceptor,
   },
 ]
 

@@ -15,6 +15,6 @@ export class CacheService extends CacheTemplate {
     @InjectQueue(CACHE_QUEUE_TOKEN) readonly queue: Queue,
     public readonly loggingService: LoggingService,
   ) {
-    super({ className: CacheService.name, cache, queue, loggingService })
+    super({ cache, queue, loggingService })
   }
 }

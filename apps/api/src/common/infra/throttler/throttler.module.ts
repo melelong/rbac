@@ -20,6 +20,7 @@ export class ThrottlerModuleHelper {
    * @param config Redis配置
    */
   public static async create(config: RedisOptions) {
+    config.keyPrefix = `${ThrottlerModuleHelper.name}:`
     if (!ThrottlerModuleHelper.instance) {
       ThrottlerModuleHelper.instance = new ThrottlerModuleHelper()
       ThrottlerModuleHelper.instance.logger = new Logger(ThrottlerModule.name)

@@ -13,6 +13,7 @@ export class BootController {
     private readonly cacheService: CacheService,
   ) {}
 
+  static readonly BOOT_START_TIME = 'BOOT_START_TIME'
   @IsPublic()
   @Get()
   @Render('page/index')
@@ -25,7 +26,7 @@ export class BootController {
       config: { path },
     } = this.configService.get<ISwaggerConfig>(SWAGGER_CONFIG_KEY)!
 
-    const startTime = (await this.cacheService.get('startTime')) || '未知'
+    const startTime = (await this.cacheService.get(BootController.BOOT_START_TIME)) || '未知'
     return { name, enabled, path, startTime }
   }
 
