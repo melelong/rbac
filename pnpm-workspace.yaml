@@ -69,22 +69,21 @@ catalogs:
     class-transformer: ^0.5.1
     nestjs-cls: ^6.0.1
     # 数据库
-    '@nestjs/typeorm': ^10.0.2
+    '@nestjs/typeorm': ^11.0.0
     mysql2: ^3.14.1
     typeorm: 0.3.20
-    '@nestjs/mongoose': ^10.1.0
-    mongoose: ^8.18.0
-    mongodb: 6.5.0
     # 配置
     joi: ^17.13.3
     '@nestjs/config': ^4.0.2
     cross-env: ^7.0.3
     # 日志
-    nest-winston: ^1.10.2
     winston-daily-rotate-file: ^5.0.0
     winston: ^3.17.0
     chalk: ^5.6.0
+    nest-winston: ^1.10.2
     winston-mongodb: ^7.0.1
+    mongoose: 8.23.0
+    '@nestjs/mongoose': ^11.0.4
     # 缓存
     '@nestjs/cache-manager': ^3.1.0
     # 官方推荐@keyv/redis 但是底层用的是node-redis
@@ -112,7 +111,7 @@ catalogs:
     '@nestjs/throttler': ^6.4.0
     '@nest-lab/throttler-storage-redis': ^1.1.0
     # 健康
-    '@nestjs/terminus': ^10.3.0
+    '@nestjs/terminus': ^11.0.0
     systeminformation: ^5.27.11
     # 定时任务
     '@nestjs/schedule': ^6.0.0

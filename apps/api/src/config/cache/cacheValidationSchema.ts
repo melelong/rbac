@@ -4,7 +4,7 @@ import { BaseValidationSchema } from '../base'
 
 /** cache配置相关 */
 export const DEFAULT_CACHE_MEMORY_LRU_SIZE = 5000
-export const DEFAULT_CACHE_MEMORY_TTL = 60 * 1000
+export const DEFAULT_CACHE_MEMORY_TTL = 5 * 60 * 1000
 export const DEFAULT_CACHE_REDIS_DB = 2
 export const DEFAULT_CACHE_REDIS_TTL = 30 * 60 * 1000
 /** cache配置验证 */

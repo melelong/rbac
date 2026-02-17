@@ -36,7 +36,7 @@ export class HttpInterceptor implements NestInterceptor {
         const VO = ResVO.success(data, this.clsService)
         /** 排除 data 字段(日志不记录) */
         const log = omit(VO, ['data'])
-        this.loggingService.http(`${JSON.stringify(log)}`)
+        this.loggingService.log(`${JSON.stringify(log)}`, 'http')
         return VO
       }),
     )

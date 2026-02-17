@@ -63,7 +63,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       }
       case exception instanceof InternalServerErrorException: {
         data = ExceptionCodeTextMap[ExceptionCode.COMMON_INTERNAL_SERVER_ERROR][0]
-        this.loggingService.error(exception.message, exception.stack)
+        this.loggingService.error(exception.message, exception.stack, undefined, 'http')
         break
       }
       case exception instanceof BusinessException: {
@@ -82,7 +82,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       default: {
         status = status < 200 ? HttpStatus.INTERNAL_SERVER_ERROR : status
         this.loggingService.debug(String(status))
-        this.loggingService.error(exception.message, exception.stack)
+        this.loggingService.error(exception.message, exception.stack, undefined, 'http')
         break
       }
     }
@@ -91,6 +91,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     res.status(status < 200 ? 500 : status).json(VO)
 
     // 业务异常日志
-    if (isLogging) this.loggingService.http(JSON.stringify(VO))
+    if (isLogging) this.loggingService.warn(JSON.stringify(VO), undefined, 'http')
   }
 }

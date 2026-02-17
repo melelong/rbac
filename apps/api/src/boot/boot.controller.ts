@@ -1,11 +1,13 @@
 import type { IAppConfig, ISwaggerConfig } from '@/config'
+import { CacheTTL } from '@nestjs/cache-manager'
 import { Controller, Get, Render } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ApiController, ApiMethod, IsNoFormat, IsPublic } from '@/common/deco'
 import { CacheService } from '@/common/infra'
-import { APP_CONFIG_KEY, SWAGGER_CONFIG_KEY } from '@/config'
+import { APP_CONFIG_KEY, DEFAULT_CACHE_MEMORY_TTL, SWAGGER_CONFIG_KEY } from '@/config'
 
 @Controller()
+@CacheTTL(DEFAULT_CACHE_MEMORY_TTL)
 @ApiController({ ApiTagsOptions: ['跳转swagger文档'] })
 export class BootController {
   constructor(

@@ -5,7 +5,7 @@ import { Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
-import { CacheService, LoggingService } from '@/common/infra'
+import { CacheService, createConsoleTransport, LoggingService } from '@/common/infra'
 import { APP_CONFIG_KEY } from '@/config'
 import { BootController } from './boot.controller'
 import { initGlobalSettings, initMiddlewares, initPipes, initResource, initRole, initSwagger, initUser } from './init'
@@ -22,8 +22,14 @@ export class BootImpl implements IBoot {
   public static async create(bootModule: any) {
     const instance = new BootImpl()
     // 仅控制台日志的日志实例
-    // const logger = new LoggingService()
-    instance.appInstance = await NestFactory.create<NestExpressApplication>(bootModule, { bufferLogs: true })
+    if (!LoggingService.Logger) {
+      LoggingService.Logger = LoggingService.createLogger({
+        level: 'debug',
+        transports: [createConsoleTransport()],
+        exitOnError: false,
+      })
+    }
+    instance.appInstance = await NestFactory.create<NestExpressApplication>(bootModule, { bufferLogs: true, logger: LoggingService.Logger })
 
     // 替换默认的日志实例
     const logger = instance.appInstance.get(LoggingService)

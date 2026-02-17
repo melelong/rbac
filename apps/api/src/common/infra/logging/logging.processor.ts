@@ -1,5 +1,5 @@
 import type { Job } from 'bullmq'
-import type { LEVEL_TYPE } from '@/config'
+import type { WINSTON_LEVEL } from '@/config'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { LogContextClass } from '@/common/deco'
 import { LOGGING_QUEUE_TOKEN } from '@/common/infra/queue'
@@ -11,7 +11,7 @@ export interface ILoggingJobData {
   /** 日志内容 */
   message: string
   /** 日志级别 */
-  level: (typeof LEVEL_TYPE)[number]
+  level: (typeof WINSTON_LEVEL)[number]
 }
 /** 日志队列处理 */
 @Processor(LOGGING_QUEUE_TOKEN)

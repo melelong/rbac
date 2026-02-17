@@ -22,7 +22,7 @@ export class OrmExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp()
     const res = ctx.getResponse<Response>()
     ResVO.setLoggerContext(this.clsService, OrmExceptionFilter.name)
-    this.loggingService.error(exception.message, exception.stack)
+    this.loggingService.error(exception.message, exception.stack, 'orm')
     this.loggingService.debug(Object.prototype.toString.call(exception))
     const VO = ResVO.error(res, this.clsService, String(HttpStatus.INTERNAL_SERVER_ERROR))
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(VO)

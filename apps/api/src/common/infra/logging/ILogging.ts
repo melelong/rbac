@@ -1,6 +1,6 @@
 import type { LoggerService } from '@nestjs/common'
 import type { ClsStore } from 'nestjs-cls'
-import type { Logger } from 'winston'
+import type { WINSTON_TYPE } from '@/config'
 
 export interface ILoggingCls extends ClsStore {
   /** 用户ID */
@@ -21,60 +21,46 @@ export interface ILoggingCls extends ClsStore {
 
 export interface ILoggingService extends LoggerService {
   /**
-   * 设置上下文
-   * @param context 上下文
-   */
-  // setContext: (context: string) => void
-  /**
-   * 设置控制台日志实例
-   * @param logger 日志实例
-   */
-  setLogger: (logger: Logger) => void
-  /**
-   * 设置文件日志实例
-   * @param logger 日志实例
-   */
-  setFileLogger: (logger: Logger | null) => void
-  /**
-   * 添加mongo日志实例
-   * @param logger 日志实例
-   */
-  setMongoLogger: (logger: Logger | null) => void
-  /**
    * 普通日志
    * @param message 日志信息
    * @param context 上下文
+   * @param type 日志类型
    */
-  log: (message: string, context?: string) => void
+  log: (message: string, context?: string, type?: (typeof WINSTON_TYPE)[number]) => void
   /**
    * 错误日志
    * @param message 日志信息
-   * @param trace 错误信息
+   * @param trace 错误堆栈信息
    * @param context 上下文
+   * @param type 日志类型
    */
-  error: (message: string, trace?: string, context?: string) => void
+  error: (message: string, trace?: string, context?: string, type?: (typeof WINSTON_TYPE)[number]) => void
   /**
    * 警告日志
    * @param message 日志信息
    * @param context 上下文
+   * @param type 日志类型
    */
-  warn: (message: string, context?: string) => void
+  warn: (message: string, context?: string, type?: (typeof WINSTON_TYPE)[number]) => void
   /**
    * 调试日志
    * @param message 日志信息
    * @param context 上下文
+   * @param type 日志类型
    */
-  debug: (message: string, context?: string) => void
+  debug: (message: string, context?: string, type?: (typeof WINSTON_TYPE)[number]) => void
   /**
    * 详细日志
    * @param message 日志信息
    * @param context 上下文
+   * @param type 日志类型
    */
-  verbose: (message: string, context?: string) => void
+  verbose: (message: string, context?: string, type?: (typeof WINSTON_TYPE)[number]) => void
   /**
-   * HTTP日志
+   * 致命错误日志
    * @param message 日志信息
    * @param context 上下文
+   * @param type 日志类型
    */
-  http: (message: string, context?: string) => void
+  fatal: (message: string, context?: string, type?: (typeof WINSTON_TYPE)[number]) => void
 }

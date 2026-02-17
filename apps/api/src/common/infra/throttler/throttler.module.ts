@@ -40,7 +40,7 @@ export class ThrottlerModuleHelper {
     nestThrottlerModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
         const { throttlersConfig, storageConfig } = configService.get<IThrottlerConfig>(THROTTLER_CONFIG_KEY)!
-        const throttler2ModuleHelper = await ThrottlerModuleHelper.create(storageConfig)
+        const throttler2ModuleHelper = await ThrottlerModuleHelper.create(storageConfig as RedisOptions)
         const {
           initRedis: { redisClient },
         } = throttler2ModuleHelper
@@ -60,7 +60,7 @@ export class ThrottlerModuleHelper {
       useFactory: async (configService: ConfigService) => {
         if (ThrottlerModuleHelper.redis) return ThrottlerModuleHelper.redis
         const { storageConfig } = configService.get<IThrottlerConfig>(THROTTLER_CONFIG_KEY)!
-        const throttler2ModuleHelper = await ThrottlerModuleHelper.create(storageConfig)
+        const throttler2ModuleHelper = await ThrottlerModuleHelper.create(storageConfig as RedisOptions)
         const {
           initRedis: { redisClient },
         } = throttler2ModuleHelper
