@@ -1,12 +1,16 @@
 import type mongoose from 'mongoose'
 import type { Logger } from 'winston'
 import type { ILoggingService } from './ILogging'
-import type { IWinstonConfig, WINSTON_MODE, WINSTON_TYPE } from '@/config'
+import type { ILoggingJobData } from './logging.processor'
+import type { WINSTON_TYPE } from '@/config'
 import { pid } from 'node:process'
+import { InjectQueue } from '@nestjs/bullmq'
 import { Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import { Queue } from 'bullmq'
 import winston, { createLogger } from 'winston'
-import { DEFAULT_APP_NAME, WINSTON_CONFIG_KEY } from '@/config'
+import { redisIsOk } from '@/common/utils'
+import { DEFAULT_APP_NAME } from '@/config'
+import { LOGGING_QUEUE_TOKEN, QueueModuleHelper } from '../queue'
 
 /** 应用日志服务 */
 @Injectable()
@@ -15,46 +19,62 @@ export class LoggingService implements ILoggingService {
   public static context: string = 'Application'
   /** winston实例 */
   public static Logger: Logger | null
-  /** 日志模式 */
-  public static mode: (typeof WINSTON_MODE)[number]
   /** 日志模块的 MongoDB 连接 */
   public static MongoConnection: mongoose.Connection | null = null
   /** 应用名称 */
   public static appName: string = DEFAULT_APP_NAME
 
-  constructor(private readonly configService: ConfigService) {
-    const { mode } = this.configService.get<IWinstonConfig>(WINSTON_CONFIG_KEY)!
-    LoggingService.mode = mode
+  constructor(@InjectQueue(LOGGING_QUEUE_TOKEN) private readonly loggingQueue: Queue<ILoggingJobData>) {}
+  record(loggingJobData: ILoggingJobData) {
+    const { fnName, args } = loggingJobData
+    redisIsOk(QueueModuleHelper.redis!)
+      ? this.loggingQueue.add(
+          'loggingQueue',
+          { fnName, args },
+          {
+            /** 失败重试 */
+            attempts: 3,
+            /** 指数退避重试 */
+            backoff: { type: 'exponential', delay: 500 },
+          },
+        )
+      : LoggingService.Logger![fnName](...args)
   }
 
   log(message: string, context?: string, winstonType: (typeof WINSTON_TYPE)[number] = 'app') {
     context = `${context || LoggingService.context}`
-    LoggingService.Logger!.info(message, { context, isLog: true, pid, appName: LoggingService.appName, winstonType })
+    const args: [string, ...any[]] = [message, { context, isLog: true, pid, appName: LoggingService.appName, winstonType }]
+    this.record({ args, fnName: 'info' })
   }
 
   error(message: string, trace?: string, context?: string, winstonType: (typeof WINSTON_TYPE)[number] = 'app') {
     context = `${context || LoggingService.context}`
-    LoggingService.Logger!.error(message, { context, pid, appName: LoggingService.appName, trace, winstonType })
+    const args: [string, ...any[]] = [message, { context, pid, appName: LoggingService.appName, trace, winstonType }]
+    this.record({ args, fnName: 'error' })
   }
 
   warn(message: string, context?: string, winstonType: (typeof WINSTON_TYPE)[number] = 'app') {
     context = `${context || LoggingService.context}`
-    LoggingService.Logger!.warn(message, { context, pid, appName: LoggingService.appName, winstonType })
+    const args: [string, ...any[]] = [message, { context, pid, appName: LoggingService.appName, winstonType }]
+    this.record({ args, fnName: 'warn' })
   }
 
   debug(message: string, context?: string, winstonType: (typeof WINSTON_TYPE)[number] = 'app') {
     context = `${context || LoggingService.context}`
-    LoggingService.Logger!.debug(message, { context, pid, appName: LoggingService.appName, winstonType })
+    const args: [string, ...any[]] = [message, { context, pid, appName: LoggingService.appName, winstonType }]
+    this.record({ args, fnName: 'debug' })
   }
 
   verbose(message: string, context?: string, winstonType: (typeof WINSTON_TYPE)[number] = 'app') {
     context = `${context || LoggingService.context}`
-    LoggingService.Logger!.verbose(message, { context, pid, appName: LoggingService.appName, winstonType })
+    const args: [string, ...any[]] = [message, { context, pid, appName: LoggingService.appName, winstonType }]
+    this.record({ args, fnName: 'verbose' })
   }
 
   fatal(message: string, context?: string, winstonType: (typeof WINSTON_TYPE)[number] = 'app') {
     context = `${context || LoggingService.context}`
-    LoggingService.Logger!.http(message, { context, pid, appName: LoggingService.appName, winstonType })
+    const args: [string, ...any[]] = [message, { context, pid, appName: LoggingService.appName, winstonType }]
+    this.record({ args, fnName: 'http' })
   }
 
   public static setContext(context: string) {

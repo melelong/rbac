@@ -7,7 +7,7 @@ import { WinstonModule } from 'nest-winston'
 import { APP_CONFIG_KEY, WINSTON_CONFIG_KEY } from '@/config'
 import { LoggingProcessor } from './logging.processor'
 import { LoggingService } from './logging.service'
-import { createConsoleTransport, createMongoDBTransport } from './transports'
+import { createConsoleTransport, createFileTransport, createMongoDBTransport } from './transports'
 
 /** 日志模块 */
 @Global()
@@ -37,7 +37,7 @@ import { createConsoleTransport, createMongoDBTransport } from './transports'
       useFactory: async (configService: ConfigService) => {
         const { name } = configService.get<IAppConfig>(APP_CONFIG_KEY)!
         LoggingService.appName = name
-        const { level, mongodbConfig } = configService.get<IWinstonConfig>(WINSTON_CONFIG_KEY)!
+        const { level, mongodbConfig, mode, fileConfig } = configService.get<IWinstonConfig>(WINSTON_CONFIG_KEY)!
         if (!LoggingService.Logger) {
           LoggingService.Logger = LoggingService.createLogger({
             level,
@@ -47,7 +47,14 @@ import { createConsoleTransport, createMongoDBTransport } from './transports'
         } else {
           LoggingService.Logger.level = level
         }
-        LoggingService.Logger.add(await createMongoDBTransport('app', 'warn', mongodbConfig))
+        LoggingService.Logger.add(createFileTransport('app', 'error', mode, fileConfig))
+        LoggingService.Logger.add(createFileTransport('app', 'warn', mode, fileConfig))
+        LoggingService.Logger.add(createFileTransport('app', 'verbose', mode, fileConfig))
+        LoggingService.Logger.add(createFileTransport('http', 'info', mode, fileConfig))
+        LoggingService.Logger.add(await createMongoDBTransport('app', 'error', mode, mongodbConfig))
+        LoggingService.Logger.add(await createMongoDBTransport('app', 'warn', mode, mongodbConfig))
+        LoggingService.Logger.add(await createMongoDBTransport('app', 'verbose', mode, mongodbConfig))
+        LoggingService.Logger.add(await createMongoDBTransport('http', 'info', mode, mongodbConfig))
         return {
           level,
           instance: LoggingService.Logger,

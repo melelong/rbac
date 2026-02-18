@@ -1,5 +1,6 @@
 import type { LoggerService } from '@nestjs/common'
 import type { ClsStore } from 'nestjs-cls'
+import type { ILoggingJobData } from './logging.processor'
 import type { WINSTON_TYPE } from '@/config'
 
 export interface ILoggingCls extends ClsStore {
@@ -63,4 +64,6 @@ export interface ILoggingService extends LoggerService {
    * @param type 日志类型
    */
   fatal: (message: string, context?: string, type?: (typeof WINSTON_TYPE)[number]) => void
+  /** 记录日志(自动队列redis状态来判断直接记录还是记录到队列) */
+  record: (loggingJobData: ILoggingJobData) => void
 }

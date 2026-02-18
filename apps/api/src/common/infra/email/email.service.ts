@@ -12,14 +12,14 @@ import { redisIsOk } from '@/common/utils'
 @Injectable()
 export class EmailService implements IEmailService {
   constructor(
-    @InjectQueue(EMAIL_QUEUE_TOKEN) private readonly emailQueue: Queue,
+    @InjectQueue(EMAIL_QUEUE_TOKEN) private readonly emailQueue: Queue<ISendEmailOptions>,
     private readonly logging: LoggingService,
   ) {}
 
   @LogContextMethod()
   async sendEmail<T = any>(options: ISendEmailOptions<T>) {
     if (!redisIsOk(QueueModuleHelper.redis!)) throw new QueueException(ExceptionCode.QUEUE_SERVICE_ERROR, ExceptionCodeTextMap)
-    await this.emailQueue.add('sendEmail', options, {
+    await this.emailQueue.add(`${options.to}`, options, {
       /** 失败重试 */
       attempts: 3,
       /** 指数退避重试 */

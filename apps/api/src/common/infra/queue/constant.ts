@@ -5,4 +5,4 @@ export const CACHE_QUEUE_TOKEN = 'cache'
 /** 注册的邮箱队列名(提供给其他模块获取队列实例) */
 export const EMAIL_QUEUE_TOKEN = 'email'
 /** 注册的日志队列名(提供给其他模块获取队列实例) */
-export const LOGGING_QUEUE_TOKEN = 'logger'
+export const LOGGING_QUEUE_TOKEN = 'logging'

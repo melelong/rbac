@@ -22,7 +22,7 @@ export class HttpInterceptor implements NestInterceptor {
   ) {}
 
   intercept<T>(context: ExecutionContext, next: CallHandler): Observable<Promise<IOKResponse<T>>> {
-    this.loggingService.log('前置拦截器')
+    this.loggingService.debug('前置拦截器', undefined, 'app')
     const cxt = context.switchToHttp()
     const res = cxt.getResponse<Response>()
     if (res.statusCode === 201) res.statusCode = HttpStatus.OK
@@ -30,13 +30,13 @@ export class HttpInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map(async (data): Promise<IOKResponse<T>> => {
         LoggingService.setContext(`HttpInterceptor.intercept`)
-        this.loggingService.log('后置拦截器')
+        this.loggingService.debug('后置拦截器', undefined, 'app')
         ResVO.setLoggerContext(this.clsService)
         if (isNoFormat) return data
         const VO = ResVO.success(data, this.clsService)
         /** 排除 data 字段(日志不记录) */
         const log = omit(VO, ['data'])
-        this.loggingService.log(`${JSON.stringify(log)}`, 'http')
+        this.loggingService.log(`${JSON.stringify(log)}`, undefined, 'http')
         return VO
       }),
     )

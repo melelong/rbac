@@ -1,4 +1,4 @@
-import type { IWinstonConfig, WINSTON_LEVEL, WINSTON_TYPE } from '@/config'
+import type { IWinstonConfig, WINSTON_LEVEL, WINSTON_MODE, WINSTON_TYPE } from '@/config'
 import { join } from 'node:path'
 import chalk from 'chalk'
 import { connect } from 'mongoose'
@@ -47,15 +47,46 @@ export function createConsoleTransport() {
 export function createLevelFilter(level: (typeof WINSTON_LEVEL)[number]) {
   return winston.format((info) => (info.level === level ? info : false))()
 }
-/** 创建日志级别过滤器 */
+/** 创建日志类型过滤器 */
 export function createTypeFilter(winstonType: (typeof WINSTON_TYPE)[number]) {
   return winston.format((info) => (info.winstonType === winstonType ? info : false))()
+}
+
+/** 创建文件日志降级过滤器 */
+export function createFileDowngradeFilter(mode: (typeof WINSTON_MODE)[number]) {
+  return winston.format((info) => {
+    switch (mode) {
+      case 'none':
+        return false
+      case 'file':
+        return info
+      case 'mongodb':
+        if (LoggingService.MongoConnection && LoggingService.MongoConnection.readyState === 1) return false
+        return info
+    }
+  })()
+}
+
+/** 创建MongoDB日志降级过滤器 */
+export function createMongoDowngradeFilter(mode: (typeof WINSTON_MODE)[number]) {
+  return winston.format((info) => {
+    switch (mode) {
+      case 'none':
+        return false
+      case 'file':
+        return false
+      case 'mongodb':
+        if (LoggingService.MongoConnection && LoggingService.MongoConnection.readyState === 1) return info
+        return false
+    }
+  })()
 }
 
 /** 创建MongoDB日志(主要日志持久化) */
 export async function createMongoDBTransport(
   type: (typeof WINSTON_TYPE)[number],
   level: (typeof WINSTON_LEVEL)[number],
+  mode: (typeof WINSTON_MODE)[number],
   config: IWinstonConfig['mongodbConfig'],
 ) {
   const { uri, db: dbName } = config
@@ -71,7 +102,14 @@ export async function createMongoDBTransport(
     })
     LoggingService.MongoConnection = mongoClient.connection
   }
-  const format = [createLevelFilter(level), winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), winston.format.ms(), winston.format.json()]
+  const format = [
+    createLevelFilter(level),
+    createTypeFilter(type),
+    createMongoDowngradeFilter(mode),
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    winston.format.ms(),
+    winston.format.json(),
+  ]
   if (level === 'error') format.push(winston.format.errors({ stack: true }))
   return new winston.transports.MongoDB({
     level,
@@ -93,12 +131,20 @@ export async function createMongoDBTransport(
 export function createFileTransport(
   type: (typeof WINSTON_TYPE)[number],
   level: (typeof WINSTON_LEVEL)[number],
+  mode: (typeof WINSTON_MODE)[number],
   config: IWinstonConfig['fileConfig'],
 ) {
   const { dirname, datePattern, zippedArchive, maxSize, maxFiles } = config
   const _dirname = join(dirname, type, level as unknown as string)
   mkdir(_dirname)
-  const format = [createLevelFilter(level), winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), winston.format.ms(), winston.format.json()]
+  const format = [
+    createLevelFilter(level),
+    createTypeFilter(type),
+    createFileDowngradeFilter(mode),
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    winston.format.ms(),
+    winston.format.json(),
+  ]
   if (level === 'error') format.push(winston.format.errors({ stack: true }))
   return new DailyRotateFile({
     level,
