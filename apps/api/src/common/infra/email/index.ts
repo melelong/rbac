@@ -1,3 +1,3 @@
 export * from './email.module'
 export * from './email.service'
-export * from './IEmailService'
+export * from './IEmail'

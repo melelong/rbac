@@ -1,6 +1,6 @@
 import type { Job } from 'bullmq'
 import type SMTPConnection from 'nodemailer/lib/smtp-connection'
-import type { ISendEmailOptions } from './IEmailService'
+import type { IEmailJobData } from './IEmail'
 import type { AppConfigType, EmailConfigType } from '@/config'
 import { MailerService } from '@nestjs-modules/mailer'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
@@ -21,11 +21,11 @@ export class EmailProcessor extends WorkerHost {
   }
 
   /** 处理 */
-  async process(job: Job) {
+  async process(job: Job<IEmailJobData>) {
     const { name: appName } = this.configService.get<AppConfigType>(APP_CONFIG_KEY)!
     const { transports } = this.configService.get<EmailConfigType>(EMAIL_CONFIG_KEY)!
     let lastError: Error | null = null
-    const { fromName, ...data } = job.data as ISendEmailOptions
+    const { fromName, ...data } = job.data
     for (const transport of EMAIL_SERVICE_KEYS) {
       try {
         const res = await this.mailerService.sendMail({

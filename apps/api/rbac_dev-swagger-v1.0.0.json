@@ -3631,6 +3631,18 @@
         },
         "tags": ["跳转swagger文档"]
       }
+    },
+    "/api/v1/test": {
+      "get": {
+        "operationId": "BootController_test_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": ["跳转swagger文档"]
+      }
     }
   },
   "info": {

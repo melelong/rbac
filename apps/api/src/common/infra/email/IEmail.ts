@@ -1,4 +1,4 @@
-export interface ISendEmailOptions<T = any> {
+export interface IEmailJobData<T = any> {
   /** 发送者名称 */
   fromName?: string
   /** 接收者邮箱 */
@@ -17,5 +17,5 @@ export interface IEmailService {
    * 发送邮件
    * @param options 发送邮件参数
    */
-  sendEmail: <T = any>(options: ISendEmailOptions<T>) => Promise<boolean>
+  sendEmail: <T = any>(options: IEmailJobData<T>) => Promise<boolean>
 }

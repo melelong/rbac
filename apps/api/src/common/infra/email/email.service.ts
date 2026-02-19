@@ -1,4 +1,4 @@
-import type { IEmailService, ISendEmailOptions } from './IEmailService'
+import type { IEmailJobData, IEmailService } from './IEmail'
 import { InjectQueue } from '@nestjs/bullmq'
 import { Injectable } from '@nestjs/common'
 import { Queue } from 'bullmq'
@@ -12,12 +12,12 @@ import { redisIsOk } from '@/common/utils'
 @Injectable()
 export class EmailService implements IEmailService {
   constructor(
-    @InjectQueue(EMAIL_QUEUE_TOKEN) private readonly emailQueue: Queue<ISendEmailOptions>,
+    @InjectQueue(EMAIL_QUEUE_TOKEN) private readonly emailQueue: Queue<IEmailJobData>,
     private readonly logging: LoggingService,
   ) {}
 
   @LogContextMethod()
-  async sendEmail<T = any>(options: ISendEmailOptions<T>) {
+  async sendEmail<T = any>(options: IEmailJobData<T>) {
     if (!redisIsOk(QueueModuleHelper.redis!)) throw new QueueException(ExceptionCode.QUEUE_SERVICE_ERROR, ExceptionCodeTextMap)
     await this.emailQueue.add(`${options.to}`, options, {
       /** 失败重试 */

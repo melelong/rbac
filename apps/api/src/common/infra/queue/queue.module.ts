@@ -19,7 +19,7 @@ export class QueueModuleHelper {
    * @param config Redis配置
    */
   public static async create(config: RedisOptions) {
-    // 这里前缀不能自定义，不然队列会在内部找不到key
+    // 这里key前缀不能自定义，不然队列会在内部找不到key
     // config.keyPrefix = `${QueueModuleHelper.name}:`
     if (!QueueModuleHelper.instance) {
       QueueModuleHelper.instance = new QueueModuleHelper()

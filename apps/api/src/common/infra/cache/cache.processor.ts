@@ -1,9 +1,20 @@
+import type { ICacheTemplate } from './ICache'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { Job } from 'bullmq'
 import { LoggingService } from '@/common/infra/logging'
 import { CACHE_QUEUE_TOKEN } from '@/common/infra/queue'
 import { CacheService } from './cache.service'
 
+export interface ICacheJobData {
+  /** 缓存操作类型 */
+  type: keyof ICacheTemplate
+  /** 缓存键 */
+  key: string
+  /** 缓存值 */
+  value?: any
+  /** 过期时间 */
+  ttl?: number
+}
 /** 缓存队列处理 */
 @Processor(CACHE_QUEUE_TOKEN)
 export class CacheProcessor extends WorkerHost {
@@ -15,7 +26,7 @@ export class CacheProcessor extends WorkerHost {
   }
 
   /** 处理 */
-  async process(job: Job) {
+  async process(job: Job<ICacheJobData>) {
     const { type, key, value, ttl } = job.data
     try {
       switch (type) {

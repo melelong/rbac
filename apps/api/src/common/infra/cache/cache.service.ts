@@ -5,7 +5,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { LogContextClass } from '@/common/deco'
 import { LoggingService } from '@/common/infra/logging'
 import { CACHE_QUEUE_TOKEN } from '@/common/infra/queue'
-import { CacheTemplate } from '@/common/template'
+import { CacheTemplate } from './cache.template'
 
 @Injectable()
 @LogContextClass()

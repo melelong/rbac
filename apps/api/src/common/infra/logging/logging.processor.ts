@@ -20,9 +20,9 @@ export class LoggingProcessor extends WorkerHost {
     super()
   }
 
-  async process(job: Job) {
+  async process(job: Job<ILoggingJobData>) {
     try {
-      const { fnName, args } = job.data as ILoggingJobData
+      const { fnName, args } = job.data
       LoggingService.Logger![fnName](...args)
       await job.log(`延迟写入日志成功`)
     } catch (error) {

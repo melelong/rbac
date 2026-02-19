@@ -119,4 +119,9 @@ export class BootController {
     await this.cacheService.delayedDel('obj', 5000)
     return []
   }
+
+  @Get('test')
+  async test() {
+    return 'test'
+  }
 }

@@ -1,6 +1,7 @@
 import type { Queue, RedisClient } from 'bullmq'
 import type { Redis as IOValkey } from 'iovalkey'
-import type { ICacheLockOptions, ICacheTemplate, ICacheTemplateOptions } from './ICacheTemplate'
+import type { ICacheJobData } from './cache.processor'
+import type { ICacheLockOptions, ICacheTemplate, ICacheTemplateOptions } from './ICache'
 import type { LoggingService } from '@/common/infra'
 import { Cache } from '@nestjs/cache-manager'
 import { OnApplicationBootstrap } from '@nestjs/common'
@@ -14,7 +15,7 @@ import { redisIsOk, uuid_v4 } from '@/common/utils'
 export abstract class CacheTemplate implements ICacheTemplate, OnApplicationBootstrap {
   cache: Cache
   loggingService: LoggingService
-  queue?: Queue<any, any, string, any, any, string>
+  queue?: Queue<ICacheJobData>
   queueRedis?: RedisClient
   channelName: string = CacheTemplate.name
   sub: IOValkey | null = null
