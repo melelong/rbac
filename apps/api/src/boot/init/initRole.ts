@@ -119,16 +119,14 @@ export async function initRole(
             USER_ID ? roleResourceService.assignRolesResourceByIds(em, { ids: [USER_ID], resourceIds: USER_RESOURCE }) : null,
           ])
           logger.log(`√ 批量创建角色成功，共创建 ${newRoles.length} 个新角色`)
-        } catch (error) {
-          console.warn(error)
-          logger.error(`× 批量创建角色失败`, error)
-          throw new Error(`角色扫描失败${error.message}`)
+        } catch (err) {
+          logger.error(`× 批量创建角色失败${err.message}`, err.stack)
         }
       } else {
         logger.log('没有发现新角色需要创建')
       }
     })
-  } catch (error) {
-    logger.error(`角色扫描失败${error.message}`)
+  } catch (err) {
+    logger.error(`角色扫描失败${err.message}`, err.stack)
   }
 }

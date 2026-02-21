@@ -3,6 +3,16 @@ import type { Queue, RedisClient } from 'bullmq'
 import type { LoggingService } from '@/common/infra'
 import type { TRedis } from '@/common/utils'
 
+export interface ICacheJobData {
+  /** 缓存操作类型 */
+  type: keyof ICacheTemplate
+  /** 缓存键 */
+  key: string
+  /** 缓存值 */
+  value?: any
+  /** 过期时间 */
+  ttl?: number
+}
 /** 缓存模板抽象类配置接口 */
 export interface ICacheTemplateOptions {
   /** 缓存实例 */

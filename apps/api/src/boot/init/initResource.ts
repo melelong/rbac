@@ -112,15 +112,15 @@ export async function initResource(
         try {
           existingResources = await resourceDomainService.createResources(em, createDTOList)
           logger.log(`√ 批量创建资源成功，共创建 ${newResources.length} 个新资源`)
-        } catch (error) {
-          logger.error(`× 批量创建资源失败`, error)
+        } catch (err) {
+          logger.error(`× 批量创建资源失败${err.message}`, err.stack)
         }
       } else {
         logger.log('没有发现新资源需要创建')
       }
     })
-  } catch (error) {
-    logger.error(`资源扫描失败${error.message}`)
+  } catch (err) {
+    logger.error(`资源扫描失败${err.message}`, err.stack)
   }
   return limit
 }

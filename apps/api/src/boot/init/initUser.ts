@@ -107,15 +107,14 @@ export async function initUser(
             USER_ID ? userRoleService.assignUsersRoleByIds(em, { ids: [USER_ID], roleIds: USER_ROLE }) : null,
           ])
           logger.log(`√ 批量创建用户成功，共创建 ${newUsers.length} 个新用户`)
-        } catch (error) {
-          console.warn(error)
-          logger.error(`× 批量创建用户失败`, error)
+        } catch (err) {
+          logger.error(`× 批量创建用户失败${err.message}`, err.stack)
         }
       } else {
         logger.log('没有发现新用户需要创建')
       }
     })
-  } catch (error) {
-    logger.error(`用户扫描失败${error.message}`)
+  } catch (err) {
+    logger.error(`用户扫描失败${err.message}`)
   }
 }

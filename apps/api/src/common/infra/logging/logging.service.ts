@@ -1,7 +1,6 @@
 import type mongoose from 'mongoose'
 import type { Logger } from 'winston'
-import type { ILoggingService } from './ILogging'
-import type { ILoggingJobData } from './logging.processor'
+import type { ILoggingJobData, ILoggingService } from './ILogging'
 import type { WINSTON_TYPE } from '@/config'
 import { pid } from 'node:process'
 import { InjectQueue } from '@nestjs/bullmq'
@@ -29,7 +28,7 @@ export class LoggingService implements ILoggingService {
     const { fnName, args } = loggingJobData
     redisIsOk(QueueModuleHelper.redis!)
       ? this.loggingQueue.add(
-          'loggingQueue',
+          'delayedLog',
           { fnName, args },
           {
             /** 失败重试 */

@@ -47,7 +47,7 @@ export class OrmModule {
       })
       pool.on('connection', (connection) => {
         logger.log(`${connection.threadId} 新建连接`)
-        connection.on('error', (error) => logger.error(`${connection.threadId} 错误: ${error.message}`))
+        connection.on('error', (err) => logger.error(`${connection.threadId} 错误: ${err.message}`, err.stack))
         connection.on('connect', () => logger.log(`${connection.threadId} 连接成功`))
         connection.on('end', () => logger.log(`${connection.threadId} 连接已关闭`))
       })
@@ -63,8 +63,8 @@ export class OrmModule {
       const [nowMsg] = await connection.query(`SELECT NOW()`)
       logger.log(`数据库时间:${nowMsg[0]['NOW()']}`)
       connection.release()
-    } catch (e) {
-      logger.error(e)
+    } catch (err) {
+      logger.error(`错误: ${err.message}`, err.stack)
     }
   }
 }

@@ -1,11 +1,12 @@
 import type { IWinstonConfig, WINSTON_LEVEL, WINSTON_MODE, WINSTON_TYPE } from '@/config'
 import { join } from 'node:path'
 import chalk from 'chalk'
-import { connect } from 'mongoose'
+import { createConnection } from 'mongoose'
 import winston from 'winston'
 import DailyRotateFile from 'winston-daily-rotate-file'
 import { mkdir } from '@/common/utils'
 import { MONGO_CAPPED_CONFIG } from './constant'
+import { LoggingModule } from './logging.module'
 import { LoggingService } from './logging.service'
 
 /** 创建控制台日志 */
@@ -91,16 +92,33 @@ export async function createMongoDBTransport(
 ) {
   const { uri, db: dbName } = config
   if (!LoggingService.MongoConnection) {
-    const mongoClient = await connect(uri, {
+    const mongoConnection = createConnection(uri, {
       autoIndex: false,
-      serverSelectionTimeoutMS: 5000,
-      heartbeatFrequencyMS: 10000,
-      maxPoolSize: 50,
-      minPoolSize: 10,
+      serverSelectionTimeoutMS: 30000,
+      heartbeatFrequencyMS: 0,
+      maxPoolSize: 200,
+      minPoolSize: 2,
+      maxConnecting: 2,
       maxIdleTimeMS: 60000,
       waitQueueTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
+      socketTimeoutMS: 5000,
+      bufferCommands: false,
+      retryReads: true,
+      retryWrites: true,
+      minHeartbeatFrequencyMS: 500,
     })
-    LoggingService.MongoConnection = mongoClient.connection
+    LoggingService.MongoConnection = mongoConnection
+    LoggingService.MongoConnection.on('open', () => LoggingModule.logger.verbose('mongodb 连接成功'))
+    LoggingService.MongoConnection.on('disconnected', () => LoggingModule.logger.warn('mongodb 已断开连接'))
+    LoggingService.MongoConnection.on('reconnected', () => LoggingModule.logger.warn('mongodb 重新连接中...'))
+    LoggingService.MongoConnection.on('disconnecting', () => LoggingModule.logger.warn('mongodb 断开连接中...'))
+    LoggingService.MongoConnection.on('error', (err) => LoggingModule.logger.error(`mongodb:${err.message}`, err.stack))
+    try {
+      await LoggingService.MongoConnection.getClient().connect()
+    } catch (err) {
+      LoggingModule.logger.error(`mongodb:${err.message}`, err.stack)
+    }
   }
   const format = [
     createLevelFilter(level),

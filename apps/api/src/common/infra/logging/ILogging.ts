@@ -1,8 +1,15 @@
 import type { LoggerService } from '@nestjs/common'
 import type { ClsStore } from 'nestjs-cls'
-import type { ILoggingJobData } from './logging.processor'
+import type { Logger } from 'winston'
 import type { WINSTON_TYPE } from '@/config'
 
+/** 传给日志任务队列的数据格式 */
+export interface ILoggingJobData {
+  /** 日志服务方法名 */
+  fnName: keyof Logger
+  /** 参数 */
+  args: [string, ...any[]]
+}
 export interface ILoggingCls extends ClsStore {
   /** 用户ID */
   USER_ID: string

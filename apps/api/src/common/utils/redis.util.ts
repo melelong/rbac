@@ -71,7 +71,7 @@ export async function initRedis(options: IInitRedisOptions): Promise<IInitRedisR
     const redisInfo: string = `redis${redisConfig.db} `
     redisClient.on('end', () => logger.warn(`${redisInfo}连接已手动关闭`))
     redisClient.on('connect', () => logger.verbose(`${redisInfo}连接成功`))
-    redisClient.on('error', (error) => logger.error(`${redisInfo}${error.message}`))
+    redisClient.on('error', (err) => logger.error(`${redisInfo}${err.message}`, err.stack))
     redisClient.on('connecting', () => logger.log(`${redisInfo}连接中...`))
     redisClient.on('reconnecting', () => logger.log(`${redisInfo}重新连接中...`))
     redisClient.on('close', () => logger.warn(`${redisInfo}连接已关闭`))

@@ -1,7 +1,6 @@
 import type { Queue, RedisClient } from 'bullmq'
 import type { Redis as IOValkey } from 'iovalkey'
-import type { ICacheJobData } from './cache.processor'
-import type { ICacheLockOptions, ICacheTemplate, ICacheTemplateOptions } from './ICache'
+import type { ICacheJobData, ICacheLockOptions, ICacheTemplate, ICacheTemplateOptions } from './ICache'
 import type { LoggingService } from '@/common/infra'
 import { Cache } from '@nestjs/cache-manager'
 import { OnApplicationBootstrap } from '@nestjs/common'

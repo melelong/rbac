@@ -1,6 +1,5 @@
 import type { IAppConfig, IWinstonConfig } from '@/config'
-
-import { Global, Module } from '@nestjs/common'
+import { Global, Logger, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { MongooseModule } from '@nestjs/mongoose'
 import { WinstonModule } from 'nest-winston'
@@ -13,26 +12,6 @@ import { createConsoleTransport, createFileTransport, createMongoDBTransport } f
 @Global()
 @Module({
   imports: [
-    MongooseModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => {
-        const {
-          mongodbConfig: { uri },
-        } = configService.get<IWinstonConfig>(WINSTON_CONFIG_KEY)!
-        return {
-          uri,
-          onConnectionCreate(connection) {
-            if (LoggingService.MongoConnection) return
-            LoggingService.MongoConnection = connection
-            LoggingService.MongoConnection.on('connected', () => console.log('mongo connected'))
-            LoggingService.MongoConnection.on('open', () => console.log('mongo open'))
-            LoggingService.MongoConnection.on('disconnected', () => console.log('mongo disconnected'))
-            LoggingService.MongoConnection.on('reconnected', () => console.log('mongo reconnected'))
-            LoggingService.MongoConnection.on('disconnecting', () => console.log('mongo disconnecting'))
-          },
-        }
-      },
-      inject: [ConfigService],
-    }),
     WinstonModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
         const { name } = configService.get<IAppConfig>(APP_CONFIG_KEY)!
@@ -51,13 +30,43 @@ import { createConsoleTransport, createFileTransport, createMongoDBTransport } f
         LoggingService.Logger.add(createFileTransport('app', 'warn', mode, fileConfig))
         LoggingService.Logger.add(createFileTransport('app', 'verbose', mode, fileConfig))
         LoggingService.Logger.add(createFileTransport('http', 'info', mode, fileConfig))
-        LoggingService.Logger.add(await createMongoDBTransport('app', 'error', mode, mongodbConfig))
-        LoggingService.Logger.add(await createMongoDBTransport('app', 'warn', mode, mongodbConfig))
-        LoggingService.Logger.add(await createMongoDBTransport('app', 'verbose', mode, mongodbConfig))
-        LoggingService.Logger.add(await createMongoDBTransport('http', 'info', mode, mongodbConfig))
+        if (mode === 'mongodb') {
+          LoggingService.Logger!.add(await createMongoDBTransport('app', 'error', mode, mongodbConfig))
+          LoggingService.Logger!.add(await createMongoDBTransport('app', 'warn', mode, mongodbConfig))
+          LoggingService.Logger!.add(await createMongoDBTransport('app', 'verbose', mode, mongodbConfig))
+          LoggingService.Logger!.add(await createMongoDBTransport('http', 'info', mode, mongodbConfig))
+        }
         return {
           level,
           instance: LoggingService.Logger,
+        }
+      },
+      inject: [ConfigService],
+    }),
+    MongooseModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => {
+        const {
+          mongodbConfig: { uri },
+        } = configService.get<IWinstonConfig>(WINSTON_CONFIG_KEY)!
+        return {
+          uri,
+          retryAttempts: 30,
+          retryDelay: 3000,
+          // lazyConnection: true,
+          connectionErrorFactory(err) {
+            LoggingModule.logger.error(`mongodb1:${err.message}`, err.stack)
+            return err
+          },
+          onConnectionCreate(connection) {
+            if (LoggingService.MongoConnection) return LoggingService.MongoConnection
+            LoggingService.MongoConnection = connection
+            LoggingService.MongoConnection.on('open', () => LoggingModule.logger.verbose('mongodb 连接成功'))
+            LoggingService.MongoConnection.on('disconnected', () => LoggingModule.logger.warn('mongodb 已断开连接'))
+            LoggingService.MongoConnection.on('reconnected', () => LoggingModule.logger.warn('mongodb 重新连接中...'))
+            LoggingService.MongoConnection.on('disconnecting', () => LoggingModule.logger.warn('mongodb 断开连接中...'))
+            LoggingService.MongoConnection.on('error', (err) => LoggingModule.logger.error(`mongodb:${err.message}`, err.stack))
+            return LoggingService.MongoConnection
+          },
         }
       },
       inject: [ConfigService],
@@ -66,4 +75,6 @@ import { createConsoleTransport, createFileTransport, createMongoDBTransport } f
   providers: [LoggingService, LoggingProcessor],
   exports: [LoggingService, LoggingProcessor],
 })
-export class LoggingModule {}
+export class LoggingModule {
+  public static logger: Logger = new Logger(LoggingModule.name)
+}

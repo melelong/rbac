@@ -33,7 +33,7 @@
     "@iconify/vue": "catalog:web_prod",
     "@intlify/unplugin-vue-i18n": "catalog:web_prod",
     "@unocss/reset": "catalog:web_prod",
-    "@vueuse/core": "catalog:web_prod",
+    "@vueuse/core": "catalog:",
     "axios": "catalog:cli",
     "chroma-js": "catalog:web_prod",
     "crypto-js": "catalog:cli",
@@ -43,8 +43,8 @@
     "nprogress": "catalog:web_prod",
     "pinia": "catalog:web_prod",
     "uuid": "catalog:cli",
-    "vue": "catalog:web_prod",
-    "vue-i18n": "catalog:web_prod",
+    "vue": "catalog:",
+    "vue-i18n": "catalog:",
     "vue-router": "catalog:web_prod"
   },
   "devDependencies": {
@@ -75,11 +75,11 @@
     "unocss": "catalog:web_dev",
     "unplugin-auto-import": "catalog:web_dev",
     "unplugin-vue-components": "catalog:web_dev",
-    "vite": "catalog:web_dev",
+    "vite": "catalog:cli",
     "vite-plugin-compression": "catalog:web_dev",
     "vite-plugin-html": "catalog:web_dev",
     "vite-plugin-imagemin": "catalog:web_dev",
     "vite-plugin-vue-devtools": "catalog:web_dev",
-    "vue-tsc": "catalog:web_dev"
+    "vue-tsc": "catalog:cli"
   }
 }
